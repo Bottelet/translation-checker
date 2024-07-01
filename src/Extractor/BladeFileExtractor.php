@@ -28,7 +28,7 @@ class BladeFileExtractor extends NodeVisitorAbstract implements ExtractorContrac
     public function extractFromFile(SplFileInfo $file): array
     {
         $filePath = $file->getRealPath();
-        if (! is_file($filePath) || pathinfo($filePath, PATHINFO_EXTENSION) !== 'php') {
+        if ($file->getExtension() !== 'php') {
             return [];
         }
 

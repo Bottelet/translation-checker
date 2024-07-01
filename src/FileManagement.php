@@ -9,10 +9,8 @@ use SplFileInfo;
 class FileManagement
 {
     /**
-     * Recursively get all files in the specified paths.
-     *
-     * @param  array<string>  $paths Paths to scan for files.
-     * @return array<SplFileInfo> An array of SplFileInfo objects for each found file.
+     * @param  array<string>  $paths
+     * @return array<SplFileInfo>
      */
     public function getAllFiles(array $paths): array
     {

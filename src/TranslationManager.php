@@ -15,8 +15,8 @@ class TranslationManager
     }
 
     /**
-     * @param  array<string>  $sourceFilePaths  Paths of source files.
-     * @return array<string, string> Missing translations.
+     * @param  array<string>  $sourceFilePaths
+     * @return array<string, string>
      */
     public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, ?string $language = null, bool $translateMissing = false): array
     {

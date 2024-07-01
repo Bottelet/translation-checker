@@ -23,7 +23,7 @@ class PhpClassExtractor extends NodeVisitorAbstract implements ExtractorContract
     public function extractFromFile(SplFileInfo $file): array
     {
         $filePath = $file->getRealPath();
-        if (! is_file($filePath) || pathinfo($filePath, PATHINFO_EXTENSION) !== 'php') {
+        if ($file->getExtension() !== 'php') {
             return [];
         }
 
@@ -53,7 +53,7 @@ class PhpClassExtractor extends NodeVisitorAbstract implements ExtractorContract
     {
         if ($node instanceof FuncCall && $node->name instanceof Name) {
             $functionName = $node->name->toString();
-            if (in_array($functionName, ['__', '__t', '@lang', '@trans', 'trans', 'lang'])) {
+            if (in_array($functionName, ['__', '__t', 'trans', 'lang'])) {
                 $args = $node->getArgs();
                 if (! empty($args)) {
                     $firstArg = $args[0]->value;
