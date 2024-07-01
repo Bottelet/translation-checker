@@ -3,26 +3,18 @@
 namespace Bottelet\TranslationChecker\Translator;
 
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
-use Google\Cloud\Core\Exception\GoogleException;
-use Google\Cloud\Core\Exception\ServiceException;
 use Google\Cloud\Translate\V2\TranslateClient;
 
 class GoogleTranslator implements TranslatorContract
 {
     private TranslateClient $translateClient;
 
-    /**
-     * @throws GoogleException
-     */
     public function __construct(
         protected VariableRegexHandler $variableHandler
     ) {
-        $this->translateClient = new TranslateClient(['keyFile' => config('services.google-translate')]);
+        $this->translateClient = new TranslateClient(['key' => getenv('GOOGLE_TRANSLATE_API_KEY')]);
     }
 
-    /**
-     * @throws ServiceException
-     */
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
     {
         $replaceVariablesText = $this->variableHandler->replacePlaceholders($text);
@@ -32,21 +24,25 @@ class GoogleTranslator implements TranslatorContract
             'model' => 'nmt',
             'source' => $sourceLanguage,
         ]);
-        $translation = $this->variableHandler->restorePlaceholders($translation['text']);
 
-        return $translation['text'];
+        // Check if 'text' key exists in the translation array
+        if (! isset($translation['text'])) {
+            // Handle the case where 'text' key is missing or return a default/fallback value
+            return ''; // Or use some fallback mechanism
+        }
+
+        return $this->variableHandler->restorePlaceholders($translation['text']);
     }
 
     /**
-     * @throws ServiceException
+     * Translates an array of strings from the source language to the target language.
+     *
+     * @param  array<string>  $texts Array of texts to translate.
+     * @return array<string> Array of translated texts.
      */
-    public function translateBatch(array $text, string $targetLanguage, string $sourceLanguage = 'en'): array
+    public function translateBatch(array $texts, string $targetLanguage, string $sourceLanguage = 'en'): array
     {
-        $textsToTranslate = [];
-
-        foreach ($text as $string) {
-            $textsToTranslate[] = $this->variableHandler->replacePlaceholders($string);
-        }
+        $textsToTranslate = array_map([$this->variableHandler, 'replacePlaceholders'], $texts);
 
         $translations = $this->translateClient->translateBatch($textsToTranslate, [
             'target' => $targetLanguage,
@@ -54,11 +50,8 @@ class GoogleTranslator implements TranslatorContract
             'source' => $sourceLanguage,
         ]);
 
-        $translated = [];
-        foreach ($translations as $translatedText) {
-            $translated['text'][] = $this->variableHandler->restorePlaceholders($translatedText['text']);
-        }
-
-        return $translated['text'];
+        return array_map(function ($translation) {
+            return isset($translation['text']) ? $this->variableHandler->restorePlaceholders($translation['text']) : '';
+        }, $translations);
     }
 }

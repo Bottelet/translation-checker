@@ -15,10 +15,7 @@ class TranslationManager
     }
 
     /**
-     * @param  string[]  $sourceFilePaths Paths of source files.
-     * @param  string  $targetJsonPath Path to the target JSON file.
-     * @param  string|null  $language Language for translation.
-     * @param  bool  $translateMissing Whether to translate missing translations.
+     * @param  array<string>  $sourceFilePaths  Paths of source files.
      * @return array<string, string> Missing translations.
      */
     public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, ?string $language = null, bool $translateMissing = false): array
@@ -27,7 +24,9 @@ class TranslationManager
         $foundStrings = $this->translationFinder->findTranslatableStrings($files);
         $jsonTranslations = $this->jsonTranslationManager->readJsonFile($targetJsonPath);
 
-        $jsonTranslations = array_filter($jsonTranslations, 'is_string', ARRAY_FILTER_USE_BOTH);
+        $jsonTranslations = array_filter($jsonTranslations, function ($value) {
+            return is_string($value);
+        });
 
         $missingTranslations = $this->extractMissingTranslations($foundStrings['all'], $jsonTranslations);
 

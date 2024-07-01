@@ -13,7 +13,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         $this->app->bind(TranslatorContract::class, GoogleTranslator::class);
     }
 
-    public function boot()
+    public function boot(): void
     {
 
     }

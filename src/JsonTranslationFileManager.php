@@ -31,11 +31,6 @@ class JsonTranslationFileManager
         file_put_contents($filePath, $jsonContent);
     }
 
-    /**
-     * Sorts the translations in a JSON file alphabetically by key.
-     *
-     * @param  string  $filePath  Path to the JSON file.
-     */
     public function sortJsonFile(string $filePath): void
     {
         $translations = $this->readJsonFile($filePath);

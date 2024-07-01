@@ -6,14 +6,14 @@ class VariableRegexHandler implements VariableHandlerContract
 {
     private const PLACEHOLDER_REGEX = '/:(\w+)/';
 
+    /**
+     * @var array<string, string>
+     */
     private array $placeholders = [];
 
-    /**
-     * Replace placeholders in the string with unique identifiers.
-     */
     public function replacePlaceholders(string $text): string
     {
-        return preg_replace_callback(self::PLACEHOLDER_REGEX, function ($matches) {
+        $result = preg_replace_callback(self::PLACEHOLDER_REGEX, function ($matches) {
             $placeholder = $matches[0];
             $index = count($this->placeholders) + 1;
             $varName = "VAR_{$index}";
@@ -21,11 +21,10 @@ class VariableRegexHandler implements VariableHandlerContract
 
             return $varName;
         }, $text);
+
+        return $result ?? '';
     }
 
-    /**
-     * Restore placeholders in the translated text back to their original values.
-     */
     public function restorePlaceholders(string $translatedText): string
     {
         foreach ($this->placeholders as $varName => $placeholder) {

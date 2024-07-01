@@ -11,8 +11,8 @@ class FileManagement
     /**
      * Recursively get all files in the specified paths.
      *
-     * @param  string[]  $paths Paths to scan for files.
-     * @return SplFileInfo[] An array of SplFileInfo objects for each found file.
+     * @param  array<string>  $paths Paths to scan for files.
+     * @return array<SplFileInfo> An array of SplFileInfo objects for each found file.
      */
     public function getAllFiles(array $paths): array
     {
