@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Extractor;
+namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

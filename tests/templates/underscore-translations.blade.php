@@ -15,12 +15,12 @@
         @endif
 
         <div class="buttons">
-            <x-button type="primary">
+            <button type="primary">
                 {{ __('Click Me') }}
-            </x-button>
-            <x-button type="secondary">
+            </button>
+            <button type="secondary">
                 {{ __('Another Button') }}
-            </x-button>
+            </button>
         </div>
 
         <div class="content">

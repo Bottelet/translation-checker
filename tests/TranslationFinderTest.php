@@ -4,42 +4,10 @@ namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\TranslationFinder;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
 class TranslationFinderTest extends TestCase
 {
-    private string $tempDir;
-    private SplFileInfo $vueFile;
-    private SplFileInfo $phpController;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->tempDir = '/translation_checker_tests';
-        if (! file_exists($this->tempDir)) {
-            mkdir($this->tempDir, 0777, true);
-        }
-
-        $vueFilePath = $this->tempDir . '/test.vue';
-        $phpController = $this->tempDir . '/TestController.php';
-
-        file_put_contents($phpController, file_get_contents('translation-checker/tests/templates/TestController.php'));
-        file_put_contents($vueFilePath, file_get_contents('translation-checker/tests/templates/dollar-t.vue'));
-
-        $this->vueFile = new SplFileInfo($vueFilePath);
-        $this->phpController = new SplFileInfo($phpController);
-    }
-
-    protected function tearDown(): void
-    {
-        array_map('unlink', glob("{$this->tempDir}/*.*"));
-        rmdir($this->tempDir);
-
-        parent::tearDown();
-    }
-
     #[Test]
     public function findTranslatableStringsFindsStringsWithDollarT(): void
     {
@@ -50,15 +18,13 @@ class TranslationFinderTest extends TestCase
     }
 
     #[Test]
-    public function findTranslatableStringsIgnoresNonPhpFiles(): void
+    public function findTranslatableStringsChecksNonPhpFiles(): void
     {
         $translationFinder = new TranslationFinder;
         $nonPhpFile = new SplFileInfo($this->tempDir . '/nonPhpContent.html');
 
-        file_put_contents($this->tempDir . '/nonPhpContent.php', file_get_contents('translation-checker/tests/templates/no-translations.blade.php'));
-
+        file_put_contents($this->tempDir . '/nonPhpContent.html', file_get_contents($this->noTranslationsBladeFile));
         $foundStrings = $translationFinder->findTranslatableStrings([$nonPhpFile]);
-
         $this->assertEmpty($foundStrings['all']);
     }
 
@@ -99,11 +65,12 @@ class TranslationFinderTest extends TestCase
     }
 
     #[Test]
-    public function ignoresFilesWithSyntaxErrors(): void
+    public function throwExceptionFilesWithSyntaxErrors(): void
     {
         $fileWithSyntaxError = $this->tempDir . '/syntaxError.php';
         file_put_contents($fileWithSyntaxError, "<?php echo __('missing_semicolon'");
 
+        $this->expectException(\Exception::class);
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($fileWithSyntaxError)]);
 
@@ -139,7 +106,7 @@ class TranslationFinderTest extends TestCase
     public function canFindFunctionsInController(): void
     {
         $translationFinder = new TranslationFinder;
-        $foundStrings = $translationFinder->findTranslatableStrings([$this->phpController]);
+        $foundStrings = $translationFinder->findTranslatableStrings([$this->phpControllerFile]);
 
         $this->assertCount(10, $foundStrings['all']);
     }

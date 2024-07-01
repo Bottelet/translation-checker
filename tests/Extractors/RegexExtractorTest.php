@@ -1,24 +1,17 @@
 <?php
 
-namespace Tests\Unit\Extractor;
+namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use Bottelet\TranslationChecker\Extractor\RegexExtractor;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
-class RegexExtractorTest extends TestCase
+class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 {
-    private string $tempDir;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->tempDir = sys_get_temp_dir() . '/regex_extractor_tests';
-        if (! file_exists($this->tempDir)) {
-            mkdir($this->tempDir, 0777, true);
-        }
 
         $testPhpContent = <<<'TEXT'
          __('simple_string');
@@ -34,14 +27,6 @@ class RegexExtractorTest extends TestCase
         TEXT;
 
         file_put_contents($this->tempDir . '/test.php', $testPhpContent);
-    }
-
-    protected function tearDown(): void
-    {
-        array_map('unlink', glob("{$this->tempDir}/*.*"));
-        rmdir($this->tempDir);
-
-        parent::tearDown();
     }
 
     #[Test]
@@ -76,13 +61,8 @@ class RegexExtractorTest extends TestCase
     #[Test]
     public function it_handles_vue_js_files_with_translations(): void
     {
-        $vueFilePath = $this->tempDir . '/test.vue';
-        $vuePath = 'translation-checker/tests/templates/dollar-t.vue';
-        file_put_contents($vueFilePath, file_get_contents($vuePath));
-        $vueFile = new SplFileInfo($vueFilePath);
-
         $extractor = new RegexExtractor;
-        $translationKeys = $extractor->extractFromFile($vueFile);
+        $translationKeys = $extractor->extractFromFile($this->vueFile);
 
         $this->assertContains('welcome_message', $translationKeys);
         $this->assertNotContains('Clicked', $translationKeys);

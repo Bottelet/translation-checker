@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Bottelet\TranslationChecker\Extractor;
+namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Extractor\ExtractorFactory;

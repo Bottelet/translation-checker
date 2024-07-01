@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class FileManagementTest extends TestCase
+class FileManagementTest extends \Bottelet\TranslationChecker\Tests\TestCase
 {
     private $testDir;
 

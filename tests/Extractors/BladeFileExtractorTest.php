@@ -1,40 +1,20 @@
 <?php
 
-namespace Tests\Unit\Extractor;
+namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
+use Bottelet\TranslationChecker\Tests\TestCase;
+use Illuminate\Support\Facades\Blade;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
-use SplFileInfo;
 
 class BladeFileExtractorTest extends TestCase
 {
-    private string $tempDir;
-
-    private SplFileInfo $bladeFile;
-
-    protected function setUp(): void
+    #[Test]
+    public function ensureFileIsCompilable(): void
     {
-        parent::setUp();
-
-        $this->tempDir = sys_get_temp_dir() . '/blade_file_extractor_tests';
-        if (! file_exists($this->tempDir)) {
-            mkdir($this->tempDir, 0777, true);
-        }
-
-        $bladeFilePath = $this->tempDir . '/test.blade.php';
-        $bladePath = 'translation-checker/tests/templates/underscore-translations.blade.php';
-        file_put_contents($bladeFilePath, file_get_contents($bladePath));
-
-        $this->bladeFile = new SplFileInfo($bladeFilePath);
-    }
-
-    protected function tearDown(): void
-    {
-        array_map('unlink', glob("{$this->tempDir}/*.*"));
-        rmdir($this->tempDir);
-
-        parent::tearDown();
+        $bladeContent = file_get_contents($this->bladeFile->getRealPath());
+        $compiledString = Blade::compileString($bladeContent);
+        $this->assertNotEmpty($compiledString);
     }
 
     #[Test]
