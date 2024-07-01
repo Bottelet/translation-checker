@@ -3,6 +3,7 @@
 namespace Bottelet\TranslationChecker\Translator;
 
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
+use Google\Cloud\Core\Exception\ServiceException;
 use Google\Cloud\Translate\V2\TranslateClient;
 
 class GoogleTranslator implements TranslatorContract
@@ -25,20 +26,18 @@ class GoogleTranslator implements TranslatorContract
             'source' => $sourceLanguage,
         ]);
 
-        // Check if 'text' key exists in the translation array
         if (! isset($translation['text'])) {
-            // Handle the case where 'text' key is missing or return a default/fallback value
-            return ''; // Or use some fallback mechanism
+            return '';
         }
 
         return $this->variableHandler->restorePlaceholders($translation['text']);
     }
 
     /**
-     * Translates an array of strings from the source language to the target language.
-     *
      * @param  array<string>  $texts Array of texts to translate.
      * @return array<string> Array of translated texts.
+     *
+     * @throws ServiceException
      */
     public function translateBatch(array $texts, string $targetLanguage, string $sourceLanguage = 'en'): array
     {
