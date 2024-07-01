@@ -5,6 +5,7 @@ use Bottelet\TranslationChecker\JsonTranslationFileManager;
 use Bottelet\TranslationChecker\TranslationFinder;
 use Bottelet\TranslationChecker\TranslationManager;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -68,9 +69,7 @@ class TranslationManagerTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translationsAreAppendedWhenNotUsingTranslationService(): void
     {
         $this->translationServiceMock->expects($this->never())
@@ -84,9 +83,7 @@ class TranslationManagerTest extends TestCase
         ], $missingTranslations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateTranslationsFromFile_TranslateMissing(): void
     {
         $translations = [
@@ -120,9 +117,7 @@ class TranslationManagerTest extends TestCase
         $this->assertStringContainsString('Already Translated Hello, World!', $jsonContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translationNotPerformedWithEmptySourceFilePath(): void
     {
         $missingTranslations = $this->translationManager->updateTranslationsFromFile([], $this->jsonFilePath);
@@ -133,9 +128,7 @@ class TranslationManagerTest extends TestCase
         $this->assertStringContainsString('Already Translated Hello, World!', $jsonContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translationPerformedWithEmptyJsonFile(): void
     {
         file_put_contents($this->jsonFilePath, '');

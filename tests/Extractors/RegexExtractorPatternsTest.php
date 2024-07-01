@@ -2,13 +2,12 @@
 
 namespace Bottelet\TranslationChecker\Extractor;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RegexExtractorPatternsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function doubleUnderscorePattern(): void
     {
         $doubleUnderscorePattern = '/(__\()([\'"])(.*?)\2/';
@@ -18,9 +17,7 @@ class RegexExtractorPatternsTest extends TestCase
         $this->assertEquals(['welcome', 'user'], $matches[3]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doubleUnderscorePatternWithVariables(): void
     {
         $doubleUnderscorePattern = '/(__\()([\'"])(.*?)\2/';
@@ -32,9 +29,7 @@ class RegexExtractorPatternsTest extends TestCase
         $this->assertNotContains('more random text', $matches[3]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tPattern(): void
     {
         $tPattern = '/\$?t\([\'"]([^\'"]+)[\'"]\)/';
@@ -46,9 +41,7 @@ class RegexExtractorPatternsTest extends TestCase
         $this->assertCount(4, $matches[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tPatternAdditional(): void
     {
         $tPattern = '/\$?t\([\'"]([^\'"]+)[\'"]\)/';
@@ -59,9 +52,7 @@ class RegexExtractorPatternsTest extends TestCase
         $this->assertEquals(['vue_case', 'dollar_case'], $matches[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dollarUnderscorePattern(): void
     {
         $dollarUnderscorePattern = '/\$_\([\'"]([^\'"]+)[\'"]\)/';
@@ -71,9 +62,7 @@ class RegexExtractorPatternsTest extends TestCase
         $this->assertEquals(['welcome_underscore', 'another_underscore'], $matches[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dollarUnderscorePatternAdditional(): void
     {
         $dollarUnderscorePattern = '/\$_\([\'"]([^\'"]+)[\'"]\)/';

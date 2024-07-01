@@ -3,13 +3,12 @@
 namespace Bottelet\TranslationChecker\Tests\Translator\VariableHandlers;
 
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class VariableRegexHandlerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function replacePlaceholdersWithUniqueValues(): void
     {
         $handler = new VariableRegexHandler;
@@ -20,9 +19,7 @@ class VariableRegexHandlerTest extends TestCase
         $this->assertEquals($expectedReplacedText, $replacedText);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replacePlaceholdersWithMultipleOccurrences(): void
     {
         $handler = new VariableRegexHandler;
@@ -33,9 +30,7 @@ class VariableRegexHandlerTest extends TestCase
         $this->assertEquals($expectedReplacedText, $replacedText);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replacePlaceholdersWithAdditionalCharacters(): void
     {
         $handler = new VariableRegexHandler;
@@ -46,9 +41,7 @@ class VariableRegexHandlerTest extends TestCase
         $this->assertEquals($expectedReplacedText, $replacedText);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restorePlaceholdersDifferentVariables(): void
     {
         $handler = new VariableRegexHandler;
@@ -62,9 +55,7 @@ class VariableRegexHandlerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restorePlaceholdersSameVariables(): void
     {
         $handler = new VariableRegexHandler;

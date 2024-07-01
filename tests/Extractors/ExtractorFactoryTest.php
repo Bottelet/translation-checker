@@ -6,14 +6,13 @@ use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Extractor\ExtractorFactory;
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use Bottelet\TranslationChecker\Extractor\RegexExtractor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
 class ExtractorFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createBladeFileExtractor(): void
     {
         $file = new SplFileInfo('example.blade.php');
@@ -21,9 +20,7 @@ class ExtractorFactoryTest extends TestCase
         $this->assertInstanceOf(BladeFileExtractor::class, $extractor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPhpClassExtractor(): void
     {
         $file = new SplFileInfo('example.php');
@@ -31,9 +28,7 @@ class ExtractorFactoryTest extends TestCase
         $this->assertInstanceOf(PhpClassExtractor::class, $extractor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createRegexExtractorForVue(): void
     {
         $file = new SplFileInfo('example.vue');
@@ -41,9 +36,7 @@ class ExtractorFactoryTest extends TestCase
         $this->assertInstanceOf(RegexExtractor::class, $extractor);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createRegexExtractorForNonPhpFiles(): void
     {
         $file = new SplFileInfo('example.txt');

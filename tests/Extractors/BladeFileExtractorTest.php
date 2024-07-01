@@ -3,8 +3,9 @@
 namespace Tests\Unit\Extractor;
 
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use SplFileInfo;
-use Tests\TestCase;
 
 class BladeFileExtractorTest extends TestCase
 {
@@ -36,9 +37,7 @@ class BladeFileExtractorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canFindFunctionsInBlade(): void
     {
         $phpExtractor = new BladeFileExtractor;

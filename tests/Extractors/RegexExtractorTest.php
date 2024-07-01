@@ -3,8 +3,9 @@
 namespace Tests\Unit\Extractor;
 
 use Bottelet\TranslationChecker\Extractor\RegexExtractor;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use SplFileInfo;
-use Tests\TestCase;
 
 class RegexExtractorTest extends TestCase
 {
@@ -43,7 +44,7 @@ class RegexExtractorTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_correctly_extracts_translation_strings_from_php_file(): void
     {
         $file = new SplFileInfo($this->tempDir . '/test.php');
@@ -58,7 +59,7 @@ class RegexExtractorTest extends TestCase
         $this->assertContains('underscore translator inside curly bracket', $translationKeys);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_files_without_translation_strings(): void
     {
         $emptyFile = $this->tempDir . '/empty.php';
@@ -72,9 +73,7 @@ class RegexExtractorTest extends TestCase
         $this->assertEmpty($translationKeys);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_vue_js_files_with_translations(): void
     {
         $vueFilePath = $this->tempDir . '/test.vue';
@@ -89,7 +88,7 @@ class RegexExtractorTest extends TestCase
         $this->assertNotContains('Clicked', $translationKeys);
     }
 
-    /** @test */
+    #[Test]
     public function should_not_find_emit_request_etc(): void
     {
         $jsFile = $this->tempDir . '/file.js';

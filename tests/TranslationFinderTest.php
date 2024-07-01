@@ -3,6 +3,7 @@
 namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\TranslationFinder;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
@@ -39,9 +40,7 @@ class TranslationFinderTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTranslatableStringsFindsStringsWithDollarT(): void
     {
         $translationFinder = new TranslationFinder;
@@ -50,9 +49,7 @@ class TranslationFinderTest extends TestCase
         $this->assertContains('welcome_message', $foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTranslatableStringsIgnoresNonPhpFiles(): void
     {
         $translationFinder = new TranslationFinder;
@@ -65,9 +62,7 @@ class TranslationFinderTest extends TestCase
         $this->assertEmpty($foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTranslatableStringsHandlesEmptyFiles(): void
     {
         $emptyFile = new SplFileInfo($this->tempDir . '/empty.php');
@@ -79,9 +74,7 @@ class TranslationFinderTest extends TestCase
         $this->assertEmpty($foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonexistentPathShouldJustBeSkipped(): void
     {
         $translationFinder = new TranslationFinder;
@@ -92,9 +85,7 @@ class TranslationFinderTest extends TestCase
         $this->assertEmpty($foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pathNormalization(): void
     {
         $normalizedFile = new SplFileInfo($this->tempDir . '/testFile.php');
@@ -107,9 +98,7 @@ class TranslationFinderTest extends TestCase
         $this->assertContains('normalized string', $foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoresFilesWithSyntaxErrors(): void
     {
         $fileWithSyntaxError = $this->tempDir . '/syntaxError.php';
@@ -121,9 +110,7 @@ class TranslationFinderTest extends TestCase
         $this->assertEmpty($foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handlesFilesWithMultipleTranslationFunctions(): void
     {
         $multiFunctionFile = $this->tempDir . '/multiFunction.php';
@@ -136,9 +123,7 @@ class TranslationFinderTest extends TestCase
         $this->assertContains('second_key', $foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function correctlyIdentifiesTranslationKeysWithVariables(): void
     {
         $fileWithVariables = $this->tempDir . '/variableKey.php';
@@ -150,9 +135,7 @@ class TranslationFinderTest extends TestCase
         $this->assertEquals(['key_with_variable', 'a text with :key inside string'], $foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canFindFunctionsInController(): void
     {
         $translationFinder = new TranslationFinder;
@@ -161,9 +144,7 @@ class TranslationFinderTest extends TestCase
         $this->assertCount(10, $foundStrings['all']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function distinguishesBetweenTranslationAndOtherScriptingFunctions(): void
     {
         $jsFile = $this->tempDir . '/script.js';

@@ -3,8 +3,9 @@
 namespace Tests\Unit\Extractor;
 
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use SplFileInfo;
-use Tests\TestCase;
 
 class PhpClassExtractorTest extends TestCase
 {
@@ -36,9 +37,7 @@ class PhpClassExtractorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canFindFunctionsInController(): void
     {
         $phpExtractor = new PhpClassExtractor;

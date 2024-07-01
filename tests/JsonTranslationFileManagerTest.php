@@ -3,6 +3,7 @@
 namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\JsonTranslationFileManager;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class JsonTranslationFileManagerTest extends TestCase
@@ -29,9 +30,7 @@ class JsonTranslationFileManagerTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readJsonFileReturnsArray(): void
     {
         $jsonManager = new JsonTranslationFileManager;
@@ -40,9 +39,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertCount(2, $translations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateJsonFileUpdatesContentCorrectly(): void
     {
         $jsonManager = new JsonTranslationFileManager;
@@ -58,9 +55,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertEquals($newTranslations, $updatedContent);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ensureLastLineDoesNotAddComma(): void
     {
         $jsonManager = new JsonTranslationFileManager;
@@ -89,9 +84,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertStringContainsString('add new', $lastLine);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sortJsonFileSortsKeys(): void
     {
         $jsonManager = new JsonTranslationFileManager;
@@ -107,9 +100,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertEquals(array_keys($expectedOrder), array_keys($sortedContent));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonexistentFileReadReturnsEmptyArray(): void
     {
         $jsonManager = new JsonTranslationFileManager;
@@ -118,9 +109,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertEmpty($translations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readJsonFileHandlesInvalidJson(): void
     {
         // Create an invalid JSON content
@@ -131,9 +120,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $this->assertEmpty($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addsNewTranslationsOverwritesExisting(): void
     {
         $jsonManager = new JsonTranslationFileManager;

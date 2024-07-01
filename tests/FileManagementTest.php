@@ -4,6 +4,7 @@ namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\FileManagement;
 use FilesystemIterator;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -51,9 +52,7 @@ class FileManagementTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllFilesReturnsArray()
     {
         $fileManagement = new FileManagement;
@@ -61,9 +60,7 @@ class FileManagementTest extends TestCase
         $this->assertIsArray($files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllFiles()
     {
         $fileManagement = new FileManagement;
@@ -74,9 +71,7 @@ class FileManagementTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllFilesExcludesDirectories()
     {
         $fileManagement = new FileManagement;
@@ -87,9 +82,7 @@ class FileManagementTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonexistentPathReturnsEmptyArray()
     {
         $fileManagement = new FileManagement;
@@ -97,9 +90,7 @@ class FileManagementTest extends TestCase
         $this->assertEmpty($files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pathNormalization()
     {
         $fileManagement = new FileManagement;
@@ -108,9 +99,7 @@ class FileManagementTest extends TestCase
         $this->assertNotEmpty($files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAllFilesFindsDeeplyNestedFiles()
     {
         $fileManagement = new FileManagement;
