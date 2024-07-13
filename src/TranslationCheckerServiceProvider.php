@@ -9,7 +9,14 @@ class TranslationCheckerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-
+        $this->app->bind(TranslationManager::class, function ($app) {
+            return new TranslationManager(
+                $app->make(FileManagement::class),
+                $app->make(TranslationFinder::class),
+                $app->make(JsonTranslationFileManager::class),
+                $app->make(TranslatorContract::class)
+            );
+        });
     }
 
     public function boot(): void
