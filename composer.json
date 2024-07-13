@@ -1,0 +1,37 @@
+{
+    "name": "bottelet/translation-checker",
+    "description": "A translation checker package for Laravel, find, add, and translate missing strings",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Casper Bottelet",
+            "email": "cbottelet@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bottelet\\TranslationChecker\\": "src/",
+            "Bottelet\\TranslationChecker\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bottelet\\TranslationChecker\\TranslationCheckerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "phpunit/phpunit": "^9.4|^10.1",
+        "phpstan/phpstan": "^1.10",
+        "orchestra/testbench": "^7.0|^8.0|^9.0"
+    },
+    "require": {
+        "php": "^8.0",
+        "nikic/php-parser": "^5.0",
+        "google/cloud-translate": "^1.17"
+    }
+}
