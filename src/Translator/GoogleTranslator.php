@@ -13,7 +13,7 @@ class GoogleTranslator implements TranslatorContract
     public function __construct(
         protected VariableRegexHandler $variableHandler
     ) {
-        $this->translateClient = new TranslateClient(['key' => getenv('GOOGLE_TRANSLATE_API_KEY')]);
+        $this->translateClient = new TranslateClient(['key' => config('translator.translators.goggle')]);
     }
 
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string

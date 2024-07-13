@@ -3,65 +3,31 @@
 namespace Bottelet\TranslationChecker\Extractor;
 
 use Exception;
-use Jenssegers\Blade\Blade;
-use PhpParser\Error;
+use Illuminate\Support\Facades\Blade;
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
-use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
-use PhpParser\PhpVersion;
-use RuntimeException;
 use SplFileInfo;
 
-class BladeFileExtractor extends NodeVisitorAbstract implements ExtractorContract
+class BladeFileExtractor extends PhpBaseClassExtractor
 {
-    /**
-     * @var string[]
-     */
-    protected array $translationKeys = [];
-
-    public function extractFromFile(SplFileInfo $file): array
+    protected function getCode(SplFileInfo $file): ?string
     {
-        $filePath = $file->getRealPath();
-        if ($file->getExtension() !== 'php') {
-            return [];
+        $code = parent::getCode($file);
+        if (is_null($code)) {
+            return null;
         }
 
-        $parser = (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));
-        $traverser = new NodeTraverser;
-        $traverser->addVisitor($this);
         try {
-            $code = file_get_contents($filePath);
-            if ($code === false) {
-                return [];
-            }
-            $renderer = new Blade($filePath, $filePath);
-            $compiler = $renderer->compiler();
-            try {
-                $compiledCode = $compiler->compileString($code);
-                if (! $compiledCode) {
-                    return [];
-                }
-                $code = $compiledCode;
-            } catch (Exception $e) {
-                throw new $e;
-            }
+            $compiledCode = Blade::compileString($code);
 
-            $ast = $parser->parse($code);
-            if (is_array($ast)) {
-                $traverser->traverse($ast);
-            }
-
-        } catch (Error $error) {
-            throw new RuntimeException("Error parsing file {$filePath}: {$error->getMessage()}");
+            return $compiledCode ?: null;
+        } catch (Exception $e) {
+            throw new $e;
         }
-
-        return $this->translationKeys;
     }
 
     public function enterNode(Node $node): ?int
@@ -70,7 +36,7 @@ class BladeFileExtractor extends NodeVisitorAbstract implements ExtractorContrac
             if ($node->name instanceof Name) {
                 $functionName = $node->name->toString();
                 if (in_array($functionName, ['__', '__t', '@lang', '@trans', 'trans', 'lang'], true)) {
-                    $this->addTranslationKey($node->getArgs());
+                    $this->addTranslation($node->getArgs());
                 }
             }
         } elseif ($node instanceof MethodCall && $node->name instanceof Identifier && $node->name->name === 'get') {
@@ -88,7 +54,7 @@ class BladeFileExtractor extends NodeVisitorAbstract implements ExtractorContrac
                 /** @var Node\Scalar\String_ $value */
                 $value = $argument->value;
                 if ($value->value === 'translator') {
-                    $this->addTranslationKey($node->getArgs());
+                    $this->addTranslation($node->getArgs());
 
                     return NodeVisitor::STOP_TRAVERSAL;
                 }
@@ -96,16 +62,5 @@ class BladeFileExtractor extends NodeVisitorAbstract implements ExtractorContrac
         }
 
         return null;
-    }
-
-    /** @param  array<int, Node\Arg>  $args*/
-    private function addTranslationKey(array $args): void
-    {
-        if (! empty($args)) {
-            $firstArg = $args[0]->value;
-            if ($firstArg instanceof Node\Scalar\String_) {
-                $this->translationKeys[] = $firstArg->value;
-            }
-        }
     }
 }
