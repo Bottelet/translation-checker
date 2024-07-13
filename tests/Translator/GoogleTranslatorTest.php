@@ -6,10 +6,10 @@ use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
 use Google\Cloud\Translate\V2\TranslateClient;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionClass;
 
-class GoogleTranslatorTest extends TestCase
+class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 {
     /** @var VariableRegexHandler|MockObject */
     private $variableHandlerMock;
@@ -33,7 +33,7 @@ class GoogleTranslatorTest extends TestCase
         $this->googleTranslator = new GoogleTranslator($this->variableHandlerMock);
 
         // Injecting the TranslateClient mock directly as it's a private property
-        $reflection = new \ReflectionClass(GoogleTranslator::class);
+        $reflection = new ReflectionClass(GoogleTranslator::class);
         $translateClientProperty = $reflection->getProperty('translateClient');
         $translateClientProperty->setAccessible(true);
         $translateClientProperty->setValue($this->googleTranslator, $this->translateClientMock);
@@ -47,13 +47,13 @@ class GoogleTranslatorTest extends TestCase
         $targetLanguage = 'fr';
 
         $this->variableHandlerMock->method('replacePlaceholders')
-                                  ->willReturn($text);
+            ->willReturn($text);
 
         $this->variableHandlerMock->method('restorePlaceholders')
-                                  ->willReturn($translatedText);
+            ->willReturn($translatedText);
 
         $this->translateClientMock->method('translate')
-                                  ->willReturn(['text' => $translatedText]);
+            ->willReturn(['text' => $translatedText]);
 
         $result = $this->googleTranslator->translate($text, $targetLanguage);
 
@@ -67,19 +67,19 @@ class GoogleTranslatorTest extends TestCase
         $translatedTexts = ['Bonjour le monde!', 'Bonjour'];
         $targetLanguage = 'fr';
 
-        $translations = array_map(fn($text) => ['text' => $text], $translatedTexts);
+        $translations = array_map(fn ($text) => ['text' => $text], $translatedTexts);
 
         $this->variableHandlerMock->expects($this->exactly(count($texts)))
-                                  ->method('replacePlaceholders')
-                                  ->willReturnOnConsecutiveCalls(...$texts);
+            ->method('replacePlaceholders')
+            ->willReturnOnConsecutiveCalls(...$texts);
 
         $this->variableHandlerMock->expects($this->exactly(count($texts)))
-                                  ->method('restorePlaceholders')
-                                  ->willReturnOnConsecutiveCalls(...$translatedTexts);
+            ->method('restorePlaceholders')
+            ->willReturnOnConsecutiveCalls(...$translatedTexts);
 
         $this->translateClientMock->expects($this->once())
-                                  ->method('translateBatch')
-                                  ->willReturn($translations);
+            ->method('translateBatch')
+            ->willReturn($translations);
 
         $result = $this->googleTranslator->translateBatch($texts, $targetLanguage);
 
