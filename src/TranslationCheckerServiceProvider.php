@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker;
 
-use Bottelet\TranslationChecker\Commands\Console\CheckTranslation;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +21,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         $this->app->bind(TranslatorContract::class, fn ($app) => $app->make($app->config['translator.default_translation_service']));
 
         $this->commands([
-            CheckTranslation::class,
+            Commands\CheckTranslation::class,
         ]);
     }
 }
