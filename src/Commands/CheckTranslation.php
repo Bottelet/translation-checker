@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Commands\Console;
+namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\TranslationManager;
 use Illuminate\Console\Command;
@@ -16,12 +16,8 @@ class CheckTranslation extends Command
 
     protected $description = 'Check and manage translations';
 
-    public function __construct(protected TranslationManager $translationManager)
-    {
-        parent::__construct();
-    }
 
-    public function handle(): void
+    public function handle(TranslationManager $translationManager): void
     {
         $this->info('Checking translations...');
         $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
@@ -39,7 +35,7 @@ class CheckTranslation extends Command
 
         $targetJsonPath = base_path(config('translator.language_folder') . "/{$targetLanguage}.json");
 
-        $missingTranslations = $this->translationManager->updateTranslationsFromFile(
+        $missingTranslations = $translationManager->updateTranslationsFromFile(
             $sourceFilePaths,
             $targetJsonPath,
             $targetLanguage,
