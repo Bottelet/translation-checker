@@ -3,7 +3,8 @@
 namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\FileManagement;
-use Bottelet\TranslationChecker\JsonTranslationFileManager;
+use Bottelet\TranslationChecker\LanguageFileManager;
+use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\TranslationFinder;
 use Bottelet\TranslationChecker\TranslationManager;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
@@ -49,7 +50,8 @@ class TranslationManagerTest extends TestCase
         $this->translationManager     = new TranslationManager(
             new FileManagement,
             new TranslationFinder,
-            new JsonTranslationFileManager,
+            new LanguageFileManager,
+            new AlphabeticSort,
             $this->translationServiceMock
         );
     }
@@ -86,7 +88,7 @@ class TranslationManagerTest extends TestCase
     }
 
     #[Test]
-    public function updateTranslationsFromFile_TranslateMissing(): void
+    public function updateTranslationsFromFileTranslateMissing(): void
     {
         $translations = [
             'Hello, World!'   => 'Translated Hello, World!',
@@ -100,16 +102,17 @@ class TranslationManagerTest extends TestCase
             ->willReturnCallback(function ($keys) use ($translations) {
                 $translatedTexts = [];
                 foreach ($keys as $key) {
-                    $translatedTexts[] = $translations[$key] ?? 'Another Translation';
+                    $translatedTexts[$key] = $translations[$key] ?? 'Another Translation';
                 }
 
                 return $translatedTexts;
             });
 
         $missingTranslations = $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath, 'en', true);
+            $this->jsonFilePath, false,'en', true);
 
         unset($translations['Hello, World!']);
+
         $this->assertEquals($translations, $missingTranslations);
         $this->assertNotContains('Hello, World!', array_keys($missingTranslations));
 
@@ -148,14 +151,14 @@ class TranslationManagerTest extends TestCase
             ->willReturnCallback(function ($keys) use ($translations) {
                 $translatedTexts = [];
                 foreach ($keys as $key) {
-                    $translatedTexts[] = $translations[$key] ?? 'Another Translation';
+                    $translatedTexts[$key] = $translations[$key] ?? 'Another Translation';
                 }
 
                 return $translatedTexts;
             });
 
         $missingTranslations = $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath, 'en', true);
+            $this->jsonFilePath, false, 'en', true);
         $this->assertEquals($translations, $missingTranslations);
 
         $jsonContent = file_get_contents($this->jsonFilePath);

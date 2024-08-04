@@ -15,6 +15,7 @@ class TranslationFinder
      */
     public function findTranslatableStrings(array $files): array
     {
+        //TODO Can we remove everything but ALL? And perhaps not make it multi dimensional
         $found = [
             'all' => [],
             'simpleStrings' => [],
@@ -32,5 +33,35 @@ class TranslationFinder
         }
 
         return $found;
+    }
+
+    /**
+     * @param  array<int, SplFileInfo>  $files
+     * @param  array<string, string>  $currentTranslatedStrings
+     *
+     * @return void
+     */
+    public function findMissingTranslableStrings(array $files, array $currentTranslatedStrings): array
+    {
+        $translationString = $this->findTranslatableStrings($files);
+        return $this->extractMissingTranslations($translationString['all'], $currentTranslatedStrings);
+    }
+
+    /**
+     * @param  array<string>  $foundStrings
+     * @param  array<string, string>  $jsonTranslations
+     * @return array<string, string>
+     */
+    protected function extractMissingTranslations(array $foundStrings, array $jsonTranslations): array
+    {
+        $missingTranslations = [];
+        foreach ($foundStrings as $string) {
+            $unescapedString = stripslashes($string);
+            if (! array_key_exists($unescapedString, $jsonTranslations)) {
+                $missingTranslations[$unescapedString] = '';
+            }
+        }
+
+        return $missingTranslations;
     }
 }

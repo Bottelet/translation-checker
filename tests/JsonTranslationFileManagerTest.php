@@ -2,7 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests;
 
-use Bottelet\TranslationChecker\JsonTranslationFileManager;
+use Bottelet\TranslationChecker\LanguageFileManager;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +33,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function readJsonFileReturnsArray(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $translations = $jsonManager->readJsonFile($this->tempFile);
         $this->assertIsArray($translations);
         $this->assertCount(2, $translations);
@@ -42,7 +42,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function updateJsonFileUpdatesContentCorrectly(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $newTranslations = [
             'welcome' => 'Welcome to our application',
             'farewell' => 'See you soon',
@@ -58,7 +58,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function ensureLastLineDoesNotAddComma(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $translations = [
             'welcome' => 'Welcome to our application',
             'farewell' => 'See you soon',
@@ -87,7 +87,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function sortJsonFileSortsKeys(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $translations = [
             'b' => 'Second',
             'a' => 'First',
@@ -103,7 +103,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function nonexistentFileReadReturnsEmptyArray(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $translations = $jsonManager->readJsonFile('/path/to/nonexistent/file.json');
         $this->assertIsArray($translations);
         $this->assertEmpty($translations);
@@ -114,7 +114,7 @@ class JsonTranslationFileManagerTest extends TestCase
     {
         // Create an invalid JSON content
         file_put_contents($this->tempFile, '{invalid json}');
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $result = $jsonManager->readJsonFile($this->tempFile);
         $this->assertIsArray($result);
         $this->assertEmpty($result);
@@ -123,7 +123,7 @@ class JsonTranslationFileManagerTest extends TestCase
     #[Test]
     public function addsNewTranslationsOverwritesExisting(): void
     {
-        $jsonManager = new JsonTranslationFileManager;
+        $jsonManager = new LanguageFileManager;
         $additionalTranslations = ['new_key' => 'New translation'];
         $jsonManager->updateJsonFile($this->tempFile, $additionalTranslations);
 

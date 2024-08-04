@@ -13,7 +13,7 @@ class GoogleTranslator implements TranslatorContract
     public function __construct(
         protected VariableRegexHandler $variableHandler
     ) {
-        $this->translateClient = new TranslateClient(['key' => config('translator.translators.google')]);
+        $this->translateClient = new TranslateClient(['key' => config('translator.translators.goggle')]);
     }
 
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
@@ -35,7 +35,7 @@ class GoogleTranslator implements TranslatorContract
 
     /**
      * @param  array<string>  $texts Array of texts to translate.
-     * @return array<string> Array of translated texts.
+     * @return array<string, string> Array of translated texts.
      *
      * @throws ServiceException
      */
@@ -49,8 +49,12 @@ class GoogleTranslator implements TranslatorContract
             'source' => $sourceLanguage,
         ]);
 
-        return array_map(function ($translation) {
-            return isset($translation['text']) ? $this->variableHandler->restorePlaceholders($translation['text']) : '';
-        }, $translations);
+        $translatedKeys = [];
+        foreach ($translations as $index => $translation) {
+            $translatedText = isset($translation['text']) ? $this->variableHandler->restorePlaceholders($translation['text']) : '';
+            $translatedKeys[$texts[$index]] = $translatedText ?: '';
+        }
+
+        return $translatedKeys;
     }
 }

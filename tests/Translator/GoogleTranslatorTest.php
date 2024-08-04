@@ -83,6 +83,6 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 
         $result = $this->googleTranslator->translateBatch($texts, $targetLanguage);
 
-        $this->assertSame($translatedTexts, $result);
+        $this->assertSame(['Hello, world!' => 'Bonjour le monde!', 'Good morning' => 'Bonjour'], $result);
     }
 }

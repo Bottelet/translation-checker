@@ -2,6 +2,9 @@
 
 namespace Bottelet\TranslationChecker;
 
+use Bottelet\TranslationChecker\Sort\AlphabeticSort;
+use Bottelet\TranslationChecker\Sort\Sorter;
+use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +16,8 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             return new TranslationManager(
                 $app->make(FileManagement::class),
                 $app->make(TranslationFinder::class),
-                $app->make(JsonTranslationFileManager::class),
+                $app->make(LanguageFileManager::class),
+                $app->make(SorterContract::class),
                 $app->make(TranslatorContract::class)
             );
         });
@@ -26,9 +30,12 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         ]);
 
         $this->app->bind(TranslatorContract::class, fn ($app) => $app->make($app->config['translator.default_translation_service']));
+        $this->app->bind(SorterContract::class, fn ($app) => $app->make(AlphabeticSort::class));
 
-        $this->commands([
-            Commands\CheckTranslation::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\CheckTranslation::class,
+            ]);
+        }
     }
 }

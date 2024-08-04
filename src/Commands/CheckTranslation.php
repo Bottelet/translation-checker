@@ -22,6 +22,7 @@ class CheckTranslation extends Command
         $this->info('Checking translations...');
         $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
         $translateMissing = (bool) $this->option('translate-missing');
+        $sort = (bool) $this->option('sort');
         $targetLanguage = is_string($this->argument('target')) ? $this->argument('target') : null;
 
         if (is_null($targetLanguage)) {
@@ -33,11 +34,12 @@ class CheckTranslation extends Command
             throw new RuntimeException('Source paths needs to be set as array');
         }
 
-        $targetJsonPath = base_path(config('translator.language_folder') . "/{$targetLanguage}.json");
+        $targetJsonPath = config('translator.language_folder') . "/{$targetLanguage}.json";
 
         $missingTranslations = $translationManager->updateTranslationsFromFile(
             $sourceFilePaths,
             $targetJsonPath,
+            $sort,
             $targetLanguage,
             $translateMissing,
             $sourceLanguage,

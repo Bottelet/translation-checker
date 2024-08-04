@@ -2,7 +2,7 @@
 
 namespace Bottelet\TranslationChecker;
 
-class JsonTranslationFileManager
+class LanguageFileManager
 {
     /**
      * Reads a JSON translation file and returns its content as an associative array.

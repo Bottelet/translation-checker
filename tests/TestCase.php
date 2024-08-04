@@ -2,6 +2,10 @@
 
 namespace Bottelet\TranslationChecker\Tests;
 
+use Bottelet\TranslationChecker\Commands\CheckTranslation;
+use Bottelet\TranslationChecker\TranslationCheckerServiceProvider;
+use Bottelet\TranslationChecker\Translator\GoogleTranslator;
+use Bottelet\TranslationChecker\Translator\NoneExistingTranslator;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -24,7 +28,18 @@ class TestCase extends \Orchestra\Testbench\TestCase
             mkdir($this->tempDir, 0777, true);
         }
 
+        $this->app['config']->set('translator.default_translation_service', NoneExistingTranslator::class);
         $this->createTemplateFiles();
+    }
+
+
+    /**
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [TranslationCheckerServiceProvider::class];
     }
 
     protected function tearDown(): void
@@ -40,7 +55,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
                 }
             }
         }
-        rmdir($this->tempDir);
+
+        //rmdir($this->tempDir);
 
         parent::tearDown();
     }
@@ -48,19 +64,19 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function createTemplateFiles(): void
     {
         $bladeFilePath = $this->tempDir . '/test.blade.php';
-        $bladePath = __DIR__ . '/templates/underscore-translations.blade.php';
+        $bladePath = __DIR__.'/Files/templates/underscore-translations.blade.php';
         file_put_contents($bladeFilePath, file_get_contents($bladePath));
 
         $phpController = $this->tempDir . '/TestController.php';
-        $phpControllerPath =  __DIR__ .  '/templates/TestController.php';
+        $phpControllerPath = __DIR__.'/Files/templates/TestController.php';
         file_put_contents($phpController, file_get_contents($phpControllerPath));
 
         $vueFilePath = $this->tempDir . '/test.vue';
-        $vuePath =  __DIR__ . '/templates/dollar-t.vue';
+        $vuePath = __DIR__.'/Files/templates/dollar-t.vue';
         file_put_contents($vueFilePath, file_get_contents($vuePath));
 
         $noTranslationsFile = $this->tempDir . '/empty.blade.php';
-        $noTranslationsPath =  __DIR__ . '/templates/no-translations.blade.php';
+        $noTranslationsPath = __DIR__.'/Files/templates/no-translations.blade.php';
         file_put_contents($noTranslationsFile, file_get_contents($noTranslationsPath));
 
         $this->bladeFile = new SplFileInfo($bladeFilePath);
