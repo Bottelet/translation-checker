@@ -14,9 +14,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
     {
         $this->app->bind(TranslationManager::class, function ($app) {
             return new TranslationManager(
-                $app->make(FileManagement::class),
-                $app->make(MissingKeysFinder::class),
-                $app->make(LanguageFileManager::class),
+                $app->make(TranslationFinder::class),
                 $app->make(SorterContract::class),
                 $app->make(TranslatorContract::class)
             );

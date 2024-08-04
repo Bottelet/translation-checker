@@ -8,6 +8,10 @@ class TranslationFinder
     {
     }
 
+    public function getLanguageFilerManager():LanguageFileManager
+    {
+        return $this->languageFileManager;
+    }
     /**
      * @param  array<string>  $sourceFilePaths
      * @param  string  $targetLanguagePath

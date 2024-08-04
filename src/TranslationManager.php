@@ -8,9 +8,7 @@ use Bottelet\TranslationChecker\Translator\TranslatorContract;
 class TranslationManager
 {
     public function __construct(
-        protected FileManagement $fileManagement,
-        protected MissingKeysFinder $missingKeysFinder,
-        protected LanguageFileManager $jsonTranslationManager,
+        protected TranslationFinder $translationFinder,
         protected SorterContract $sorter,
         protected TranslatorContract $translationService
     ) {
@@ -22,18 +20,13 @@ class TranslationManager
      */
     public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, bool $sort = false, ?string $targetLanguage = null, bool $translateMissing = false, string $sourceLanguage = 'en'): array
     {
-        $files = $this->fileManagement->getAllFiles($sourceFilePaths);
-        $jsonTranslations = $this->jsonTranslationManager->readJsonFile($targetJsonPath);
-        $jsonTranslations = array_filter($jsonTranslations, function ($value) {
-            return is_string($value);
-        });
-        $missingTranslations = $this->missingKeysFinder->findMissingTranslatableStrings($files, $jsonTranslations);
+        $missingTranslations = $this->translationFinder->findMissingTranslations($sourceFilePaths, $targetJsonPath);
         /// Perhaps turn this part into a findMissingTranslations / Make it in the TranslationsFinder
         if ($translateMissing && $targetLanguage !== null) {
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);
         }
 
-        $allTranslations = array_merge($jsonTranslations, $missingTranslations);
+        $allTranslations = array_merge($this->translationFinder->getLanguageFilerManager()->readJsonFile($targetJsonPath), $missingTranslations);
 
         if($sort) {
             $allTranslations = $this->sorter->sortByKey($allTranslations);
@@ -50,7 +43,6 @@ class TranslationManager
      */
     protected function updateJsonFileWithTranslations(string $filePath, array $updatedTranslations): void
     {
-
-        $this->jsonTranslationManager->updateJsonFile($filePath, $updatedTranslations);
+        $this->translationFinder->getLanguageFilerManager()->updateJsonFile($filePath, $updatedTranslations);
     }
 }
