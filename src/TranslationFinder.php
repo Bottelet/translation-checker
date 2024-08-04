@@ -11,24 +11,19 @@ class TranslationFinder
      * Finds translatable strings in a set of files and organizes them by categories.
      *
      * @param  array<int, SplFileInfo>  $files
-     * @return array<string, array<string>>
+     * @return array<int, string>
      */
     public function findTranslatableStrings(array $files): array
     {
-        //TODO Can we remove everything but ALL? And perhaps not make it multi dimensional
-        $found = [
-            'all' => [],
-            'simpleStrings' => [],
-            'stringsWithVariables' => [],
-            'vueSyntax' => [],
-            'nonStrings' => [],
-        ];
+        $found = [];
 
         foreach ($files as $file) {
             if ($file->isFile()) {
                 $extractor = ExtractorFactory::createExtractorForFile($file);
                 $translationKeys = $extractor->extractFromFile($file);
-                $found['all'] = array_merge($found['all'], $translationKeys);
+                foreach ($translationKeys as $key) {
+                    $found[] = $key;
+                }
             }
         }
 
@@ -44,7 +39,7 @@ class TranslationFinder
     public function findMissingTranslableStrings(array $files, array $currentTranslatedStrings): array
     {
         $translationString = $this->findTranslatableStrings($files);
-        return $this->extractMissingTranslations($translationString['all'], $currentTranslatedStrings);
+        return $this->extractMissingTranslations($translationString, $currentTranslatedStrings);
     }
 
     /**

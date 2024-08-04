@@ -14,7 +14,7 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
 
         $foundStrings = $translationFinder->findTranslatableStrings([$this->vueFile]);
-        $this->assertContains('welcome_message', $foundStrings['all']);
+        $this->assertContains('welcome_message', $foundStrings);
     }
 
     #[Test]
@@ -25,7 +25,7 @@ class TranslationFinderTest extends TestCase
 
         file_put_contents($this->tempDir . '/nonPhpContent.html', file_get_contents($this->noTranslationsBladeFile));
         $foundStrings = $translationFinder->findTranslatableStrings([$nonPhpFile]);
-        $this->assertEmpty($foundStrings['all']);
+        $this->assertEmpty($foundStrings);
     }
 
     #[Test]
@@ -37,7 +37,7 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$emptyFile]);
 
-        $this->assertEmpty($foundStrings['all']);
+        $this->assertEmpty($foundStrings);
     }
 
     #[Test]
@@ -48,7 +48,7 @@ class TranslationFinderTest extends TestCase
 
         $foundStrings = $translationFinder->findTranslatableStrings([$nonexistentFile]);
 
-        $this->assertEmpty($foundStrings['all']);
+        $this->assertEmpty($foundStrings);
     }
 
     #[Test]
@@ -61,7 +61,7 @@ class TranslationFinderTest extends TestCase
         $foundStrings = $translationFinder->findTranslatableStrings([$normalizedFile]);
 
         $this->assertNotEmpty($foundStrings);
-        $this->assertContains('normalized string', $foundStrings['all']);
+        $this->assertContains('normalized string', $foundStrings);
     }
 
     #[Test]
@@ -74,7 +74,7 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($fileWithSyntaxError)]);
 
-        $this->assertEmpty($foundStrings['all']);
+        $this->assertEmpty($foundStrings);
     }
 
     #[Test]
@@ -86,8 +86,8 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($multiFunctionFile)]);
 
-        $this->assertContains('first_key', $foundStrings['all']);
-        $this->assertContains('second_key', $foundStrings['all']);
+        $this->assertContains('first_key', $foundStrings);
+        $this->assertContains('second_key', $foundStrings);
     }
 
     #[Test]
@@ -99,7 +99,7 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($fileWithVariables)]);
 
-        $this->assertEquals(['key_with_variable', 'a text with :key inside string'], $foundStrings['all']);
+        $this->assertEquals(['key_with_variable', 'a text with :key inside string'], $foundStrings);
     }
 
     #[Test]
@@ -108,7 +108,7 @@ class TranslationFinderTest extends TestCase
         $translationFinder = new TranslationFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$this->phpControllerFile]);
 
-        $this->assertCount(10, $foundStrings['all']);
+        $this->assertCount(10, $foundStrings);
     }
 
     #[Test]
@@ -121,6 +121,6 @@ class TranslationFinderTest extends TestCase
         $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($jsFile)]);
 
         // Assuming TranslationFinder is expected to ignore non-PHP files
-        $this->assertEmpty($foundStrings['all']);
+        $this->assertEmpty($foundStrings);
     }
 }
