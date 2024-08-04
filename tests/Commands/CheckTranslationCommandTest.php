@@ -9,49 +9,43 @@ use Illuminate\Support\Facades\Artisan;
 
 class CheckTranslationCommandTest extends TestCase
 {
+    private string $translationFile;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->translationFile = $this->tempDir.'/lang/fr.json';
+
+        if ( ! file_exists(dirname($this->translationFile))) {
+            mkdir(dirname($this->translationFile), 0777, true);
+        }
+
+        file_put_contents($this->translationFile, '');
+
+        Config::set('translator.source_paths', [$this->tempDir]);
+        Config::set('translator.language_folder', $this->tempDir.'/lang');
+    }
 
     #[Test]
     public function itExecutesWithValidArgumentsAndOptions(): void
     {
-        $translationFile = $this->tempDir.'/lang/fr.json';
-
-        if ( ! file_exists(dirname($translationFile))) {
-            mkdir(dirname($translationFile), 0777, true);
-        }
-
-        file_put_contents($translationFile, '{}');
-
-        Config::set('translator.source_paths', [$this->tempDir]);
-        Config::set('translator.language_folder', $this->tempDir.'/lang');
-
         $this->artisan('translations:check', [
             'target' => 'fr',
         ])->assertExitCode(0);
 
-        $this->assertNotEmpty(json_decode(file_get_contents($translationFile)));
+        $this->assertNotEmpty(json_decode(file_get_contents($this->translationFile)));
     }
 
     #[Test]
     public function itTranslatesMissing(): void
     {
-        $translationFile = $this->tempDir.'/lang/fr.json';
-
-        if ( ! file_exists(dirname($translationFile))) {
-            mkdir(dirname($translationFile), 0777, true);
-        }
-
-        file_put_contents($translationFile, '{}');
-
-        Config::set('translator.source_paths', [$this->tempDir]);
-        Config::set('translator.language_folder', $this->tempDir.'/lang');
-
         $this->artisan('translations:check', [
             'target' => 'fr',
             '--source' => 'en',
             '--translate-missing' => true,
         ])->assertExitCode(0);
 
-        foreach (json_decode(file_get_contents($translationFile), false) as $translation) {
+        foreach (json_decode(file_get_contents($this->translationFile), false) as $translation) {
             $this->assertEquals("nothing", $translation);
         }
     }
@@ -59,14 +53,8 @@ class CheckTranslationCommandTest extends TestCase
     #[Test]
     public function itSortsTranslationFileInAlphabeticOrder(): void
     {
-        $translationFile = $this->tempDir.'/lang/fr.json';
-
-        if (!file_exists(dirname($translationFile))) {
-            mkdir(dirname($translationFile), 0777, true);
-        }
-
         // Populate the translation file with unsorted content
-        file_put_contents($translationFile, json_encode([
+        file_put_contents($this->translationFile, json_encode([
             'z' => 'Z value',
             'b' => 'B value',
             'a' => 'A value',
@@ -82,7 +70,7 @@ class CheckTranslationCommandTest extends TestCase
         ])->assertExitCode(0);
 
         // Get the content of the sorted translation file
-        $sortedContent = json_decode(file_get_contents($translationFile), true);
+        $sortedContent = json_decode(file_get_contents($this->translationFile), true);
 
         // Assert that the translation file content is sorted alphabetically
         $expectedContent = [

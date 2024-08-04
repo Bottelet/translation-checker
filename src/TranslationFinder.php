@@ -2,61 +2,26 @@
 
 namespace Bottelet\TranslationChecker;
 
-use Bottelet\TranslationChecker\Extractor\ExtractorFactory;
-use SplFileInfo;
-
 class TranslationFinder
 {
-    /**
-     * Finds translatable strings in a set of files and organizes them by categories.
-     *
-     * @param  array<int, SplFileInfo>  $files
-     * @return array<int, string>
-     */
-    public function findTranslatableStrings(array $files): array
+    public function __construct(protected FileManagement $fileManagement, protected LanguageFileManager $languageFileManager, protected MissingKeysFinder $missingKeysFinder)
     {
-        $found = [];
-
-        foreach ($files as $file) {
-            if ($file->isFile()) {
-                $extractor = ExtractorFactory::createExtractorForFile($file);
-                $translationKeys = $extractor->extractFromFile($file);
-                foreach ($translationKeys as $key) {
-                    $found[] = $key;
-                }
-            }
-        }
-
-        return $found;
     }
 
     /**
-     * @param  array<int, SplFileInfo>  $files
-     * @param  array<string, string>  $currentTranslatedStrings
+     * @param  array<string>  $sourceFilePaths
+     * @param  string  $targetLanguagePath
      *
      * @return array<string, string>
      */
-    public function findMissingTranslatableStrings(array $files, array $currentTranslatedStrings): array
+    public function findMissingTranslations(array $sourceFilePaths, string $targetLanguagePath): array
     {
-        $translationString = $this->findTranslatableStrings($files);
-        return $this->extractMissingTranslations($translationString, $currentTranslatedStrings);
-    }
+        $files = $this->fileManagement->getAllFiles($sourceFilePaths);
+        $jsonTranslations = $this->languageFileManager->readJsonFile($targetLanguagePath);
+        $jsonTranslations = array_filter($jsonTranslations, function ($value) {
+            return is_string($value);
+        });
 
-    /**
-     * @param  array<string>  $foundStrings
-     * @param  array<string, string>  $jsonTranslations
-     * @return array<string, string>
-     */
-    protected function extractMissingTranslations(array $foundStrings, array $jsonTranslations): array
-    {
-        $missingTranslations = [];
-        foreach ($foundStrings as $string) {
-            $unescapedString = stripslashes($string);
-            if (! array_key_exists($unescapedString, $jsonTranslations)) {
-                $missingTranslations[$unescapedString] = '';
-            }
-        }
-
-        return $missingTranslations;
+        return $this->missingKeysFinder->findMissingTranslatableStrings($files, $jsonTranslations);
     }
 }

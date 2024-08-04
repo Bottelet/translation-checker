@@ -15,10 +15,18 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         $this->app->bind(TranslationManager::class, function ($app) {
             return new TranslationManager(
                 $app->make(FileManagement::class),
-                $app->make(TranslationFinder::class),
+                $app->make(MissingKeysFinder::class),
                 $app->make(LanguageFileManager::class),
                 $app->make(SorterContract::class),
                 $app->make(TranslatorContract::class)
+            );
+        });
+
+        $this->app->bind(TranslationFinder::class, function ($app) {
+            return new TranslationFinder(
+                $app->make(FileManagement::class),
+                $app->make(LanguageFileManager::class),
+                $app->make(MissingKeysFinder::class),
             );
         });
     }
@@ -35,6 +43,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Commands\CheckTranslation::class,
+                Commands\FindMissing::class,
             ]);
         }
     }

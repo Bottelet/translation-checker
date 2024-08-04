@@ -5,7 +5,7 @@ namespace Bottelet\TranslationChecker\Tests;
 use Bottelet\TranslationChecker\FileManagement;
 use Bottelet\TranslationChecker\LanguageFileManager;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
-use Bottelet\TranslationChecker\TranslationFinder;
+use Bottelet\TranslationChecker\MissingKeysFinder;
 use Bottelet\TranslationChecker\TranslationManager;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use FilesystemIterator;
@@ -49,7 +49,7 @@ class TranslationManagerTest extends TestCase
         $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
         $this->translationManager     = new TranslationManager(
             new FileManagement,
-            new TranslationFinder,
+            new MissingKeysFinder,
             new LanguageFileManager,
             new AlphabeticSort,
             $this->translationServiceMock
