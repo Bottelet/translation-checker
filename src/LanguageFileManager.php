@@ -4,14 +4,18 @@ namespace Bottelet\TranslationChecker;
 
 class LanguageFileManager
 {
+    public function __construct(protected string $filePath)
+    {
+    }
+
     /**
      * Reads a JSON translation file and returns its content as an associative array.
      *
      * @return array<string, mixed>
      */
-    public function readJsonFile(string $filePath): array
+    public function readJsonFile(): array
     {
-        if (! file_exists($filePath) || ($jsonContent = file_get_contents($filePath)) === false) {
+        if (! file_exists($this->filePath) || ($jsonContent = file_get_contents($this->filePath)) === false) {
             return [];
         }
 
@@ -25,16 +29,16 @@ class LanguageFileManager
      *
      * @param  array<string, mixed>  $translations
      */
-    public function updateJsonFile(string $filePath, array $translations): void
+    public function updateJsonFile(array $translations): void
     {
         $jsonContent = json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        file_put_contents($filePath, $jsonContent);
+        file_put_contents($this->filePath, $jsonContent);
     }
 
-    public function sortJsonFile(string $filePath): void
+    public function sortJsonFile(): void
     {
-        $translations = $this->readJsonFile($filePath);
+        $translations = $this->readJsonFile();
         ksort($translations, SORT_FLAG_CASE | SORT_NATURAL);
-        $this->updateJsonFile($filePath, $translations);
+        $this->updateJsonFile($translations);
     }
 }

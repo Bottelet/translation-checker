@@ -2,8 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Sort;
 
-use Bottelet\TranslationChecker\LanguageFileManager;
-
 class AlphabeticSort implements SorterContract
 {
 

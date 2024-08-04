@@ -49,7 +49,6 @@ class TranslationManagerTest extends TestCase
 
         $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
         $this->translationManager     = new TranslationManager(
-            app(TranslationFinder::class),
             new AlphabeticSort,
             $this->translationServiceMock
         );

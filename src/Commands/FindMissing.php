@@ -4,6 +4,7 @@ namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\FileManagement;
 use Bottelet\TranslationChecker\LanguageFileManager;
+use Bottelet\TranslationChecker\MissingKeysFinder;
 use Bottelet\TranslationChecker\TranslationFinder;
 use Bottelet\TranslationChecker\TranslationManager;
 use Illuminate\Console\Command;
@@ -18,24 +19,25 @@ class FindMissing extends Command
     protected $description = 'Check and manage translations';
 
 
-    public function handle(TranslationFinder $translationFinder): void
+    public function handle(): void
     {
         $this->info('Finding translations...');
+
         $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
+        $targetJsonPath = config('translator.language_folder') . "/{$sourceLanguage}.json";
+
+        $translationFinder = new TranslationFinder(new FileManagement(), new LanguageFileManager($targetJsonPath), new MissingKeysFinder());
 
         $sourceFilePaths = config('translator.source_paths');
         if (! is_array($sourceFilePaths)) {
             throw new RuntimeException('Source paths needs to be set as array');
         }
-
-        $targetJsonPath = config('translator.language_folder') . "/{$sourceLanguage}.json";
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths, $targetJsonPath);
 
         if ($this->option('print-missing')) {
             //$this->table(['translations'], $missingTranslations);
         } else {
-            $languageManager = new LanguageFileManager();
-            $languageManager->updateJsonFile($targetJsonPath, $missingTranslations);
+            $translationFinder->getLanguageFilerManager()->updateJsonFile($missingTranslations);
         }
     }
 }
