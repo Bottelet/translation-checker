@@ -27,7 +27,7 @@ class TranslationManager
         $jsonTranslations = array_filter($jsonTranslations, function ($value) {
             return is_string($value);
         });
-        $missingTranslations = $this->translationFinder->findMissingTranslableStrings($files, $jsonTranslations);
+        $missingTranslations = $this->translationFinder->findMissingTranslatableStrings($files, $jsonTranslations);
     /// Perhaps turn this part into a findMissingTranslations / Make it in the TranslationsFinder
         if ($translateMissing && $targetLanguage !== null) {
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);

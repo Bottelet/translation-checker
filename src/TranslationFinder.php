@@ -34,9 +34,9 @@ class TranslationFinder
      * @param  array<int, SplFileInfo>  $files
      * @param  array<string, string>  $currentTranslatedStrings
      *
-     * @return void
+     * @return array<string, string>
      */
-    public function findMissingTranslableStrings(array $files, array $currentTranslatedStrings): array
+    public function findMissingTranslatableStrings(array $files, array $currentTranslatedStrings): array
     {
         $translationString = $this->findTranslatableStrings($files);
         return $this->extractMissingTranslations($translationString, $currentTranslatedStrings);
