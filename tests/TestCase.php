@@ -28,7 +28,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             mkdir($this->tempDir, 0777, true);
         }
 
-        $this->app['config']->set('translator.default_translation_service', NoneExistingTranslator::class);
+        $this->app['config']->set('translator.default_translation_service', TestingTranslator::class);
         $this->createTemplateFiles();
     }
 
