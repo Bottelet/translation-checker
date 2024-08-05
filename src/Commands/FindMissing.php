@@ -32,7 +32,7 @@ class FindMissing extends Command
         if (! is_array($sourceFilePaths)) {
             throw new RuntimeException('Source paths needs to be set as array');
         }
-        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths, $targetJsonPath);
+        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
         if ($this->option('print-missing')) {
             //$this->table(['translations'], $missingTranslations);

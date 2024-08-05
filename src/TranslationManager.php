@@ -21,12 +21,13 @@ class TranslationManager
     {
         $translationFinder = new TranslationFinder(new FileManagement, new LanguageFileManager($targetJsonPath), new MissingKeysFinder);
 
-        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths, $targetJsonPath);
+        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
         if ($translateMissing && $targetLanguage !== null) {
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);
         }
 
+        /** @var array<string, string> $allTranslations */
         $allTranslations = array_merge($translationFinder->getLanguageFilerManager()->readJsonFile(), $missingTranslations);
 
         if($sort) {

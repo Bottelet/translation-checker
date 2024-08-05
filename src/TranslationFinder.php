@@ -14,14 +14,13 @@ class TranslationFinder
     }
     /**
      * @param  array<string>  $sourceFilePaths
-     * @param  string  $targetLanguagePath
      *
      * @return array<string, string>
      */
-    public function findMissingTranslations(array $sourceFilePaths, string $targetLanguagePath): array
+    public function findMissingTranslations(array $sourceFilePaths): array
     {
         $files = $this->fileManagement->getAllFiles($sourceFilePaths);
-        $jsonTranslations = $this->languageFileManager->readJsonFile($targetLanguagePath);
+        $jsonTranslations = $this->languageFileManager->readJsonFile();
         $jsonTranslations = array_filter($jsonTranslations, function ($value) {
             return is_string($value);
         });
