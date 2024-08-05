@@ -5,8 +5,14 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Name;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileInfo;
+use PhpParser\Node;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Identifier;
+use PhpParser\NodeVisitor;
 
 class BladeFileExtractorTest extends TestCase
 {
@@ -38,5 +44,37 @@ class BladeFileExtractorTest extends TestCase
 
         $foundStrings = $phpExtractor->extractFromFile($bladeFile);
         $this->assertEmpty($foundStrings);
+    }
+
+    #[Test]
+    public function canHandleFuncCallNode(): void
+    {
+        $funcCallNode = new FuncCall(new Name('trans'), [new Node\Arg(new Node\Scalar\String_('Hello, world!'))]);
+
+        $bladeExtractor = new BladeFileExtractor;
+
+        $result = $bladeExtractor->enterNode($funcCallNode);
+
+        $this->assertNull($result);
+    }
+
+    #[Test]
+    public function isNullOnNonFuncCallNode(): void
+    {
+        $methodCallNode = new MethodCall(new Node\Expr\Variable('someVar'), 'someMethod');
+        $bladeExtractor = new BladeFileExtractor;
+        $result = $bladeExtractor->enterNode($methodCallNode);
+
+        $this->assertNull($result);
+    }
+
+    #[Test]
+    public function stopTraverseOnNonFuncCallCalledGet(): void
+    {
+        $methodCallNode = new MethodCall(new Node\Expr\Variable('someVar'), 'get');
+        $bladeExtractor = new BladeFileExtractor;
+        $result = $bladeExtractor->enterNode($methodCallNode);
+
+        $this->assertEquals(NodeVisitor::STOP_TRAVERSAL, $result);
     }
 }
