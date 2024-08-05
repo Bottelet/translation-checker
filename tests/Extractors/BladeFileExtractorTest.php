@@ -6,6 +6,7 @@ use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
 use PHPUnit\Framework\Attributes\Test;
+use SplFileInfo;
 
 class BladeFileExtractorTest extends TestCase
 {
@@ -25,6 +26,17 @@ class BladeFileExtractorTest extends TestCase
 
         $this->assertContains('This is a demo page to showcase translations and Blade components.', $foundStrings);
         $this->assertContains('You are currently not logged in.', $foundStrings);
+    }
 
+    #[Test]
+    public function emptyArrayOnEmptyBladeFile()
+    {
+        $phpExtractor = new BladeFileExtractor;
+        $bladeFilePath = $this->tempDir . '/empty-test.blade.php';
+        file_put_contents($bladeFilePath, null);
+        $bladeFile = new SplFileInfo($bladeFilePath);
+
+        $foundStrings = $phpExtractor->extractFromFile($bladeFile);
+        $this->assertEmpty($foundStrings);
     }
 }

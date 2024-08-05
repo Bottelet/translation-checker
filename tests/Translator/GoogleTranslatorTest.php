@@ -23,20 +23,21 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Mock the VariableRegexHandler
-        $this->variableHandlerMock = $this->createMock(VariableRegexHandler::class);
-        // Mock the TranslateClient
         $this->translateClientMock = $this->createMock(TranslateClient::class);
+        $this->variableHandlerMock = $this->createMock(VariableRegexHandler::class);
+        $this->googleTranslator = new GoogleTranslator($this->variableHandlerMock, $this->translateClientMock);
+    }
 
-        // Instantiate GoogleTranslator with mocked dependencies
-        $this->googleTranslator = new GoogleTranslator($this->variableHandlerMock);
+    #[Test]
+    public function googleTranslateIfTextKeyNotReturned(): void
+    {
+        $this->translateClientMock->method('translate')
+                            ->willReturn(['']);
+        $this->variableHandlerMock->method('restorePlaceholders')->willReturn('Translated text');
 
-        // Injecting the TranslateClient mock directly as it's a private property
-        $reflection = new ReflectionClass(GoogleTranslator::class);
-        $translateClientProperty = $reflection->getProperty('translateClient');
-        $translateClientProperty->setAccessible(true);
-        $translateClientProperty->setValue($this->googleTranslator, $this->translateClientMock);
+        $result = $this->googleTranslator->translate('Hello', 'fr', 'en');
+
+        $this->assertEquals('', $result);
     }
 
     #[Test]

@@ -8,13 +8,14 @@ use Google\Cloud\Translate\V2\TranslateClient;
 
 class GoogleTranslator implements TranslatorContract
 {
-    private TranslateClient $translateClient;
 
     public function __construct(
-        protected VariableRegexHandler $variableHandler
+        protected VariableRegexHandler $variableHandler,
+        protected TranslateClient $translateClient,
     ) {
-        $this->translateClient = new TranslateClient(['key' => config('translator.translators.goggle')]);
+
     }
+
 
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
     {

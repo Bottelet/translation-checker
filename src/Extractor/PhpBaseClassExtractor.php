@@ -73,6 +73,7 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
             return null;
         }
 
+
         $code = file_get_contents($filePath);
         if ($code === false) {
             return null;

@@ -17,12 +17,13 @@ class BladeFileExtractor extends PhpBaseClassExtractor
     protected function getCode(SplFileInfo $file): ?string
     {
         $code = parent::getCode($file);
-        if (is_null($code)) {
+        if (is_null($code) || empty($code)) {
             return null;
         }
 
         try {
             $compiledCode = Blade::compileString($code);
+
 
             return $compiledCode ?: null;
         } catch (Exception $e) {

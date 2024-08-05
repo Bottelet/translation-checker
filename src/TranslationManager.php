@@ -37,13 +37,4 @@ class TranslationManager
 
         return $missingTranslations;
     }
-
-    /**
-     * @param  string  $filePath
-     * @param  array<string, string>  $updatedTranslations
-     */
-    protected function updateJsonFileWithTranslations(string $filePath, array $updatedTranslations): void
-    {
-
-    }
 }

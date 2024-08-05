@@ -3,9 +3,11 @@
 namespace Bottelet\TranslationChecker;
 
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
-use Bottelet\TranslationChecker\Sort\Sorter;
 use Bottelet\TranslationChecker\Sort\SorterContract;
+use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
+use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
+use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Support\ServiceProvider;
 
 class TranslationCheckerServiceProvider extends ServiceProvider
@@ -16,6 +18,13 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             return new TranslationManager(
                 $app->make(SorterContract::class),
                 $app->make(TranslatorContract::class)
+            );
+        });
+
+        $this->app->bind(GoogleTranslator::class, function ($app) {
+            return new GoogleTranslator(
+                $app->make(VariableRegexHandler::class),
+                new TranslateClient(['key' =>  $app->make($app->config('translator.translators.goggle'))])
             );
         });
     }
