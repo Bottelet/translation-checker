@@ -35,7 +35,9 @@ class FindMissing extends Command
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
         if ($this->option('print-missing')) {
-            //$this->table(['translations'], $missingTranslations);
+            foreach ($missingTranslations as $translation) {
+                $this->line($translation);
+            }
         } else {
             $translationFinder->getLanguageFilerManager()->updateJsonFile($missingTranslations);
         }
