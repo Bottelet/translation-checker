@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker;
 
+use Bottelet\TranslationChecker\Commands\SortTranslations;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
@@ -45,6 +46,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             $this->commands([
                 Commands\CheckTranslation::class,
                 Commands\FindMissing::class,
+                Commands\SortTranslations::class
             ]);
         }
     }

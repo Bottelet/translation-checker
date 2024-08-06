@@ -1,12 +1,13 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Tests;
+namespace Bottelet\TranslationChecker\Tests\Finder;
 
-use Bottelet\TranslationChecker\MissingKeysFinder;
+use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
+use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileInfo;
 
-class TranslationFinderTest extends TestCase
+class MissingKeysFinderTest extends TestCase
 {
     #[Test]
     public function findTranslatableStringsFindsStringsWithDollarT(): void

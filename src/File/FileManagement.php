@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker;
+namespace Bottelet\TranslationChecker\File;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

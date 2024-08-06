@@ -2,11 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests;
 
-use Bottelet\TranslationChecker\FileManagement;
-use Bottelet\TranslationChecker\LanguageFileManager;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
-use Bottelet\TranslationChecker\MissingKeysFinder;
-use Bottelet\TranslationChecker\TranslationFinder;
 use Bottelet\TranslationChecker\TranslationManager;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use FilesystemIterator;

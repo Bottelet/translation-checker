@@ -91,6 +91,19 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->phpControllerFile = new SplFileInfo($phpControllerPath);
         $this->vueFile = new SplFileInfo($vueFilePath);
         $this->noTranslationsBladeFile = new SplFileInfo($noTranslationsPath);
+    }
 
+    public function createTranslationFile(string $name, string|array $content = '')
+    {
+        $translationFile = $this->tempDir."/lang/{$name}.json";
+        if ( ! file_exists(dirname($translationFile))) {
+            mkdir(dirname($translationFile), 0777, true);
+        }
+        if(is_array($content)) {
+            $content = json_encode($content);
+        }
+        file_put_contents($translationFile, $content);
+
+        return $translationFile;
     }
 }

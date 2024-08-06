@@ -1,8 +1,9 @@
 <?php
 
-namespace Bottelet\TranslationChecker;
+namespace Bottelet\TranslationChecker\Finder;
 
-use Bottelet\TranslationChecker\LanguageManager\LanguageFileManager;
+use Bottelet\TranslationChecker\File\FileManagement;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 
 class TranslationFinder
 {
@@ -14,6 +15,7 @@ class TranslationFinder
     {
         return $this->languageFileManager;
     }
+
     /**
      * @param  array<string>  $sourceFilePaths
      *
@@ -22,11 +24,11 @@ class TranslationFinder
     public function findMissingTranslations(array $sourceFilePaths): array
     {
         $files = $this->fileManagement->getAllFiles($sourceFilePaths);
-        $jsonTranslations = $this->languageFileManager->readJsonFile();
-        $jsonTranslations = array_filter($jsonTranslations, function ($value) {
+        $existingTranslations = $this->languageFileManager->readJsonFile();
+        $existingTranslations = array_filter($existingTranslations, function ($value) {
             return is_string($value);
         });
 
-        return $this->missingKeysFinder->findMissingTranslatableStrings($files, $jsonTranslations);
+        return $this->missingKeysFinder->findMissingTranslatableStrings($files, $existingTranslations);
     }
 }

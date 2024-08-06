@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker;
+namespace Bottelet\TranslationChecker\Finder;
 
 use Bottelet\TranslationChecker\Extractor\ExtractorFactory;
 use SplFileInfo;
@@ -33,14 +33,14 @@ class MissingKeysFinder
     /**
      * Finds missing translatable strings in a set of files.
      * @param  array<int, SplFileInfo>  $files
-     * @param  array<string, string>  $currentTranslatedStrings
+     * @param  array<string, string>  $existingTranslatedStrings
      *
      * @return array<string, string>
      */
-    public function findMissingTranslatableStrings(array $files, array $currentTranslatedStrings): array
+    public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): array
     {
         $translationString = $this->findTranslatableStrings($files);
-        return $this->extractMissingTranslations($translationString, $currentTranslatedStrings);
+        return $this->extractMissingTranslations($translationString, $existingTranslatedStrings);
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Tests\LanguageManager;
+namespace Bottelet\TranslationChecker\Tests\File\Language;
 
-use Bottelet\TranslationChecker\LanguageManager\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 

@@ -2,11 +2,10 @@
 
 namespace Bottelet\TranslationChecker\Commands;
 
-use Bottelet\TranslationChecker\FileManagement;
-use Bottelet\TranslationChecker\LanguageFileManager;
-use Bottelet\TranslationChecker\MissingKeysFinder;
-use Bottelet\TranslationChecker\TranslationFinder;
-use Bottelet\TranslationChecker\TranslationManager;
+use Bottelet\TranslationChecker\File\FileManagement;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
+use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Illuminate\Console\Command;
 use RuntimeException;
 
@@ -16,7 +15,7 @@ class FindMissing extends Command
                             {--source : The source language for the translations to find}
                             {--print-missing : Print the missing translation to the console, instead of writing to file}';
 
-    protected $description = 'Check and manage translations';
+    protected $description = 'Find missing translations and add the key to the given source language file, with an empty value';
 
 
     public function handle(): void

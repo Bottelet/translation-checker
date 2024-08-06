@@ -1,11 +1,10 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Tests;
+namespace Bottelet\TranslationChecker\Tests\File;
 
-use Bottelet\TranslationChecker\FileManagement;
+use Bottelet\TranslationChecker\File\FileManagement;
 use FilesystemIterator;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 

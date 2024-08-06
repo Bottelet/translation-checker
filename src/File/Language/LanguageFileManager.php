@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker\LanguageManager;
+namespace Bottelet\TranslationChecker\File\Language;
 
 class LanguageFileManager
 {

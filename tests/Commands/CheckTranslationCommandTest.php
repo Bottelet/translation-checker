@@ -69,10 +69,8 @@ class CheckTranslationCommandTest extends TestCase
             '--sort' => true,
         ])->assertExitCode(0);
 
-        // Get the content of the sorted translation file
         $sortedContent = json_decode(file_get_contents($this->translationFile), true);
 
-        // Assert that the translation file content is sorted alphabetically
         $expectedContent = [
             'a' => 'A value',
             'b' => 'B value',

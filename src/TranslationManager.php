@@ -2,6 +2,10 @@
 
 namespace Bottelet\TranslationChecker;
 
+use Bottelet\TranslationChecker\File\FileManagement;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
+use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
 
