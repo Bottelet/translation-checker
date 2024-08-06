@@ -1,6 +1,6 @@
 <?php
 
-namespace Bottelet\TranslationChecker;
+namespace Bottelet\TranslationChecker\LanguageManager;
 
 class LanguageFileManager
 {
@@ -11,7 +11,7 @@ class LanguageFileManager
     /**
      * Reads a JSON translation file and returns its content as an associative array.
      *
-     * @return array<string, mixed>
+     * @return array<string, string>
      */
     public function readJsonFile(): array
     {

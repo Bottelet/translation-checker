@@ -2,6 +2,8 @@
 
 namespace Bottelet\TranslationChecker;
 
+use Bottelet\TranslationChecker\LanguageManager\LanguageFileManager;
+
 class TranslationFinder
 {
     public function __construct(protected FileManagement $fileManagement, protected LanguageFileManager $languageFileManager, protected MissingKeysFinder $missingKeysFinder)

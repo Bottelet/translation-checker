@@ -1,33 +1,24 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Tests;
+namespace Bottelet\TranslationChecker\Tests\LanguageManager;
 
-use Bottelet\TranslationChecker\LanguageFileManager;
+use Bottelet\TranslationChecker\LanguageManager\LanguageFileManager;
+use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 
-class JsonTranslationFileManagerTest extends TestCase
+
+class LanguageFileManagerTest extends TestCase
 {
     private string $tempFile;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Create a temporary JSON file for testing
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'trans');
-        file_put_contents($this->tempFile, json_encode([
+        $this->tempFile = $this->createTranslationFile('da', [
             'welcome' => 'Welcome',
             'farewell' => 'Goodbye',
-        ], JSON_THROW_ON_ERROR));
-    }
+        ]);
 
-    protected function tearDown(): void
-    {
-        // Remove the temporary JSON file
-        unlink($this->tempFile);
-
-        parent::tearDown();
     }
 
     #[Test]
@@ -67,6 +58,7 @@ class JsonTranslationFileManagerTest extends TestCase
         $jsonManager->updateJsonFile($translations);
         $jsonContent = file_get_contents($this->tempFile);
         $lines = explode(PHP_EOL, $jsonContent);
+
         //remove last line as it's curly bracket
         array_pop($lines);
         $lastLine = end($lines);
