@@ -24,9 +24,10 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         $this->app->bind(GoogleTranslator::class, function ($app) {
             return new GoogleTranslator(
                 $app->make(VariableRegexHandler::class),
-                new TranslateClient(['key' =>  $app->make($app->config('translator.translators.goggle'))])
+                new TranslateClient(['key' =>  $app->config['translator.translators.google']])
             );
         });
+
     }
 
     public function boot(): void
@@ -37,6 +38,8 @@ class TranslationCheckerServiceProvider extends ServiceProvider
 
         $this->app->bind(TranslatorContract::class, fn ($app) => $app->make($app->config['translator.default_translation_service']));
         $this->app->bind(SorterContract::class, fn ($app) => $app->make(AlphabeticSort::class));
+
+
 
         if ($this->app->runningInConsole()) {
             $this->commands([

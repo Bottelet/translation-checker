@@ -2,9 +2,11 @@
 
 namespace Bottelet\TranslationChecker\Tests\Translator;
 
+use Bottelet\TranslationChecker\TranslationCheckerServiceProvider;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
 use Google\Cloud\Translate\V2\TranslateClient;
+use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionClass;
@@ -86,4 +88,12 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 
         $this->assertSame(['Hello, world!' => 'Bonjour le monde!', 'Good morning' => 'Bonjour'], $result);
     }
+
+    #[Test]
+    public function testGoogleTranslatorBinding(): void
+    {
+        $googleTranslator = app(GoogleTranslator::class);
+        $this->assertInstanceOf(GoogleTranslator::class, $googleTranslator);
+    }
+
 }

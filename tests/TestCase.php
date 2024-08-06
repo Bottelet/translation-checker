@@ -29,6 +29,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
         }
 
         $this->app['config']->set('translator.default_translation_service', TestingTranslator::class);
+        $this->app['config']->set('translator.translators.google', [
+            'type' => 'test',
+            'project_id' => 'test',
+            'private_key' => 'test',
+            'client_email' => 'test',
+            'client_x509_cert_url' => 'test',
+        ]);
+
         $this->createTemplateFiles();
     }
 
