@@ -9,11 +9,11 @@ use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Illuminate\Console\Command;
 use RuntimeException;
 
-class FindMissing extends Command
+class FindMissingTranslation extends Command
 {
     protected $signature = 'translations:find-missing
                             {--source : The source language for the translations to find}
-                            {--print-missing : Print the missing translation to the console, instead of writing to file}';
+                            {--print : Print the missing translation to the console, instead of writing to file}';
 
     protected $description = 'Find missing translations and add the key to the given source language file, with an empty value';
 
@@ -33,12 +33,12 @@ class FindMissing extends Command
         }
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
-        if ($this->option('print-missing')) {
+        if ($this->option('print')) {
             foreach ($missingTranslations as $translation) {
                 $this->line($translation);
             }
         } else {
-            $translationFinder->getLanguageFilerManager()->updateJsonFile($missingTranslations);
+            $translationFinder->getLanguageFilerManager()->updateFile($missingTranslations);
         }
     }
 }

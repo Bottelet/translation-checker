@@ -24,11 +24,21 @@ class TranslationFinder
     public function findMissingTranslations(array $sourceFilePaths): array
     {
         $files = $this->fileManagement->getAllFiles($sourceFilePaths);
-        $existingTranslations = $this->languageFileManager->readJsonFile();
+        $existingTranslations = $this->languageFileManager->readFile();
         $existingTranslations = array_filter($existingTranslations, function ($value) {
             return is_string($value);
         });
 
         return $this->missingKeysFinder->findMissingTranslatableStrings($files, $existingTranslations);
+    }
+
+    /**
+     * @param array<string, string> $sourceFilePaths
+     *
+     * @return array<int, string>
+     */
+    public function findAllTranslations(array $sourceFilePaths): array
+    {
+        return $this->missingKeysFinder->findTranslatableStrings($this->fileManagement->getAllFiles($sourceFilePaths));
     }
 }

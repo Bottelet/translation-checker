@@ -32,13 +32,13 @@ class TranslationManager
         }
 
         /** @var array<string, string> $allTranslations */
-        $allTranslations = array_merge($translationFinder->getLanguageFilerManager()->readJsonFile(), $missingTranslations);
+        $allTranslations = array_merge($translationFinder->getLanguageFilerManager()->readFile(), $missingTranslations);
 
         if($sort) {
             $allTranslations = $this->sorter->sortByKey($allTranslations);
         }
 
-        $translationFinder->getLanguageFilerManager()->updateJsonFile($allTranslations);
+        $translationFinder->getLanguageFilerManager()->updateFile($allTranslations);
 
         return $missingTranslations;
     }

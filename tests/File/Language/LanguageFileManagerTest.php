@@ -25,7 +25,7 @@ class LanguageFileManagerTest extends TestCase
     public function readJsonFileReturnsArray(): void
     {
         $jsonManager = new LanguageFileManager($this->tempFile);
-        $translations = $jsonManager->readJsonFile();
+        $translations = $jsonManager->readFile();
         $this->assertIsArray($translations);
         $this->assertCount(2, $translations);
     }
@@ -39,7 +39,7 @@ class LanguageFileManagerTest extends TestCase
             'farewell' => 'See you soon',
             'greeting' => 'Hello, User',
         ];
-        $jsonManager->updateJsonFile($newTranslations);
+        $jsonManager->updateFile($newTranslations);
 
         $updatedContent = json_decode(file_get_contents($this->tempFile), true, 512, JSON_THROW_ON_ERROR);
 
@@ -55,7 +55,7 @@ class LanguageFileManagerTest extends TestCase
             'farewell' => 'See you soon',
             'greeting' => 'Hello User',
         ];
-        $jsonManager->updateJsonFile($translations);
+        $jsonManager->updateFile($translations);
         $jsonContent = file_get_contents($this->tempFile);
         $lines = explode(PHP_EOL, $jsonContent);
 
@@ -64,7 +64,7 @@ class LanguageFileManagerTest extends TestCase
         $lastLine = end($lines);
         $this->assertStringNotContainsString(',', $lastLine);
 
-        $jsonManager->updateJsonFile(['new' => 'add new']);
+        $jsonManager->updateFile(['new' => 'add new']);
         $this->assertStringNotContainsString(',', $lastLine);
 
         $jsonContent = file_get_contents($this->tempFile);
@@ -84,8 +84,8 @@ class LanguageFileManagerTest extends TestCase
             'b' => 'Second',
             'a' => 'First',
         ];
-        $jsonManager->updateJsonFile($translations);
-        $jsonManager->sortJsonFile();
+        $jsonManager->updateFile($translations);
+        $jsonManager->sortFile();
 
         $sortedContent = json_decode(file_get_contents($this->tempFile), true);
         $expectedOrder = ['a' => 'First', 'b' => 'Second'];
@@ -96,7 +96,7 @@ class LanguageFileManagerTest extends TestCase
     public function nonexistentFileReadReturnsEmptyArray(): void
     {
         $jsonManager = new LanguageFileManager('/path/to/nonexistent/file.json');
-        $translations = $jsonManager->readJsonFile();
+        $translations = $jsonManager->readFile();
         $this->assertIsArray($translations);
         $this->assertEmpty($translations);
     }
@@ -107,7 +107,7 @@ class LanguageFileManagerTest extends TestCase
         // Create an invalid JSON content
         file_put_contents($this->tempFile, '{invalid json}');
         $jsonManager = new LanguageFileManager($this->tempFile);
-        $result = $jsonManager->readJsonFile();
+        $result = $jsonManager->readFile();
         $this->assertIsArray($result);
         $this->assertEmpty($result);
     }
@@ -117,7 +117,7 @@ class LanguageFileManagerTest extends TestCase
     {
         $jsonManager = new LanguageFileManager($this->tempFile);
         $additionalTranslations = ['new_key' => 'New translation'];
-        $jsonManager->updateJsonFile($additionalTranslations);
+        $jsonManager->updateFile($additionalTranslations);
 
         $content = json_decode(file_get_contents($this->tempFile), true, 512, JSON_THROW_ON_ERROR);
 

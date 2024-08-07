@@ -2,12 +2,14 @@
 
 namespace Bottelet\TranslationChecker\Tests\Commands;
 
+use _PHPStan_5473b6701\Nette\Neon\Exception;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Artisan;
+use RuntimeException;
 
-class FindMissingCommandTest extends TestCase
+class FindMissingTranslationTest extends TestCase
 {
     private string $translationFile;
 
@@ -39,15 +41,26 @@ class FindMissingCommandTest extends TestCase
     #[Test]
     public function itPrintsMissingAndDoesNotAddToFileWithFlag(): void
     {
-
         Config::set('translator.source_paths', [$this->tempDir]);
         Config::set('translator.language_folder', $this->tempDir.'/lang');
 
         $this->artisan('translations:find-missing', [
             '--source' => 'da',
-            '--print-missing' => true,
+            '--print' => true,
         ])->assertExitCode(0);
 
         $this->assertEmpty(json_decode(file_get_contents($this->translationFile)));
+    }
+
+    #[Test]
+    public function throwExceptionIfConifgNotArray()
+    {
+        Config::set('translator.source_paths', $this->tempDir);
+
+        $this->expectException(RunTimeException::class);
+        $this->artisan('translations:find-missing', [
+            '--source' => 'da',
+            '--print' => true,
+        ])->assertExitCode(0);
     }
 }

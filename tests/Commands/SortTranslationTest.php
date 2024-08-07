@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Artisan;
 
-class SortTranslationCommandTest extends TestCase
+class SortTranslationTest extends TestCase
 {
 
     private string $translationFile;

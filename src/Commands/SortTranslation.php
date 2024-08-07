@@ -7,7 +7,7 @@ use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Illuminate\Console\Command;
 
-class SortTranslations extends Command
+class SortTranslation extends Command
 {
     protected $signature = 'translations:sort
                             {--source : The source language for the translations to find}
@@ -45,8 +45,8 @@ class SortTranslations extends Command
     protected function processFile(string $filePath): void
     {
         $languageFile = new LanguageFileManager($filePath);
-        $contents = $languageFile->readJsonFile();
+        $contents = $languageFile->readFile();
         $sortedContents = $this->sorter->sortByKey($contents);
-        $languageFile->updateJsonFile($sortedContents);
+        $languageFile->updateFile($sortedContents);
     }
 }

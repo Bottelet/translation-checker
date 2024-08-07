@@ -10,7 +10,7 @@ class CheckTranslation extends Command
 {
     protected $signature = 'translations:check
                             {target : The target language for the translations}
-                            {--S|source=en : The source language used for the translation provider}
+                            {--source : The source language used for the translation provider}
                             {--translate-missing : Translate missing translations using the translation service}
                             {--sort : Sort JSON translation files}';
 
@@ -23,16 +23,9 @@ class CheckTranslation extends Command
         $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
         $translateMissing = (bool) $this->option('translate-missing');
         $sort = (bool) $this->option('sort');
-        $targetLanguage = is_string($this->argument('target')) ? $this->argument('target') : null;
-
-        if (is_null($targetLanguage)) {
-            throw new RuntimeException('Target language need to bet set');
-        }
-
+        $targetLanguage = is_string($this->argument('target')) ? $this->argument('target') : 'en';
         $sourceFilePaths = config('translator.source_paths');
-        if (! is_array($sourceFilePaths)) {
-            throw new RuntimeException('Source paths needs to be set as array');
-        }
+
 
         $targetJsonPath = config('translator.language_folder') . "/{$targetLanguage}.json";
 

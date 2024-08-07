@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Artisan;
 
-class CheckTranslationCommandTest extends TestCase
+class CheckTranslationTest extends TestCase
 {
     private string $translationFile;
 
