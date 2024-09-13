@@ -69,28 +69,34 @@ class TestCase extends \Orchestra\Testbench\TestCase
         parent::tearDown();
     }
 
+    public function createTempFile(string $filename, ?string $content = ''): SplFileInfo
+    {
+        $filePath = $this->tempDir . '/' . $filename;
+        file_put_contents($filePath, $content);
+        return new SplFileInfo($filePath);
+    }
+
     public function createTemplateFiles(): void
     {
-        $bladeFilePath = $this->tempDir . '/test.blade.php';
-        $bladePath = __DIR__.'/Files/templates/underscore-translations.blade.php';
-        file_put_contents($bladeFilePath, file_get_contents($bladePath));
+        $this->bladeFile = $this->createTempFile(
+            'test.blade.php',
+            file_get_contents(__DIR__.'/Files/templates/underscore-translations.blade.php'),
+        );
 
-        $phpController = $this->tempDir . '/TestController.php';
-        $phpControllerPath = __DIR__.'/Files/templates/TestController.php';
-        file_put_contents($phpController, file_get_contents($phpControllerPath));
+        $this->phpControllerFile = $this->createTempFile(
+            'TestController.php',
+            file_get_contents(__DIR__.'/Files/templates/TestController.php'),
+        );
 
-        $vueFilePath = $this->tempDir . '/test.vue';
-        $vuePath = __DIR__.'/Files/templates/dollar-t.vue';
-        file_put_contents($vueFilePath, file_get_contents($vuePath));
+        $this->vueFile = $this->createTempFile(
+            'test.vue',
+            file_get_contents(__DIR__.'/Files/templates/dollar-t.vue'),
+        );
 
-        $noTranslationsFile = $this->tempDir . '/empty.blade.php';
-        $noTranslationsPath = __DIR__.'/Files/templates/no-translations.blade.php';
-        file_put_contents($noTranslationsFile, file_get_contents($noTranslationsPath));
-
-        $this->bladeFile = new SplFileInfo($bladeFilePath);
-        $this->phpControllerFile = new SplFileInfo($phpControllerPath);
-        $this->vueFile = new SplFileInfo($vueFilePath);
-        $this->noTranslationsBladeFile = new SplFileInfo($noTranslationsPath);
+        $this->noTranslationsBladeFile = $this->createTempFile(
+            'empty.blade.php',
+            file_get_contents(__DIR__.'/Files/templates/no-translations.blade.php'),
+        );
     }
 
     public function createTranslationFile(string $name, string|array $content = '')

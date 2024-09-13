@@ -38,8 +38,7 @@ class BladeFileExtractorTest extends TestCase
     public function emptyArrayOnEmptyBladeFile()
     {
         $phpExtractor = new BladeFileExtractor;
-        $bladeFilePath = $this->tempDir . '/empty-test.blade.php';
-        file_put_contents($bladeFilePath, null);
+        $bladeFilePath = $this->createTempFile('empty-test.blade.php', null);
         $bladeFile = new SplFileInfo($bladeFilePath);
 
         $foundStrings = $phpExtractor->extractFromFile($bladeFile);

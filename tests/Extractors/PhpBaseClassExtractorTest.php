@@ -23,9 +23,6 @@ class PhpBaseClassExtractorTest extends TestCase
     #[Test]
     public function extractFileIsEmptyOnEmptyFile(): void
     {
-        $filePath = $this->tempDir . '/empty.php';
-        file_put_contents($filePath, null);
-        $file = new SplFileInfo($filePath);
         $phpExtractor = new PhpBaseClassExtractor();
         $foundStrings = $phpExtractor->extractFromFile($this->vueFile);
 
@@ -36,8 +33,7 @@ class PhpBaseClassExtractorTest extends TestCase
     #[Test]
     public function extractFileIsEmptyIfNotTranslationFunctionInFile(): void
     {
-        $filePath = $this->tempDir . '/no-translations.php';
-        file_put_contents($filePath, "
+        $file = $this->createTempFile('no-translations.php', "
             <?php
             class Test 
             { 
@@ -47,7 +43,6 @@ class PhpBaseClassExtractorTest extends TestCase
                 }
             }
         ");
-        $file = new SplFileInfo($filePath);
         $phpExtractor = new PhpBaseClassExtractor();
         $foundStrings = $phpExtractor->extractFromFile($file);
 
@@ -58,7 +53,6 @@ class PhpBaseClassExtractorTest extends TestCase
     public function emptyOnNonExistingFiles(): void
     {
         $filePath = $this->tempDir . '/non-existing.php';
-
         $file = new SplFileInfo($filePath);
         $phpExtractor = new PhpBaseClassExtractor();
         $foundStrings = $phpExtractor->extractFromFile($file);

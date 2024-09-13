@@ -47,10 +47,7 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     #[Test]
     public function it_handles_files_without_translation_strings(): void
     {
-        $emptyFile = $this->tempDir . '/empty.php';
-        file_put_contents($emptyFile, '<?php // No translations here');
-
-        $file = new SplFileInfo($emptyFile);
+        $file = $this->createTempFile('empty.php', '<?php // No translations here');
         $extractor = new RegexExtractor;
 
         $translationKeys = $extractor->extractFromFile($file);
@@ -71,11 +68,7 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     #[Test]
     public function should_not_find_emit_request_etc(): void
     {
-        $jsFile = $this->tempDir . '/file.js';
-        file_put_contents($jsFile, '<template>this.$emit(\'emit\'); this.request(\'request\'); $t(\'findable\') const target = target("target") </template>');
-
-        $file = new SplFileInfo($jsFile);
-
+        $file = $this->createTempFile('file.js', '<template>this.$emit(\'emit\'); this.request(\'request\'); $t(\'findable\') const target = target("target") </template>');
         $extractor = new RegexExtractor;
 
         $translationKeys = $extractor->extractFromFile($file);

@@ -22,9 +22,7 @@ class MissingKeysFinderTest extends TestCase
     public function findTranslatableStringsChecksNonPhpFiles(): void
     {
         $translationFinder = new MissingKeysFinder;
-        $nonPhpFile = new SplFileInfo($this->tempDir . '/nonPhpContent.html');
-
-        file_put_contents($this->tempDir . '/nonPhpContent.html', file_get_contents($this->noTranslationsBladeFile));
+        $nonPhpFile = $this->createTempFile('nonPhpContent.html', file_get_contents($this->noTranslationsBladeFile));
         $foundStrings = $translationFinder->findTranslatableStrings([$nonPhpFile]);
         $this->assertEmpty($foundStrings);
     }
@@ -32,9 +30,7 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function findTranslatableStringsHandlesEmptyFiles(): void
     {
-        $emptyFile = new SplFileInfo($this->tempDir . '/empty.php');
-        file_put_contents($this->tempDir . '/empty.php', '');
-
+        $emptyFile = $this->createTempFile('empty.php', '');
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$emptyFile]);
 
@@ -55,8 +51,7 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function pathNormalization(): void
     {
-        $normalizedFile = new SplFileInfo($this->tempDir . '/testFile.php');
-        file_put_contents($this->tempDir . '/testFile.php', "<?php echo __('normalized string');");
+        $normalizedFile = $this->createTempFile('testFile.php', "<?php echo __('normalized string');");
 
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$normalizedFile]);
@@ -68,12 +63,10 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function throwExceptionFilesWithSyntaxErrors(): void
     {
-        $fileWithSyntaxError = $this->tempDir . '/syntaxError.php';
-        file_put_contents($fileWithSyntaxError, "<?php echo __('missing_semicolon'");
-
+        $fileWithSyntaxError = $this->createTempFile('syntaxError.php', "<?php echo __('missing_semicolon'\")");
         $this->expectException(\Exception::class);
         $translationFinder = new MissingKeysFinder;
-        $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($fileWithSyntaxError)]);
+        $foundStrings = $translationFinder->findTranslatableStrings([$fileWithSyntaxError]);
 
         $this->assertEmpty($foundStrings);
     }
@@ -81,11 +74,9 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function handlesFilesWithMultipleTranslationFunctions(): void
     {
-        $multiFunctionFile = $this->tempDir . '/multiFunction.php';
-        file_put_contents($multiFunctionFile, "<?php echo __('first_key'); echo __('second_key');");
-
+        $multiFunctionFile = $this->createTempFile('multiFunction.php', "<?php echo __('first_key'); echo __('second_key');");
         $translationFinder = new MissingKeysFinder;
-        $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($multiFunctionFile)]);
+        $foundStrings = $translationFinder->findTranslatableStrings([$multiFunctionFile]);
 
         $this->assertContains('first_key', $foundStrings);
         $this->assertContains('second_key', $foundStrings);
@@ -94,11 +85,9 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function correctlyIdentifiesTranslationKeysWithVariables(): void
     {
-        $fileWithVariables = $this->tempDir . '/variableKey.php';
-        file_put_contents($fileWithVariables, "<?php echo __('key_with_variable', ['name' => \$name]); echo __('a text with :key inside string', ['key' => \$name]);");
-
+        $fileWithVariables = $this->createTempFile('variableKey.php', "<?php echo __('key_with_variable', ['name' => \$name]); echo __('a text with :key inside string', ['key' => \$name]);");
         $translationFinder = new MissingKeysFinder;
-        $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($fileWithVariables)]);
+        $foundStrings = $translationFinder->findTranslatableStrings([$fileWithVariables]);
 
         $this->assertEquals(['key_with_variable', 'a text with :key inside string'], $foundStrings);
     }
@@ -115,11 +104,9 @@ class MissingKeysFinderTest extends TestCase
     #[Test]
     public function distinguishesBetweenTranslationAndOtherScriptingFunctions(): void
     {
-        $jsFile = $this->tempDir . '/script.js';
-        file_put_contents($jsFile, "console.log('Not a PHP file');");
-
+        $jsFile = $this->createTempFile('script.js', "console.log('Not a PHP file');");
         $translationFinder = new MissingKeysFinder;
-        $foundStrings = $translationFinder->findTranslatableStrings([new SplFileInfo($jsFile)]);
+        $foundStrings = $translationFinder->findTranslatableStrings([$jsFile]);
 
         // Assuming TranslationFinder is expected to ignore non-PHP files
         $this->assertEmpty($foundStrings);
