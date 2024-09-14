@@ -19,6 +19,9 @@ class RegexExtractor implements ExtractorContract
     {
         $found = [];
         $contents = file_get_contents($file->getRealPath());
+        if(!$contents) {
+            return [];
+        }
 
         if (preg_match_all($this->patterns['doubleUnderscoreSyntax'], $contents, $matches)) {
             $found = array_merge($found, $matches[3]);
