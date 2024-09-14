@@ -51,4 +51,45 @@ class CleanTranslationTest extends TestCase
             'The title field is required for create' => 'Ice cream',
         ], $content);
     }
+
+    #[Test]
+    public function itCorrectlyCleansTranslationsForOtherLanguages(): void
+    {
+        $initialTranslations = [
+            'this does not exists' => "vaj ghu'vam taHbe'",
+            'The title field is required for create' => "Vaj che'meH mIw'a' lughovlaH",
+            'unused key' => 'voq',
+        ];
+        $file = $this->createTranslationFile('ot', $initialTranslations);
+
+        $this->artisan('translations:clean', [
+            '--source' => 'ot',
+        ])->assertExitCode(0);
+
+        $content = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+
+        $this->assertSame([
+            'The title field is required for create' => "Vaj che'meH mIw'a' lughovlaH",
+        ], $content);
+        $this->assertArrayNotHasKey('sundae', $content);
+        $this->assertArrayNotHasKey('unused_key', $content);
+    }
+
+    #[Test]
+    public function itCorrectlyHandlesCaseInsensitiveKeys(): void
+    {
+        $initialTranslations = [
+            'the title field is required for create' => 'Ice cream',
+            'you are currently not logged in.' => 'You are currently not logged in.',
+            'Please_log_in' => 'please_log_in',
+        ];
+        $file = $this->createTranslationFile('ot', $initialTranslations);
+
+        $this->artisan('translations:clean', [
+            '--source' => 'ot',
+        ])->assertExitCode(0);
+
+        $content = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertEmpty($content);
+    }
 }
