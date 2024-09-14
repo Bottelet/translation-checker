@@ -1,3 +1,9 @@
+---
+title: Translations sorting
+parent: Basic Usage
+nav_order: 4
+---
+
 # translations:sort
 
 The `translations:sort` command is used to sort translation files by keys using the sorter specified in the configuration.

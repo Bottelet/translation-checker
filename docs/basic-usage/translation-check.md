@@ -1,3 +1,9 @@
+---
+title: Translations check
+parent: Basic Usage
+nav_order: 1
+---
+
 # translations:check
 
 The `translations:check` command is used to find missing translations in your project.

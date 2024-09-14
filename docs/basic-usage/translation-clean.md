@@ -1,3 +1,9 @@
+---
+title: Translations clean
+parent: Basic Usage
+nav_order: 2
+---
+
 # translations:clean
 
 The `translations:clean` command is used to clean translations by removing unused keys from the source language file.

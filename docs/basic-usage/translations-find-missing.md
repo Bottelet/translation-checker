@@ -1,3 +1,8 @@
+---
+title: Translations find missing
+parent: Basic Usage
+nav_order: 3
+---
 # translations:find-missing
 
 The `translations:find-missing` command is used to find missing translations and add the keys to the given source language file with empty values.

@@ -1,3 +1,9 @@
+---
+title: Translations synchronize
+parent: Basic Usage
+nav_order: 5
+---
+
 # translations:sync
 
 The `translations:sync` command is used to synchronize translations between language files.
