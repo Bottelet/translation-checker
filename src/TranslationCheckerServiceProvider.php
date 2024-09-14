@@ -6,10 +6,12 @@ use Bottelet\TranslationChecker\Commands\SortTranslation;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
+use Bottelet\TranslationChecker\Translator\OpenAiTranslator;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Support\ServiceProvider;
+use OpenAI;
 
 class TranslationCheckerServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,12 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             return new GoogleTranslator(
                 $app->make(VariableRegexHandler::class),
                 new TranslateClient(['key' =>  $app->config['translator.translators.google']])
+            );
+        });
+
+        $this->app->bind(OpenAiTranslator::class, function ($app) {
+            return new OpenAiTranslator(
+                OpenAI::client($app->config['translator.translators.openai.api_key'], $app->config['translator.translators.openai.organization'])
             );
         });
 
