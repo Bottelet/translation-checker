@@ -3,6 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Illuminate\Console\Command;
+use RuntimeException;
 
 abstract class BaseTranslationCommand extends Command
 {
@@ -16,7 +17,7 @@ abstract class BaseTranslationCommand extends Command
         $paths = config('translator.source_paths', []);
 
         if (!is_array($paths)) {
-            return [];
+            return throw new RuntimeException('The source paths configuration is not an array.');
         }
 
         return array_filter(array_map(function ($path) {
