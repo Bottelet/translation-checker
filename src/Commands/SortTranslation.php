@@ -7,15 +7,15 @@ use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Illuminate\Console\Command;
 
-class SortTranslation extends Command
+class SortTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:sort
-                            {--source : The source language for the translations to find}
+                            {--source : The source language for the translations to sort}
                             {--all : All files found in the config language_folder }';
 
     protected $description = 'Sort translation file by using the sorter given in config';
 
-    public function __construct(private SorterContract $sorter, private LanguageDirectoryManager $languageDirectoryManager)
+    public function __construct(private readonly SorterContract $sorter, private readonly LanguageDirectoryManager $languageDirectoryManager)
     {
         parent::__construct();
     }
@@ -24,29 +24,40 @@ class SortTranslation extends Command
     {
         $this->info('Sorting translations...');
 
-        $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
-        $targetJsonPath = config('translator.language_folder') . "/{$sourceLanguage}.json";
+        $options = $this->parseOptions();
 
-        $this->sortFile($targetJsonPath);
+        if ($options->all) {
+            $this->sortAllFiles();
+        } else {
+            $targetJsonPath = $this->getTargetJsonPath($options->source);
+            $this->sortFile($targetJsonPath);
+        }
+
+        $this->info('Translation sorting completed.');
     }
 
-    protected function sortFile(string $targetJsonPath): void
+    protected function parseOptions(): CommandOptions
     {
-        if ($this->option('all')) {
-            $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
-            foreach ($languageFiles as $file) {
-                $this->processFile($file);
-            }
-        } else {
-            $this->processFile($targetJsonPath);
+        return new CommandOptions(
+            source: is_string($this->option('source')) ? $this->option('source') : 'en',
+            all: (bool) $this->option('all')
+        );
+    }
+
+    private function sortAllFiles(): void
+    {
+        $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
+        foreach ($languageFiles as $file) {
+            $this->sortFile($file);
         }
     }
 
-    protected function processFile(string $filePath): void
+    private function sortFile(string $filePath): void
     {
         $languageFile = new LanguageFileManager($filePath);
         $contents = $languageFile->readFile();
         $sortedContents = $this->sorter->sortByKey($contents);
         $languageFile->updateFile($sortedContents);
+        $this->info("Sorted: $filePath");
     }
 }
