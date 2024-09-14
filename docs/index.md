@@ -1,3 +1,9 @@
+---
+layout: default
+title: Getting Started
+nav_enabled: true
+---
+
 # Translation Checker
 Translation Checker is tool designed to help you find translations you forgot to add to your language files, check, and maintain translations in your project. It provides a set of commands to help with language files, ensuring consistency and completeness across your translations.
 
@@ -5,7 +11,7 @@ It works with Laravel and supports various frontend frameworks like Vue.js, Reac
 
 and as default looks for translations in the `app/` and `resources/` folders.
 ## Installation
-You can install the package via composer:
+You can install the package via composer: 
 
 ```bash
 composer require bottelet/laravel-translation-checker

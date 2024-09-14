@@ -16,7 +16,7 @@ Translation Checker provides several commands to manage your translations. The m
 ```bash
 php artisan translations:check en 
 ```
-For detailed information on all available commands and their usage, refer to the [documentation](https://github.com/bottelet/translation-checker/docs).
+For detailed information on all available commands and their usage, refer to the [documentation](https://bottelet.github.io/translation-checker/).
 
 ## Testing
 
@@ -28,7 +28,7 @@ Run the tests with:
 
 ## Documentation
 
-For full documentation, visit our [GitHub documentation page](https://github.com/bottelet/translation-checker/docs).
+For full documentation, visit our [GitHub documentation page](https://bottelet.github.io/translation-checker/).
 
 If you encounter any issues or have suggestions, please create an issue on GitHub.
 
