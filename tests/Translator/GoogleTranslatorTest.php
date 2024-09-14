@@ -92,8 +92,7 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     #[Test]
     public function testGoogleTranslatorBinding(): void
     {
-        $googleTranslator = app(GoogleTranslator::class);
-        $this->assertInstanceOf(GoogleTranslator::class, $googleTranslator);
+        $this->assertInstanceOf(GoogleTranslator::class, app(GoogleTranslator::class));
     }
 
 }
