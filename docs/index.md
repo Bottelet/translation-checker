@@ -43,42 +43,9 @@ The `check` command is particularly versatile. It scans the specified `source_pa
 
 For detailed information on each command, please refer to their individual documentation pages in the Basic Usage section:
 
-- [translations:check](basic-usage/translations-check.md)
-- [translations:clean](basic-usage/translations-clean.md)
-- [translations:find-missing](basic-usage/translations-find-missing.md)
-- [translations:sort](basic-usage/translations-sort.md)
-- [translations:sync](basic-usage/translations-sync.md)
+- [translations:check](basic-usage/translations-check.html)
+- [translations:clean](basic-usage/translations-clean.html)
+- [translations:find-missing](basic-usage/translations-find-missing.html)
+- [translations:sort](basic-usage/translations-sort.html)
+- [translations:sync](basic-usage/translations-sync.html)
 
-
-## Translation Services
-### Setup
-To use `--translate-missing` option, you need to set up a translation service.
-This can be done by setting environment variables.
-
-For OpenAI, you need to set the following environment variables:
-
-```bash
-OPENAI_API_KEY=your_api_key
-OPENAI_API_BASE=your_api_base
-```
-For more information, see [OpenAI Setup](https://platform.openai.com/docs/guides/production-best-practices/setting-up-your-organization)
-
-For Google Translate, you need to set the following environment variables
-```bash
-GOOGLE_TRANSLATE_TYPE=service_account
-GOOGLE_TRANSLATE_PROJECT_ID=your_project_id
-GOOGLE_TRANSLATE_PRIVATE_KEY=your_private_key
-GOOGLE_TRANSLATE_CLIENT_EMAIL=your_client_email
-GOOGLE_TRANSLATE_CLIENT_CERT_URL=your_client_cert_url
-```
-See more here: [Google Translate Setup](https://cloud.google.com/translate/docs/setup)
-
-### Default Service
-The `default_translation_service` configuration option specifies the class to be used for automatic translation. This service will be used for translating strings.
-
-There are currently two built-in translation services:
-1. **GoogleTranslateService** - Translates strings using Google Translate
-2. **OpenAIService** - Translates strings using OpenAI's API
-
-
-You can create your own translation service by implementing the `Bottelet\TranslationChecker\Translator\TranslatorContract` and overwriting the `default_translation_service` configuration option.
