@@ -1,6 +1,7 @@
 # Translation Checker
+Translation Checker is tool designed to help you find translations you forgot to add to your language files, check, and maintain translations in your project. It provides a set of commands to help with language files, ensuring consistency and completeness across your translations.
 
-Translation Checker is a tool designed to help you manage, check, and maintain translations in your Laravel project. It works with Laravel and supports various frontend frameworks like Vue.js, React, and Svelte.
+It works with Laravel and supports various frontend frameworks like Vue.js, React, and Svelte.
 
 ## Quick Start
 
