@@ -3,10 +3,8 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\TranslationManager;
-use Illuminate\Console\Command;
-use RuntimeException;
 
-class CheckTranslation extends Command
+class CheckTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:check
                             {target : The target language for the translations}
@@ -20,24 +18,39 @@ class CheckTranslation extends Command
     public function handle(TranslationManager $translationManager): void
     {
         $this->info('Checking translations...');
-        $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
-        $translateMissing = (bool) $this->option('translate-missing');
-        $sort = (bool) $this->option('sort');
-        $targetLanguage = is_string($this->argument('target')) ? $this->argument('target') : 'en';
-        $sourceFilePaths = config('translator.source_paths');
 
-
-        $targetJsonPath = config('translator.language_folder') . "/{$targetLanguage}.json";
+        $options = $this->parseOptions();
+        $sourceFilePaths = $this->getSourceFilePaths();
+        $targetJsonPath = $this->getTargetJsonPath($options->target);
 
         $missingTranslations = $translationManager->updateTranslationsFromFile(
             $sourceFilePaths,
             $targetJsonPath,
-            $sort,
-            $targetLanguage,
-            $translateMissing,
-            $sourceLanguage,
+            $options->sort,
+            $options->target,
+            $options->translateMissing,
+            $options->source
         );
 
+        $this->displayResult($missingTranslations);
+    }
+
+    protected function parseOptions(): CommandOptions
+    {
+
+        return new CommandOptions(
+            source: is_string($this->option('source')) ? $this->option('source') : 'en',
+            target: is_string($this->argument('target')) ? $this->argument('target') : 'en',
+            translateMissing: (bool) $this->option('translate-missing'),
+            sort: (bool) $this->option('sort')
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $missingTranslations
+     */
+    private function displayResult(array $missingTranslations): void
+    {
         if (empty($missingTranslations)) {
             $this->info('No missing translations found.');
         } else {
