@@ -1,5 +1,6 @@
 ---
 title: Translations find missing
+layout: default
 parent: Basic Usage
 nav_order: 3
 ---

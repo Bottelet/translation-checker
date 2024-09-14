@@ -1,5 +1,6 @@
 ---
 title: Translations clean
+layout: default
 parent: Basic Usage
 nav_order: 2
 ---

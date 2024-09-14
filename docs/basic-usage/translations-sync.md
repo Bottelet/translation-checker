@@ -1,5 +1,6 @@
 ---
 title: Translations synchronize
+layout: default
 parent: Basic Usage
 nav_order: 5
 ---

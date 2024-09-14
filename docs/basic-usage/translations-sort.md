@@ -1,5 +1,6 @@
 ---
 title: Translations sorting
+layout: default
 parent: Basic Usage
 nav_order: 4
 ---

@@ -2,6 +2,7 @@
 layout: default
 title: Getting Started
 nav_enabled: true
+nav_order: 1
 ---
 
 # Translation Checker

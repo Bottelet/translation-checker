@@ -1,5 +1,6 @@
 ---
 title: Translations check
+layout: default
 parent: Basic Usage
 nav_order: 1
 ---
