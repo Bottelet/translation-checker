@@ -9,7 +9,7 @@ use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Illuminate\Console\Command;
 use RuntimeException;
 
-class FindMissingTranslation extends Command
+class FindMissingTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:find-missing
                             {--source : The source language for the translations to find}
@@ -22,23 +22,41 @@ class FindMissingTranslation extends Command
     {
         $this->info('Finding translations...');
 
-        $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
-        $targetJsonPath = config('translator.language_folder') . "/{$sourceLanguage}.json";
+        $options = $this->parseOptions();
+        $sourceJsonPath = $this->getTargetJsonPath($options->source);
+        $sourceFilePaths = $this->getSourceFilePaths();
 
-        $translationFinder = new TranslationFinder(new FileManagement(), new LanguageFileManager($targetJsonPath), new MissingKeysFinder());
+        $translationFinder = new TranslationFinder(
+            new FileManagement(),
+            new LanguageFileManager($sourceJsonPath),
+            new MissingKeysFinder()
+        );
 
-        $sourceFilePaths = config('translator.source_paths');
-        if (! is_array($sourceFilePaths)) {
-            throw new RuntimeException('Source paths needs to be set as array');
-        }
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
-        if ($this->option('print')) {
-            foreach ($missingTranslations as $translation) {
-                $this->line($translation);
-            }
+        if ($options->print) {
+            $this->printMissingTranslations($missingTranslations);
         } else {
             $translationFinder->getLanguageFilerManager()->updateFile($missingTranslations);
+            $this->info('Missing translations added to the source language file.');
+        }
+    }
+
+    protected function parseOptions(): CommandOptions
+    {
+        return new CommandOptions(
+            source: is_string($this->option('source')) ? $this->option('source') : 'en',
+            print: (bool) $this->option('print')
+        );
+    }
+
+    /**
+     * @param array<string, string> $missingTranslations
+     */
+    private function printMissingTranslations(array $missingTranslations): void
+    {
+        foreach ($missingTranslations as $key => $value) {
+            $this->line("$key: $value");
         }
     }
 }
