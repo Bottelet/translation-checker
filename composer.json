@@ -32,6 +32,12 @@
     "require": {
         "php": "^8.1",
         "nikic/php-parser": "^5.0",
-        "google/cloud-translate": "^1.17"
+        "google/cloud-translate": "^1.17",
+        "openai-php/client": "^0.10.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
