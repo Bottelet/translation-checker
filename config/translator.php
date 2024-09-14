@@ -10,6 +10,11 @@ return [
             'client_email' => env('GOOGLE_TRANSLATE_CLIENT_EMAIL'),
             'client_x509_cert_url' => env('GOOGLE_TRANSLATE_CLIENT_CERT_URL'),
         ],
+        'openai' => [
+            'model' => env('OPENAI_MODEL', 'gpt-4o'),
+            'api_key' => env('OPENAI_API_KEY'),
+            'organization' => env('OPENAI_ORGANIZATION'),
+        ],
     ],
     'source_paths' => [
         base_path('app/'),
