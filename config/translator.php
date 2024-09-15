@@ -13,7 +13,7 @@ return [
         'openai' => [
             'model' => env('OPENAI_MODEL', 'gpt-4o'),
             'api_key' => env('OPENAI_API_KEY'),
-            'organization' => env('OPENAI_ORGANIZATION'),
+            'organization_id' => env('OPENAI_ORGANIZATION'),
         ],
     ],
     'source_paths' => [
