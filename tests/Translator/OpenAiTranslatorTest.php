@@ -164,7 +164,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $this->app['config']->set('translator.translators.openai', [
                 'model' => 'gpt-3.5-turbo',
                 'api_key' => null,
-                'organization' => null,
+                'organization_id' => null,
         ]);
         $this->translateClientMock = new ClientFake();
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);

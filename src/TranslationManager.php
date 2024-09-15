@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker;
 
+use Bottelet\TranslationChecker\Exception\TranslationServiceException;
 use Bottelet\TranslationChecker\File\FileManagement;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
@@ -29,7 +30,7 @@ class TranslationManager
 
         if ($translateMissing && $targetLanguage !== null) {
             if(!$this->translationService->isConfigured()) {
-                throw new \RuntimeException('Translation service credentials are not set');
+                throw TranslationServiceException::notConfigured(get_class($this->translationService));
             }
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);
         }

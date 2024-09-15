@@ -39,7 +39,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->app['config']->set('translator.translators.openai', [
             'model' => 'gpt-3.5-turbo',
             'api_key' => 'API_KEY',
-            'organization' => 'ORG_ID',
+            'organization_id' => 'ORG_ID',
         ]);
 
         $this->createTemplateFiles();

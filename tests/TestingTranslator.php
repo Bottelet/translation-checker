@@ -28,4 +28,9 @@ class TestingTranslator implements TranslatorContract
         }
        return $translations;
     }
+
+    public function isConfigured(): bool
+    {
+        return true;
+    }
 }

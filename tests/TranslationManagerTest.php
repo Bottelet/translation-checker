@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests;
 
+use Bottelet\TranslationChecker\Exception\TranslationServiceException;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\TranslationManager;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
@@ -84,6 +85,7 @@ class TranslationManagerTest extends TestCase
     #[Test]
     public function updateTranslationsFromFileTranslateMissing(): void
     {
+        $this->translationServiceMock->method('isConfigured')->willReturn(true);
         $translations = [
             'Hello, World!'   => 'Translated Hello, World!',
             'Something cool ' => 'Translated Something cool!',
@@ -131,6 +133,7 @@ class TranslationManagerTest extends TestCase
     #[Test]
     public function translationPerformedWithEmptyJsonFile(): void
     {
+        $this->translationServiceMock->method('isConfigured')->willReturn(true);
         file_put_contents($this->jsonFilePath, '');
 
         $translations = [
@@ -164,7 +167,7 @@ class TranslationManagerTest extends TestCase
     #[Test]
     public function throwsExceptionWhenTranslationServiceIsNotSet(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(TranslationServiceException::class);
 
         $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
         $this->translationManager     = new TranslationManager(
