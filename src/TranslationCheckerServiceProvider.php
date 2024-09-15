@@ -31,7 +31,7 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         $this->app->bind(GoogleTranslator::class, function ($app) {
             return new GoogleTranslator(
                 $app->make(VariableRegexHandler::class),
-                new TranslateClient(['key' =>  $app->config['translator.translators.google']])
+                new TranslateClient(['keyFile' =>  $app->config['translator.translators.google']])
             );
         });
 
