@@ -80,4 +80,21 @@ class CheckTranslationTest extends TestCase
         $this->assertSame($expectedContent, $sortedContent);
     }
 
+    #[Test]
+    public function itOutputsSpecialCharactersCorrectly(): void
+    {
+        file_put_contents($this->translationFile, json_encode([
+            'Welcome/Hi' => 'Velkommen/Hej',
+            'PHP & Laravel ^^' => 'PHP & Laravel ^^',
+        ], JSON_UNESCAPED_SLASHES));
+
+        $this->artisan('translations:check', [
+            'target' => 'da',
+        ])->assertExitCode(0);
+
+        $this->assertStringNotContainsString('Velkommen\/Hej', file_get_contents($this->translationFile));
+        $this->assertStringContainsString('Welcome/Hi', file_get_contents($this->translationFile));
+        $this->assertStringContainsString('Velkommen/Hej', file_get_contents($this->translationFile));
+    }
+
 }

@@ -31,7 +31,7 @@ class LanguageFileManager
      */
     public function updateFile(array $translations): void
     {
-        $jsonContent = json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $jsonContent = json_encode($translations, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         file_put_contents($this->filePath, $jsonContent);
     }
 

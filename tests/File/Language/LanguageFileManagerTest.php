@@ -124,4 +124,24 @@ class LanguageFileManagerTest extends TestCase
         $this->assertContains('New translation', $content);
         $this->assertNotContains('Welcome', $content);
     }
+
+    #[Test]
+    public function updateSpecialCharactersCorrectly(): void
+    {
+        $jsonManager = new LanguageFileManager($this->tempFile);
+        $newTranslations = [
+            'Welcome/Hi' => 'Velkommen/Hej',
+            'PHP & Laravel ^^' => 'PHP & Laravel ^^',
+            'This should work / Using $ Special chars Is okay £ for æ ø å o' => 'This should work / Using $ Special chars Is okay £ for unicode æ ø å ó',
+            'A very long key with special characters / * & ^ % $ @ # ! + - = | ? < > , . : ; { } [ ] ( ) _ € £ € æ ø å o' => 'A very long key with special characters / * & ^ % $ @ # ! + - = | ? < > , . : ; { } [ ] ( ) _ € £ € æ ø å ó',
+        ];
+        $jsonManager->updateFile($newTranslations);
+        $updatedContent = file_get_contents($this->tempFile);
+
+        $this->assertStringNotContainsString('Velkommen\/Hej', $updatedContent);
+        $this->assertStringContainsString('Welcome/Hi', $updatedContent);
+        $this->assertStringContainsString('PHP & Laravel ^^', $updatedContent);
+        $this->assertStringContainsString('This should work / Using $ Special chars Is okay £ for unicode æ ø å ó', $updatedContent);
+        $this->assertStringContainsString('A very long key with special characters / * & ^ % $ @ # ! + - = | ? < > , . : ; { } [ ] ( ) _ € £ € æ ø å ó', $updatedContent);
+    }
 }
