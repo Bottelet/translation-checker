@@ -8,6 +8,6 @@ class TranslationServiceException extends Exception
 {
     public static function notConfigured(string $translationServiceName): self
     {
-        return new static(sprintf('Translation service "%s" is not configured. add correct environment variables or configure the service.', $translationServiceName));
+        return new self("Translation service ${$translationServiceName} is not configured. add correct environment variables or configure the service.");
     }
 }
