@@ -160,4 +160,19 @@ class TranslationManagerTest extends TestCase
             $this->assertStringContainsString("\"{$key}\": \"{$translation}\"", $jsonContent);
         }
     }
+
+    #[Test]
+    public function throwsExceptionWhenTranslationServiceIsNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
+        $this->translationManager     = new TranslationManager(
+            new AlphabeticSort,
+            $this->translationServiceMock
+        );
+
+        $this->translationManager->updateTranslationsFromFile([$this->testDir],
+            $this->jsonFilePath, false, 'en', true);
+    }
 }
