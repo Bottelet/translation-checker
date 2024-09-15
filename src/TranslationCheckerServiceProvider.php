@@ -32,8 +32,15 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(OpenAiTranslator::class, function ($app) {
+            $factory = OpenAI::factory();
+            if($app->config['translator.translators.openai.api_key']) {
+                $factory->withApiKey($app->config['translator.translators.openai.api_key']);
+            }
+            if($app->config['translator.translators.openai.organization_id']) {
+                $factory->withOrganization($app->config['translator.translators.openai.organization_id']);
+            }
             return new OpenAiTranslator(
-                OpenAI::client($app->config['translator.translators.openai.api_key'], $app->config['translator.translators.openai.organization'])
+                $factory->withHttpHeader('OpenAI-Beta', 'assistants=v2')->make()
             );
         });
 
