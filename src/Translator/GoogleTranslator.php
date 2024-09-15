@@ -61,6 +61,8 @@ class GoogleTranslator implements TranslatorContract
 
     public function hasValidCredentials(): bool
     {
-        return !in_array(null, config('translator.translators.google'), true);
+        /** @var array<string, null|string> $googleConfig */
+        $googleConfig = config('translator.translators.google');
+        return !in_array(null, $googleConfig, true);
     }
 }
