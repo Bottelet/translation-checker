@@ -20,5 +20,5 @@ return [
         base_path('app/'),
         base_path('resources/'),
     ],
-    'language_folder' =>  base_path('/lang'),
+    'language_folder' => base_path('/lang'),
 ];
