@@ -95,4 +95,22 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $this->assertInstanceOf(GoogleTranslator::class, app(GoogleTranslator::class));
     }
 
+    #[Test]
+    public function testGoogleTranslatorHasValidCredentials(): void
+    {
+        $this->assertTrue($this->googleTranslator->hasValidCredentials());;
+    }
+
+    #[Test]
+    public function testGoogleTranslatorHasInvalidCredentials(): void
+    {
+        $this->app['config']->set('translator.translators.google', [
+            'type' => 'test',
+            'project_id' => null,
+            'private_key' => null,
+            'client_email' => null,
+            'client_x509_cert_url' => null,
+        ]);
+        $this->assertFalse($this->googleTranslator->hasValidCredentials());;
+    }
 }

@@ -144,8 +144,30 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     }
 
     #[Test]
-    public function testGoogleTranslatorBinding(): void
+    public function testOpenAiTranslatorBinding(): void
     {
         $this->assertInstanceOf(OpenAiTranslator::class, app(OpenAiTranslator::class));
+    }
+
+    #[Test]
+    public function testGoogleTranslatorHasValidCredentials(): void
+    {
+        $this->translateClientMock = new ClientFake();
+        $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
+
+        $this->assertTrue($this->openAiTranslator->hasValidCredentials());;
+    }
+
+    #[Test]
+    public function testGoogleTranslatorHasInvalidCredentials(): void
+    {
+        $this->app['config']->set('translator.translators.openai', [
+                'model' => 'gpt-3.5-turbo',
+                'api_key' => null,
+                'organization' => null,
+        ]);
+        $this->translateClientMock = new ClientFake();
+        $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
+        $this->assertFalse($this->openAiTranslator->hasValidCredentials());;
     }
 }

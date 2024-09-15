@@ -115,4 +115,11 @@ Ensure your entire response is a valid JSON object.";
 
         return $translatedKeys;
     }
+
+    public function hasValidCredentials(): bool
+    {
+        $openAiConfig = config('translator.translators.openai');
+
+        return $openAiConfig['api_key'] && $openAiConfig['model'];
+    }
 }

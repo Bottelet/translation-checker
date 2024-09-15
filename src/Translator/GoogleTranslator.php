@@ -58,4 +58,9 @@ class GoogleTranslator implements TranslatorContract
 
         return $translatedKeys;
     }
+
+    public function hasValidCredentials(): bool
+    {
+        return !in_array(null, config('translator.translators.google'), true);
+    }
 }
