@@ -25,6 +25,7 @@ class TestingTranslator implements TranslatorContract
         foreach ($texts as $text) {
             $translations[] = "nothing";
         }
+
         return $translations;
     }
 

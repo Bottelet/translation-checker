@@ -13,7 +13,6 @@ class OpenAiTranslator implements TranslatorContract
     public function __construct(
         protected ClientContract $translateClient,
     ) {
-
     }
 
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
@@ -47,7 +46,6 @@ Output format: respond with a single string in {$targetLanguage}, potentially co
         }
 
         return $translation;
-
     }
 
     /**

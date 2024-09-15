@@ -40,6 +40,7 @@ class MissingKeysFinder
     public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): array
     {
         $translationString = $this->findTranslatableStrings($files);
+
         return $this->extractMissingTranslations($translationString, $existingTranslatedStrings);
     }
 

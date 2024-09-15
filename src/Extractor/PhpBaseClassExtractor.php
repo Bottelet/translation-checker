@@ -64,7 +64,6 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
                 return [];
             }
             $traverser->traverse($ast);
-
         } catch (Exception $error) {
             throw new RuntimeException("Error parsing file {$file->getRealPath()}: {$error->getMessage()}");
         }

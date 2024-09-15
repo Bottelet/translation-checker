@@ -22,6 +22,7 @@ class BladeFileExtractor extends PhpBaseClassExtractor
         }
 
         $compiledCode = Blade::compileString($code);
+
         return $compiledCode ?: null;
     }
 

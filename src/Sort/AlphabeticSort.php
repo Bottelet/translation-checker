@@ -12,6 +12,7 @@ class AlphabeticSort implements SorterContract
     public function sortByKey(array $strings): array
     {
         ksort($strings);
+
         return $strings;
     }
 }

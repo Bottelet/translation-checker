@@ -17,7 +17,6 @@ class LanguageFileManagerTest extends TestCase
             'welcome' => 'Welcome',
             'farewell' => 'Goodbye',
         ]);
-
     }
 
     #[Test]

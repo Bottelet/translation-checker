@@ -81,6 +81,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         $filePath = $this->tempDir . '/' . $filename;
         file_put_contents($filePath, $content);
+
         return new SplFileInfo($filePath);
     }
 

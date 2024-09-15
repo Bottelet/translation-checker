@@ -25,6 +25,7 @@ class ChainedGetNodeRemover extends NodeVisitorAbstract
         } elseif ($node instanceof Closure) {
             $this->processClosure($node);
         }
+
         return $node;
     }
 

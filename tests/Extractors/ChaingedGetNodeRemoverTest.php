@@ -35,7 +35,6 @@ CODE;
         $foundStrings = $bladeExtractor->extractFromFile($file);
         $this->assertContains('Address', $foundStrings);
         $this->assertContains('Text after chained get', $foundStrings);
-
     }
 
     #[Test]
@@ -55,7 +54,6 @@ CODE;
         $foundStrings = $bladeExtractor->extractFromFile($file);
         $this->assertContains('Test', $foundStrings);
         $this->assertContains('Text after chained get', $foundStrings);
-
     }
     #[Test]
     public function canHandleNestedGetCalls(): void

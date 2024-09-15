@@ -77,5 +77,4 @@ class SyncTranslationTest extends TestCase
         $this->assertEquals($expectedTranslationsTarget, json_decode(file_get_contents($this->targetFile), true));
         $this->assertEquals($expectedTranslationsSource, json_decode(file_get_contents($thirdFile), true));
     }
-
 }

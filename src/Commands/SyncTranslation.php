@@ -30,20 +30,16 @@ class SyncTranslation extends Command
 
             $targetFileManager = new LanguageFileManager($targetPath);
             $sourceFileManager->syncFile($targetFileManager);
-
         } else {
             $files = $directoryManager->getLanguageFiles();
 
             foreach ($files as $file) {
-
                 $targetFileManager = new LanguageFileManager($file->getPathname());
 
                 if ($file->getPathname() !== $source) {
                     $sourceFileManager->syncFile($targetFileManager);
                 }
             }
-
         }
     }
-
 }

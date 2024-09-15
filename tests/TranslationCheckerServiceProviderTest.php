@@ -39,5 +39,4 @@ class TranslationCheckerServiceProviderTest extends \Bottelet\TranslationChecker
 
         $this->app->make(TranslatorContract::class);
     }
-
 }

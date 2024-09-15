@@ -52,7 +52,6 @@ class VariableRegexHandlerTest extends TestCase
 
         $restoredText = $handler->restorePlaceholders($replacedText);
         $this->assertEquals($text, $restoredText);
-
     }
 
     #[Test]
@@ -66,6 +65,5 @@ class VariableRegexHandlerTest extends TestCase
 
         $restoredText = $handler->restorePlaceholders($replacedText);
         $this->assertEquals($text, $restoredText);
-
     }
 }

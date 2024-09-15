@@ -31,5 +31,4 @@ class LanguageDirectoryManagerTest extends TestCase
         $this->assertEquals($this->translationFile, $files[0]->getPathname());
         $this->assertEquals($this->secondTranslationFile, $files[1]->getPathname());
     }
-
 }

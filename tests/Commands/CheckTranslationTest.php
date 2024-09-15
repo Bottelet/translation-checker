@@ -96,5 +96,4 @@ class CheckTranslationTest extends TestCase
         $this->assertStringContainsString('Welcome/Hi', file_get_contents($this->translationFile));
         $this->assertStringContainsString('Velkommen/Hej', file_get_contents($this->translationFile));
     }
-
 }

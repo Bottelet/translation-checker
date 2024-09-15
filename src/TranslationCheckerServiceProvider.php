@@ -44,11 +44,11 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             if ($app->config['translator.translators.openai.organization_id']) {
                 $factory->withOrganization($app->config['translator.translators.openai.organization_id']);
             }
+
             return new OpenAiTranslator(
                 $factory->withHttpHeader('OpenAI-Beta', 'assistants=v2')->make()
             );
         });
-
     }
 
     public function boot(): void

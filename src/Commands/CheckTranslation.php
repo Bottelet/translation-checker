@@ -37,7 +37,6 @@ class CheckTranslation extends BaseTranslationCommand
 
     protected function parseOptions(): CommandOptions
     {
-
         return new CommandOptions(
             source: is_string($this->option('source')) ? $this->option('source') : 'en',
             target: is_string($this->argument('target')) ? $this->argument('target') : 'en',

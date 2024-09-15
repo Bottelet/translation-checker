@@ -52,5 +52,4 @@ class PhpBaseClassExtractorTest extends TestCase
         $this->expectException(\ErrorException::class);
         $phpExtractor->extractFromFile($file);
     }
-
 }

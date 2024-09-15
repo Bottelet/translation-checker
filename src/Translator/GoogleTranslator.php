@@ -12,7 +12,6 @@ class GoogleTranslator implements TranslatorContract
         protected VariableRegexHandler $variableHandler,
         protected TranslateClient $translateClient,
     ) {
-
     }
 
 
@@ -62,6 +61,7 @@ class GoogleTranslator implements TranslatorContract
     {
         /** @var array<string, null|string> $googleConfig */
         $googleConfig = config('translator.translators.google');
+
         return !in_array(null, $googleConfig, true);
     }
 }
