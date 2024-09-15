@@ -7,7 +7,7 @@ It works with Laravel and supports various frontend frameworks like Vue.js, Reac
 
 Install the package via composer:
 ```bash
-php artisan composer require bottelet/translation-checker
+composer require bottelet/laravel-translation-checker
 ```
 
 ## Usage
