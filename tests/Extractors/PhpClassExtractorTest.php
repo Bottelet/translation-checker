@@ -17,4 +17,23 @@ class PhpClassExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 
         $this->assertCount(10, $foundStrings);
     }
+
+    #[Test]
+    public function extractFileIsEmptyIfNotTranslationFunctionInFile(): void
+    {
+        $file = $this->createTempFile('no-translations.php', "
+            <?php
+            class Test 
+            { 
+                public function index()
+                {
+                    return [Model::all()];
+                }
+            }
+        ");
+        $phpExtractor = new PhpClassExtractor();
+        $foundStrings = $phpExtractor->extractFromFile($file);
+
+        $this->assertEmpty($foundStrings);
+    }
 }

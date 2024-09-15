@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Extractor;
 
+use Bottelet\TranslationChecker\Node\ChainedGetNodeRemover;
 use Exception;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
@@ -47,18 +48,23 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
         }
 
         $code = $this->getCode($file);
+
         if (is_null($code)) {
             return [];
         }
 
         $traverser = new NodeTraverser;
+        $visitor = new ChainedGetNodeRemover;
         $traverser->addVisitor($this);
+        $traverser->addVisitor($visitor);
         try {
             $ast = $parser->parse($code);
+
             if ($ast === null) {
                 return [];
             }
             $traverser->traverse($ast);
+
         } catch (Exception $error) {
             throw new RuntimeException("Error parsing file {$file->getRealPath()}: {$error->getMessage()}");
         }
@@ -72,7 +78,6 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
         if (! is_file($filePath)) {
             return null;
         }
-
 
         return file_get_contents($filePath) ?: null;
     }

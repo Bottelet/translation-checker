@@ -29,26 +29,6 @@ class PhpBaseClassExtractorTest extends TestCase
         $this->assertEmpty($foundStrings);
     }
 
-
-    #[Test]
-    public function extractFileIsEmptyIfNotTranslationFunctionInFile(): void
-    {
-        $file = $this->createTempFile('no-translations.php', "
-            <?php
-            class Test 
-            { 
-                public function index()
-                {
-                    return [Model::all()];
-                }
-            }
-        ");
-        $phpExtractor = new PhpBaseClassExtractor();
-        $foundStrings = $phpExtractor->extractFromFile($file);
-
-        $this->assertEmpty($foundStrings);
-    }
-
     #[Test]
     public function emptyOnNonExistingFiles(): void
     {
