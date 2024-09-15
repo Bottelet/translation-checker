@@ -7,7 +7,7 @@ use SplFileInfo;
 
 class LanguageDirectoryManager
 {
-    public function __construct(protected string $directoryPath = "")
+    public function __construct(protected string $directoryPath = '')
     {
         if (!$directoryPath) {
             /** @var string $path */
@@ -15,7 +15,6 @@ class LanguageDirectoryManager
             $this->directoryPath = $path;
         }
     }
-
 
     /**
      * Get all files within the language directory.

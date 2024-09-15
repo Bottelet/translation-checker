@@ -5,7 +5,6 @@ namespace Bottelet\TranslationChecker\Tests\Commands;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Support\Facades\Artisan;
 
 class CheckTranslationTest extends TestCase
 {
@@ -46,7 +45,7 @@ class CheckTranslationTest extends TestCase
         ])->assertExitCode(0);
 
         foreach (json_decode(file_get_contents($this->translationFile), false) as $translation) {
-            $this->assertEquals("nothing", $translation);
+            $this->assertEquals('nothing', $translation);
         }
     }
 

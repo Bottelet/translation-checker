@@ -5,14 +5,13 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Blade;
+use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Name;
+use PhpParser\NodeVisitor;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileInfo;
-use PhpParser\Node;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Identifier;
-use PhpParser\NodeVisitor;
 
 class BladeFileExtractorTest extends TestCase
 {

@@ -4,7 +4,6 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use Bottelet\TranslationChecker\Extractor\RegexExtractor;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
 class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase

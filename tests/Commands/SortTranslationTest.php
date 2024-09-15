@@ -5,7 +5,6 @@ namespace Bottelet\TranslationChecker\Tests\Commands;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Support\Facades\Artisan;
 
 class SortTranslationTest extends TestCase
 {

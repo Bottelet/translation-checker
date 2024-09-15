@@ -5,15 +5,7 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
-use Illuminate\Support\Facades\Blade;
-use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Name;
 use PHPUnit\Framework\Attributes\Test;
-use SplFileInfo;
-use PhpParser\Node;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Identifier;
-use PhpParser\NodeVisitor;
 
 class ChaingedGetNodeRemoverTest extends TestCase
 {

@@ -22,11 +22,11 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                     [
                         'message' => [
                             'role'    => 'assistant',
-                            'content' => "Bonjour :name",
+                            'content' => 'Bonjour :name',
                         ],
                     ],
                 ],
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
@@ -37,7 +37,6 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
             return $method === 'create';
         });
     }
-
 
     #[Test]
     public function batchTranslate(): void
@@ -52,7 +51,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                         ],
                     ],
                 ],
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
@@ -77,7 +76,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                         ],
                     ],
                 ],
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
@@ -98,7 +97,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                         ],
                     ],
                 ],
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
@@ -114,7 +113,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                 'message' => 'The model `gpt-1` does not exist',
                 'type' => 'invalid_request_error',
                 'code' => null,
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
@@ -135,7 +134,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                         ],
                     ],
                 ],
-            ])
+            ]),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 

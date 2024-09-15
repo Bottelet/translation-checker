@@ -14,7 +14,7 @@ class TranslationServiceExceptionTest extends TestCase
         $serviceName = 'TestService';
         $exception = TranslationServiceException::notConfigured($serviceName);
 
-        $expectedMessage = "Translation service TestService is not configured. add correct environment variables or configure the service.";
+        $expectedMessage = 'Translation service TestService is not configured. add correct environment variables or configure the service.';
 
         $this->assertInstanceOf(TranslationServiceException::class, $exception);
         $this->assertEquals($expectedMessage, $exception->getMessage());
@@ -26,7 +26,7 @@ class TranslationServiceExceptionTest extends TestCase
         $serviceName = 'AnotherService';
         $exception = TranslationServiceException::notConfigured($serviceName);
 
-        $expectedMessage = "Translation service AnotherService is not configured. add correct environment variables or configure the service.";
+        $expectedMessage = 'Translation service AnotherService is not configured. add correct environment variables or configure the service.';
 
         $this->assertInstanceOf(TranslationServiceException::class, $exception);
         $this->assertEquals($expectedMessage, $exception->getMessage());

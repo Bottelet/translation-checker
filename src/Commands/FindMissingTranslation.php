@@ -6,8 +6,6 @@ use Bottelet\TranslationChecker\File\FileManagement;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
-use Illuminate\Console\Command;
-use RuntimeException;
 
 class FindMissingTranslation extends BaseTranslationCommand
 {
@@ -16,7 +14,6 @@ class FindMissingTranslation extends BaseTranslationCommand
                             {--print : Print the missing translation to the console, instead of writing to file}';
 
     protected $description = 'Find missing translations and add the key to the given source language file, with an empty value';
-
 
     public function handle(): void
     {

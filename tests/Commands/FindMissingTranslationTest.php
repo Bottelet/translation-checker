@@ -2,11 +2,9 @@
 
 namespace Bottelet\TranslationChecker\Tests\Commands;
 
-use _PHPStan_5473b6701\Nette\Neon\Exception;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
-use Illuminate\Support\Facades\Artisan;
 use RuntimeException;
 
 class FindMissingTranslationTest extends TestCase
@@ -57,7 +55,7 @@ class FindMissingTranslationTest extends TestCase
     {
         Config::set('translator.source_paths', $this->tempDir);
 
-        $this->expectException(RunTimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->artisan('translations:find-missing', [
             '--source' => 'da',
             '--print' => true,

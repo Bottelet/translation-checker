@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Tests\Commands;
 
-use Bottelet\TranslationChecker\Commands\CleanTranslation;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
@@ -39,7 +38,7 @@ class CleanTranslationTest extends TestCase
     {
         $this->artisan('translations:clean', [
             '--source' => 'da',
-            '--print' => true
+            '--print' => true,
         ])->assertExitCode(0);
         $content = json_decode(file_get_contents($this->translationFile), true);
         $this->assertNotEmpty($content);

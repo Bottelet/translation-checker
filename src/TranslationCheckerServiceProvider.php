@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker;
 
-use Bottelet\TranslationChecker\Commands\SortTranslation;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
@@ -73,8 +72,6 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             return $app->make($driverClass);
         });
         $this->app->bind(SorterContract::class, fn ($app) => $app->make(AlphabeticSort::class));
-
-
 
         if ($this->app->runningInConsole()) {
             $this->commands([

@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Extractor;
 
-use Exception;
 use Illuminate\Support\Facades\Blade;
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;

@@ -5,7 +5,6 @@ namespace Bottelet\TranslationChecker\Commands;
 use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Sort\SorterContract;
-use Illuminate\Console\Command;
 
 class SortTranslation extends BaseTranslationCommand
 {

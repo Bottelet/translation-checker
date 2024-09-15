@@ -14,7 +14,6 @@ class CheckTranslation extends BaseTranslationCommand
 
     protected $description = 'Check and manage translations';
 
-
     public function handle(TranslationManager $translationManager): void
     {
         $this->info('Checking translations...');

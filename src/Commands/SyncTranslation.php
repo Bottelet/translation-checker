@@ -27,7 +27,6 @@ class SyncTranslation extends Command
             $target = is_string($this->option('target')) ? $this->option('target') : 'en';
             $targetPath = config('translator.language_folder') . "/{$target}.json";
 
-
             $targetFileManager = new LanguageFileManager($targetPath);
             $sourceFileManager->syncFile($targetFileManager);
         } else {

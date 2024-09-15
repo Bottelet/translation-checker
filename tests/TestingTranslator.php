@@ -3,15 +3,12 @@
 namespace Bottelet\TranslationChecker\Tests;
 
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
-use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
-use Google\Cloud\Core\Exception\ServiceException;
-use Google\Cloud\Translate\V2\TranslateClient;
 
 class TestingTranslator implements TranslatorContract
 {
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
     {
-        return "nothing";
+        return 'nothing';
     }
 
     /**
@@ -23,7 +20,7 @@ class TestingTranslator implements TranslatorContract
     {
         $translations = [];
         foreach ($texts as $text) {
-            $translations[] = "nothing";
+            $translations[] = 'nothing';
         }
 
         return $translations;

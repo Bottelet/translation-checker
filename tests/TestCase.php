@@ -2,10 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests;
 
-use Bottelet\TranslationChecker\Commands\CheckTranslation;
 use Bottelet\TranslationChecker\TranslationCheckerServiceProvider;
-use Bottelet\TranslationChecker\Translator\GoogleTranslator;
-use Bottelet\TranslationChecker\Translator\NoneExistingTranslator;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -47,7 +44,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->createTemplateFiles();
     }
-
 
     /**
      * @param  \Illuminate\Foundation\Application  $app

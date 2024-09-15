@@ -14,7 +14,6 @@ class GoogleTranslator implements TranslatorContract
     ) {
     }
 
-
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
     {
         $replaceVariablesText = $this->variableHandler->replacePlaceholders($text);

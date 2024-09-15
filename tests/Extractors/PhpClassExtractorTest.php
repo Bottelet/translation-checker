@@ -4,8 +4,6 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
-use SplFileInfo;
 
 class PhpClassExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 {
@@ -21,7 +19,7 @@ class PhpClassExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     #[Test]
     public function extractFileIsEmptyIfNotTranslationFunctionInFile(): void
     {
-        $file = $this->createTempFile('no-translations.php', "
+        $file = $this->createTempFile('no-translations.php', '
             <?php
             class Test 
             { 
@@ -30,7 +28,7 @@ class PhpClassExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                     return [Model::all()];
                 }
             }
-        ");
+        ');
         $phpExtractor = new PhpClassExtractor();
         $foundStrings = $phpExtractor->extractFromFile($file);
 

@@ -2,10 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Translator;
 
-use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
-use Google\Cloud\Core\Exception\ServiceException;
-use Google\Cloud\Translate\V2\TranslateClient;
-use OpenAI\Client;
 use OpenAI\Contracts\ClientContract;
 
 class OpenAiTranslator implements TranslatorContract
@@ -36,10 +32,9 @@ Output format: respond with a single string in {$targetLanguage}, potentially co
               ],
              [   'role' => 'user',
                 'content' => $text,
-             ]
+             ],
             ],
         ])->choices[0]->message->content;
-
 
         if (! $translation) {
             return '';
@@ -92,13 +87,12 @@ Ensure your entire response is a valid JSON object.";
               ],
              [   'role' => 'user',
                 'content' => json_encode($texts),
-             ]
+             ],
             ],
             'response_format' => [
                 'type' => 'json_object',
-            ]
+            ],
         ])->choices[0]->message->content;
-
 
         if (! $translation) {
             return [];
