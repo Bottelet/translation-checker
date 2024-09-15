@@ -29,11 +29,11 @@ GOOGLE_TRANSLATE_CLIENT_CERT_URL=your_client_cert_url
 See more here: [Google Translate Setup](https://cloud.google.com/translate/docs/setup)
 
 ### Default Service
-The `default_translation_service` configuration option specifies the class to be used for automatic translation. This service will be used for translating strings.
+The `default` configuration option specifies the class to be used for automatic translation. This service will be used for translating strings.
 
 There are currently two built-in translation services:
 1. **GoogleTranslateService** - Translates strings using Google Translate
 2. **OpenAIService** - Translates strings using OpenAI's API
 
 
-You can create your own translation service by implementing the `Bottelet\TranslationChecker\Translator\TranslatorContract` and overwriting the `default_translation_service` configuration option.
+You can create your own translation service by implementing the `Bottelet\TranslationChecker\Translator\TranslatorContract` and overwriting the `default` configuration option.

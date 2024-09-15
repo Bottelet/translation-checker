@@ -56,7 +56,21 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             __DIR__ . '/../config/translator.php' => config_path('translator.php'),
         ]);
 
-        $this->app->bind(TranslatorContract::class, fn ($app) => $app->make($app->config['translator.default_translation_service']));
+        $this->app->bind(TranslatorContract::class, function ($app) {
+            $defaultService = $app->config['translator.default'];
+            $serviceConfig = $app->config["translator.translators.{$defaultService}"];
+
+            if (!isset($serviceConfig['driver'])) {
+                throw new \InvalidArgumentException("Driver not specified for the '{$defaultService}' translation service.");
+            }
+            $driverClass = $serviceConfig['driver'];
+
+            if (!class_exists($driverClass)) {
+                throw new \InvalidArgumentException("Driver class '{$driverClass}' does not exist.");
+            }
+
+            return $app->make($driverClass);
+        });
         $this->app->bind(SorterContract::class, fn ($app) => $app->make(AlphabeticSort::class));
 
 
