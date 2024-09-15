@@ -11,5 +11,6 @@ final class CommandOptions
         public readonly bool $sort = false,
         public readonly bool $print = false,
         public readonly bool $all = false
-    ) {}
+    ) {
+    }
 }

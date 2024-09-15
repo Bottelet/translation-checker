@@ -18,7 +18,8 @@ class TranslationCheckerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/translator.php', 'translator'
+            __DIR__.'/../config/translator.php',
+            'translator'
         );
 
         $this->app->bind(TranslationManager::class, function ($app) {
@@ -37,10 +38,10 @@ class TranslationCheckerServiceProvider extends ServiceProvider
 
         $this->app->bind(OpenAiTranslator::class, function ($app) {
             $factory = OpenAI::factory();
-            if($app->config['translator.translators.openai.api_key']) {
+            if ($app->config['translator.translators.openai.api_key']) {
                 $factory->withApiKey($app->config['translator.translators.openai.api_key']);
             }
-            if($app->config['translator.translators.openai.organization_id']) {
+            if ($app->config['translator.translators.openai.organization_id']) {
                 $factory->withOrganization($app->config['translator.translators.openai.organization_id']);
             }
             return new OpenAiTranslator(

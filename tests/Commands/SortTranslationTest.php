@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Artisan;
 
 class SortTranslationTest extends TestCase
 {
-
     private string $translationFile;
 
     public function setUp(): void

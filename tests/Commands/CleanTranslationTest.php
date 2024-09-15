@@ -7,7 +7,6 @@ use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 
-
 class CleanTranslationTest extends TestCase
 {
     public function setUp(): void

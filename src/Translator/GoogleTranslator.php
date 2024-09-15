@@ -8,7 +8,6 @@ use Google\Cloud\Translate\V2\TranslateClient;
 
 class GoogleTranslator implements TranslatorContract
 {
-
     public function __construct(
         protected VariableRegexHandler $variableHandler,
         protected TranslateClient $translateClient,

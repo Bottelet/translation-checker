@@ -9,10 +9,9 @@ use Google\Cloud\Translate\V2\TranslateClient;
 
 class TestingTranslator implements TranslatorContract
 {
-
     public function translate(string $text, string $targetLanguage, string $sourceLanguage = 'en'): string
     {
-       return "nothing";
+        return "nothing";
     }
 
     /**
@@ -26,7 +25,7 @@ class TestingTranslator implements TranslatorContract
         foreach ($texts as $text) {
             $translations[] = "nothing";
         }
-       return $translations;
+        return $translations;
     }
 
     public function isConfigured(): bool

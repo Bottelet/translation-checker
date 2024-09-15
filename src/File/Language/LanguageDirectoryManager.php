@@ -9,9 +9,9 @@ class LanguageDirectoryManager
 {
     public function __construct(protected string $directoryPath = "")
     {
-        if(!$directoryPath) {
+        if (!$directoryPath) {
             /** @var string $path */
-            $path = config('translator.language_folder',  base_path('/lang'));
+            $path = config('translator.language_folder', base_path('/lang'));
             $this->directoryPath = $path;
         }
     }

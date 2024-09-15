@@ -16,7 +16,7 @@ class CheckTranslationTest extends TestCase
         parent::setUp();
         $this->translationFile = $this->tempDir.'/lang/fr.json';
 
-        if ( ! file_exists(dirname($this->translationFile))) {
+        if (! file_exists(dirname($this->translationFile))) {
             mkdir(dirname($this->translationFile), 0777, true);
         }
 

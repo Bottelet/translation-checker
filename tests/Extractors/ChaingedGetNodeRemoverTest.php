@@ -17,7 +17,6 @@ use PhpParser\NodeVisitor;
 
 class ChaingedGetNodeRemoverTest extends TestCase
 {
-
     #[Test]
     public function canHandleChainedGetCall(): void
     {

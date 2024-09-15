@@ -10,7 +10,6 @@ use OpenAI\Contracts\ClientContract;
 
 class OpenAiTranslator implements TranslatorContract
 {
-
     public function __construct(
         protected ClientContract $translateClient,
     ) {
@@ -97,7 +96,7 @@ Ensure your entire response is a valid JSON object.";
                 'content' => json_encode($texts),
              ]
             ],
-            'response_format'=> [
+            'response_format' => [
                 'type' => 'json_object',
             ]
         ])->choices[0]->message->content;

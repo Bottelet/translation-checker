@@ -11,7 +11,7 @@ class TranslationFinder
     {
     }
 
-    public function getLanguageFilerManager():LanguageFileManager
+    public function getLanguageFilerManager(): LanguageFileManager
     {
         return $this->languageFileManager;
     }

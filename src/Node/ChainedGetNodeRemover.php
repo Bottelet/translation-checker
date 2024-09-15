@@ -62,7 +62,7 @@ class ChainedGetNodeRemover extends NodeVisitorAbstract
         foreach ($node->getArgs() as $arg) {
             /** @var Node\Expr $value */
             $value = $this->processNode($arg->value);
-            $arg->value =$value;
+            $arg->value = $value;
         }
 
         return $node;

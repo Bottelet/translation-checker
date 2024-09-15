@@ -110,10 +110,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function createTranslationFile(string $name, string|array $content = '')
     {
         $translationFile = $this->tempDir."/lang/{$name}.json";
-        if ( ! file_exists(dirname($translationFile))) {
+        if (! file_exists(dirname($translationFile))) {
             mkdir(dirname($translationFile), 0777, true);
         }
-        if(is_array($content)) {
+        if (is_array($content)) {
             $content = json_encode($content);
         }
         file_put_contents($translationFile, $content);

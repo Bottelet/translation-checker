@@ -25,7 +25,7 @@ class TranslationManagerTest extends TestCase
         parent::setUp();
 
         $this->testDir = sys_get_temp_dir().'/translation_checker_tests';
-        if ( ! file_exists($this->testDir)) {
+        if (! file_exists($this->testDir)) {
             mkdir($this->testDir, 0777, true);
         }
 
@@ -39,7 +39,7 @@ class TranslationManagerTest extends TestCase
         file_put_contents($this->testDir.'/file4.svelte', "{\$_('app.title')}");
 
         $this->jsonFilePath = $this->testDir.'/translations/en.json';
-        if ( ! file_exists(dirname($this->jsonFilePath))) {
+        if (! file_exists(dirname($this->jsonFilePath))) {
             mkdir(dirname($this->jsonFilePath), 0777, true);
         }
         file_put_contents($this->jsonFilePath, '{"Hello, World!": "Already Translated Hello, World!"}');
@@ -73,8 +73,10 @@ class TranslationManagerTest extends TestCase
         $this->translationServiceMock->expects($this->never())
                                      ->method('translateBatch');
 
-        $missingTranslations = $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath);
+        $missingTranslations = $this->translationManager->updateTranslationsFromFile(
+            [$this->testDir],
+            $this->jsonFilePath
+        );
         $this->assertEquals([
             'app.title'       => '',
             'Something cool ' => '',
@@ -104,8 +106,13 @@ class TranslationManagerTest extends TestCase
                 return $translatedTexts;
             });
 
-        $missingTranslations = $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath, false,'en', true);
+        $missingTranslations = $this->translationManager->updateTranslationsFromFile(
+            [$this->testDir],
+            $this->jsonFilePath,
+            false,
+            'en',
+            true
+        );
 
         unset($translations['Hello, World!']);
 
@@ -154,8 +161,13 @@ class TranslationManagerTest extends TestCase
                 return $translatedTexts;
             });
 
-        $missingTranslations = $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath, false, 'en', true);
+        $missingTranslations = $this->translationManager->updateTranslationsFromFile(
+            [$this->testDir],
+            $this->jsonFilePath,
+            false,
+            'en',
+            true
+        );
         $this->assertEquals($translations, $missingTranslations);
 
         $jsonContent = file_get_contents($this->jsonFilePath);
@@ -175,7 +187,12 @@ class TranslationManagerTest extends TestCase
             $this->translationServiceMock
         );
 
-        $this->translationManager->updateTranslationsFromFile([$this->testDir],
-            $this->jsonFilePath, false, 'en', true);
+        $this->translationManager->updateTranslationsFromFile(
+            [$this->testDir],
+            $this->jsonFilePath,
+            false,
+            'en',
+            true
+        );
     }
 }

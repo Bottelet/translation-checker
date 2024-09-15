@@ -6,7 +6,6 @@ use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-
 class LanguageFileManagerTest extends TestCase
 {
     private string $tempFile;

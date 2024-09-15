@@ -19,7 +19,7 @@ class RegexExtractor implements ExtractorContract
     {
         $found = [];
         $contents = file_get_contents($file->getRealPath());
-        if(!$contents) {
+        if (!$contents) {
             return [];
         }
 

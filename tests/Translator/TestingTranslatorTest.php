@@ -11,7 +11,6 @@ use PHPUnit\Framework\Attributes\Test;
  */
 class TestingTranslatorTest extends TestCase
 {
-
     private TestingTranslator $translator;
 
     protected function setUp(): void

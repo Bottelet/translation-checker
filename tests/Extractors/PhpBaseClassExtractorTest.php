@@ -6,7 +6,6 @@ use Bottelet\TranslationChecker\Extractor\PhpBaseClassExtractor;
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-
 use SplFileInfo;
 
 class PhpBaseClassExtractorTest extends TestCase

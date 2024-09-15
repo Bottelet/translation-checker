@@ -29,7 +29,7 @@ class TranslationManager
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
         if ($translateMissing && $targetLanguage !== null) {
-            if(!$this->translationService->isConfigured()) {
+            if (!$this->translationService->isConfigured()) {
                 throw TranslationServiceException::notConfigured(get_class($this->translationService));
             }
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);
@@ -38,7 +38,7 @@ class TranslationManager
         /** @var array<string, string> $allTranslations */
         $allTranslations = array_merge($translationFinder->getLanguageFilerManager()->readFile(), $missingTranslations);
 
-        if($sort) {
+        if ($sort) {
             $allTranslations = $this->sorter->sortByKey($allTranslations);
         }
 

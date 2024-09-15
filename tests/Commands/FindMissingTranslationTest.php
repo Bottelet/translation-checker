@@ -18,7 +18,7 @@ class FindMissingTranslationTest extends TestCase
         parent::setUp();
         $this->translationFile = $this->tempDir.'/lang/da.json';
 
-        if ( ! file_exists(dirname($this->translationFile))) {
+        if (! file_exists(dirname($this->translationFile))) {
             mkdir(dirname($this->translationFile), 0777, true);
         }
 
