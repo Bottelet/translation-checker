@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 class SortTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:sort
-                            {--source : The source language for the translations to sort}
+                            {--source= : The source language for the translations to sort}
                             {--all : All files found in the config language_folder }';
 
     protected $description = 'Sort translation file by using the sorter given in config';

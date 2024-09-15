@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 class SyncTranslation extends Command
 {
     protected $signature = 'translations:sync
-                            {--source : The source language file to sync from}
+                            {--source= : The source language file to sync from}
                             {--target : The target language file to sync to}';
 
     protected $description = 'Sync translations between language files';

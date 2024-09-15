@@ -8,7 +8,7 @@ class CheckTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:check
                             {target : The target language for the translations}
-                            {--source : The source language used for the translation provider}
+                            {--source= : The source language used for the translation provider}
                             {--translate-missing : Translate missing translations using the translation service}
                             {--sort : Sort JSON translation files}';
 

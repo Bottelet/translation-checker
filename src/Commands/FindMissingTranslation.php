@@ -12,7 +12,7 @@ use RuntimeException;
 class FindMissingTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:find-missing
-                            {--source : The source language for the translations to find}
+                            {--source= : The source language for the translations to find}
                             {--print : Print the missing translation to the console, instead of writing to file}';
 
     protected $description = 'Find missing translations and add the key to the given source language file, with an empty value';

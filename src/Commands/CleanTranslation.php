@@ -10,7 +10,7 @@ use Bottelet\TranslationChecker\Finder\TranslationFinder;
 class CleanTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:clean
-                            {--source : The source language for the translations to clean}
+                            {--source= : The source language for the translations to clean}
                             {--print : Print the cleaned translations to the console, instead of updating the file}';
 
     protected $description = 'Clean translations by removing unused keys from the source language file';
