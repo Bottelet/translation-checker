@@ -12,5 +12,5 @@ interface TranslatorContract
      */
     public function translateBatch(array $texts, string $targetLanguage, string $sourceLanguage = 'en'): array;
 
-    public function hasValidCredentials(): bool;
+    public function isConfigured(): bool;
 }

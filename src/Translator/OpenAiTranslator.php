@@ -116,7 +116,7 @@ Ensure your entire response is a valid JSON object.";
         return $translatedKeys;
     }
 
-    public function hasValidCredentials(): bool
+    public function isConfigured(): bool
     {
         /** @var array<string, null|string> $openAiConfig */
         $openAiConfig = config('translator.translators.openai');

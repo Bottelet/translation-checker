@@ -98,7 +98,7 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     #[Test]
     public function testGoogleTranslatorHasValidCredentials(): void
     {
-        $this->assertTrue($this->googleTranslator->hasValidCredentials());;
+        $this->assertTrue($this->googleTranslator->isConfigured());;
     }
 
     #[Test]
@@ -111,6 +111,6 @@ class GoogleTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
             'client_email' => null,
             'client_x509_cert_url' => null,
         ]);
-        $this->assertFalse($this->googleTranslator->hasValidCredentials());;
+        $this->assertFalse($this->googleTranslator->isConfigured());;
     }
 }

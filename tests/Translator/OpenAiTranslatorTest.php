@@ -155,7 +155,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $this->translateClientMock = new ClientFake();
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
-        $this->assertTrue($this->openAiTranslator->hasValidCredentials());;
+        $this->assertTrue($this->openAiTranslator->isConfigured());;
     }
 
     #[Test]
@@ -168,6 +168,6 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         ]);
         $this->translateClientMock = new ClientFake();
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
-        $this->assertFalse($this->openAiTranslator->hasValidCredentials());;
+        $this->assertFalse($this->openAiTranslator->isConfigured());;
     }
 }

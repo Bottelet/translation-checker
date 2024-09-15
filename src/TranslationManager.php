@@ -28,7 +28,7 @@ class TranslationManager
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 
         if ($translateMissing && $targetLanguage !== null) {
-            if(!$this->translationService->hasValidCredentials()) {
+            if(!$this->translationService->isConfigured()) {
                 throw new \RuntimeException('Translation service credentials are not set');
             }
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);

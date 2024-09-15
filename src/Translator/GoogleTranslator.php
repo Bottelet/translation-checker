@@ -59,7 +59,7 @@ class GoogleTranslator implements TranslatorContract
         return $translatedKeys;
     }
 
-    public function hasValidCredentials(): bool
+    public function isConfigured(): bool
     {
         /** @var array<string, null|string> $googleConfig */
         $googleConfig = config('translator.translators.google');
