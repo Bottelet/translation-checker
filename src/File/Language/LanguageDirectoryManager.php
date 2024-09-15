@@ -11,7 +11,7 @@ class LanguageDirectoryManager
     {
         if(!$directoryPath) {
             /** @var string $path */
-            $path = config('translator.language_folder');
+            $path = config('translator.language_folder',  base_path('/lang'));
             $this->directoryPath = $path;
         }
     }
