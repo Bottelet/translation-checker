@@ -17,6 +17,10 @@ class TranslationCheckerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/translator.php', 'translator'
+        );
+
         $this->app->bind(TranslationManager::class, function ($app) {
             return new TranslationManager(
                 $app->make(SorterContract::class),
