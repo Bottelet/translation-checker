@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default_translation_service' => \Bottelet\TranslationChecker\Translator\OpenAiTranslator::class,
+    'default_translation_service' => env('DEFAULT_TRANSLATOR_SERVICE', \Bottelet\TranslationChecker\Translator\OpenAiTranslator::class),
     'translators' => [
         'google' => [
             'type' => env('GOOGLE_TRANSLATE_TYPE', 'service_account'),
