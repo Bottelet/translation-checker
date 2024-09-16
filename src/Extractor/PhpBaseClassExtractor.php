@@ -4,6 +4,8 @@ namespace Bottelet\TranslationChecker\Extractor;
 
 use Bottelet\TranslationChecker\Node\ChainedGetNodeRemover;
 use Bottelet\TranslationChecker\Node\EnumExtractor;
+use Bottelet\TranslationChecker\Node\TranslateAttributeExtractor;
+use Bottelet\TranslationChecker\Node\TranslateCommentExtractor;
 use Exception;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
@@ -56,14 +58,16 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
 
         $traverser = new NodeTraverser;
         $enumExtractor = new EnumExtractor;
+        $translateCommentExtractor = new TranslateCommentExtractor;
         $traverser->addVisitor($this);
         $traverser->addVisitor(new ChainedGetNodeRemover);
         $traverser->addVisitor($enumExtractor);
+        $traverser->addVisitor($translateCommentExtractor);
 
         try {
             $ast = $parser->parse($code);
 
-            if ($ast === null) {
+            if (empty($ast)) {
                 return [];
             }
             $traverser->traverse($ast);
@@ -71,8 +75,10 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
             throw new RuntimeException("Error parsing file {$file->getRealPath()}: {$error->getMessage()}");
         }
 
-
-        return array_merge($this->translationKeys, $enumExtractor->getTranslationKeys());
+        return array_merge(
+            $this->translationKeys,
+            $enumExtractor->getTranslationKeys(),
+            $translateCommentExtractor->getTranslationKeys());
     }
 
     protected function getCode(SplFileInfo $file): ?string

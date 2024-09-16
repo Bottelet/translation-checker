@@ -39,6 +39,16 @@ class PhpBaseClassExtractorTest extends TestCase
     }
 
     #[Test]
+    public function emptyFile(): void
+    {
+        $emptyFile = $this->createTempFile('empty.php', '<?php');
+        $phpExtractor = new PhpBaseClassExtractor();
+        $foundStrings = $phpExtractor->extractFromFile($emptyFile);
+
+        $this->assertEmpty($foundStrings);
+    }
+
+    #[Test]
     public function getEmptyIfFilePermissionFails(): void
     {
         $filePath = $this->tempDir . '/permission.php';

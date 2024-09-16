@@ -90,10 +90,6 @@ class EnumExtractor extends NodeVisitorAbstract
             return $node->toString();
         }
 
-        if (method_exists($node, 'toString')) {
-            return $node->toString();
-        }
-
         return '';
     }
 }
