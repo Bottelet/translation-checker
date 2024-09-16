@@ -1,13 +1,13 @@
 <?php
 
-namespace Bottelet\TranslationChecker\Tests\Extractors;
+namespace Bottelet\TranslationChecker\Tests\Node;
 
 use Bottelet\TranslationChecker\Extractor\BladeFileExtractor;
 use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-class ChaingedGetNodeRemoverTest extends TestCase
+class ChainedGetNodeRemoverTest extends TestCase
 {
     #[Test]
     public function canHandleChainedGetCall(): void
