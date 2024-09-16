@@ -64,7 +64,8 @@ class EnumExtractor extends NodeVisitorAbstract
     private function handleMethodCall(MethodCall $node): void
     {
         if ($node->var instanceof ClassConstFetch &&
-            in_array($this->getNodeName($node->name), ['getLabel', 'label'], true)) {
+            //TODO: Make config with array of allowed methods empty would mean that it doesnt check for method calls
+            in_array($this->getNodeName($node->name), ['label'], true)) {
             $caseName = $this->getEnumCaseName($node->var);
             $this->translationKeys[] = ucfirst(str_replace('_', ' ', strtolower($caseName)));
         }
