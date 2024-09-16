@@ -35,5 +35,15 @@ return [
         base_path('resources/'),
     ],
     'language_folder' => base_path('/lang'),
+
+    /**
+     * Defines the function used to mark strings for translation without actually translating them.
+     *
+     * When this function (e.g., '__t') is used, it returns the original string unchanged. This is useful
+     * for cases where the string should be saved in the database or processed without translation, but still
+     * needs to be flagged for translation in the future.
+     *
+     * Set this to the name of the function that will act as a no-op for translation (e.g., '__t').
+     */
     'noop_translation' => '__t',
 ];
