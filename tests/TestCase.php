@@ -45,15 +45,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $this->createTemplateFiles();
     }
 
-    /**
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return array
-     */
-    protected function getPackageProviders($app)
-    {
-        return [TranslationCheckerServiceProvider::class];
-    }
-
     protected function tearDown(): void
     {
         $iterator    = new RecursiveDirectoryIterator($this->tempDir, FilesystemIterator::SKIP_DOTS);
@@ -116,5 +107,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
         file_put_contents($translationFile, $content);
 
         return $translationFile;
+    }
+
+    /**
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [TranslationCheckerServiceProvider::class];
     }
 }

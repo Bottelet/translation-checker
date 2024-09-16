@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Bottelet\TranslationChecker\Node;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\NodeVisitorAbstract;
-
 
 class EnumExtractor extends NodeVisitorAbstract
 {
@@ -27,7 +26,16 @@ class EnumExtractor extends NodeVisitorAbstract
                 $this->processTranslationFunction($node);
             }
         }
+
         return $node;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getTranslationKeys(): array
+    {
+        return array_unique($this->translationKeys);
     }
 
     private function processTranslationFunction(FuncCall $node): void
@@ -73,15 +81,7 @@ class EnumExtractor extends NodeVisitorAbstract
 
     private function getEnumCaseName(ClassConstFetch $node): string
     {
-        return $node->name instanceof Node\Identifier ? $node->name->toString() : '';
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    public function getTranslationKeys(): array
-    {
-        return array_unique($this->translationKeys);
+        return $node->name instanceof Identifier ? $node->name->toString() : '';
     }
 
     private function getNodeName(Node\Expr|Identifier $node): string

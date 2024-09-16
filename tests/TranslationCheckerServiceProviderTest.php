@@ -6,7 +6,7 @@ use Bottelet\TranslationChecker\Translator\TranslatorContract;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 
-class TranslationCheckerServiceProviderTest extends \Bottelet\TranslationChecker\Tests\TestCase
+class TranslationCheckerServiceProviderTest extends TestCase
 {
     #[Test]
     public function exceptionThrownWhenDriverTranslatorNotSet()

@@ -2,9 +2,9 @@
 
 namespace Bottelet\TranslationChecker\Node;
 
+use PhpParser\Comment\Doc;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\Comment\Doc;
 
 class TranslateCommentExtractor extends NodeVisitorAbstract
 {
@@ -18,6 +18,12 @@ class TranslateCommentExtractor extends NodeVisitorAbstract
         }
 
         return null;
+    }
+
+    /** @return array<int, string> */
+    public function getTranslationKeys(): array
+    {
+        return array_unique($this->translationKeys);
     }
 
     private function processExpression(Node\Stmt\Expression $node): void
@@ -82,11 +88,5 @@ class TranslateCommentExtractor extends NodeVisitorAbstract
         } elseif ($node->right instanceof Node\Expr\BinaryOp\Concat) {
             $this->processConcat($node->right);
         }
-    }
-
-    /** @return array<int, string> */
-    public function getTranslationKeys(): array
-    {
-        return array_unique($this->translationKeys);
     }
 }

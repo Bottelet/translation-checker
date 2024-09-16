@@ -2,9 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests\Node;
 
-use Bottelet\TranslationChecker\Extractor\PhpClassExtractor;
 use Bottelet\TranslationChecker\Node\EnumExtractor;
-use Bottelet\TranslationChecker\Node\TranslateCommentExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PhpParser\BuilderFactory;
 use PhpParser\Node\Expr\Variable;
@@ -65,19 +63,6 @@ class EnumExtractorTest extends TestCase
         $this->assertCount(3, $result);
     }
 
-    private function parseAndExtract(string $code): array
-    {
-        $parser = (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));
-        $ast = $parser->parse($code);
-
-        $extractor = new EnumExtractor();
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($extractor);
-        $traverser->traverse($ast);
-
-        return $extractor->getTranslationKeys();
-    }
-
     #[Test]
     public function canHandleComplexEnumUsage(): void
     {
@@ -118,7 +103,7 @@ class EnumExtractorTest extends TestCase
             $factory->methodCall(
                 $factory->classConstFetch('SomeEnum', 'SOME_CASE'),
                 new Variable('methodName')
-            )
+            ),
         ]);
 
         $extractor = new EnumExtractor();
@@ -130,8 +115,19 @@ class EnumExtractorTest extends TestCase
 
         $result = $extractor->getTranslationKeys();
 
-
         $this->assertCount(0, $result);
     }
-}
 
+    private function parseAndExtract(string $code): array
+    {
+        $parser = (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));
+        $ast = $parser->parse($code);
+
+        $extractor = new EnumExtractor();
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor($extractor);
+        $traverser->traverse($ast);
+
+        return $extractor->getTranslationKeys();
+    }
+}

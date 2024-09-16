@@ -4,8 +4,8 @@ namespace Bottelet\TranslationChecker\Tests\Node;
 
 use Bottelet\TranslationChecker\Node\TranslateCommentExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
-use PhpParser\ParserFactory;
 use PhpParser\NodeTraverser;
+use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -21,8 +21,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Simple message');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('Simple message', $result);
         $this->assertCount(1, $result);
@@ -39,8 +38,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Translated message');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
         $this->assertContains('Translated message', $result);
         $this->assertNotContains('Non-translated message', $result);
         $this->assertCount(1, $result);
@@ -59,8 +57,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Second message');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('First message', $result);
         $this->assertContains('Second message', $result);
@@ -79,8 +76,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->otherMethod('Should not be translated');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('Translated message', $result);
         $this->assertNotContains('Should not be translated', $result);
@@ -98,8 +94,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log($message);
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertEmpty($result, 'Dynamic strings should not be extracted');
     }
@@ -114,8 +109,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Concatenated ' . 'message');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
         $this->assertCount(2, $result);
     }
 
@@ -133,8 +127,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Multiline DocBlock message');
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('Multiline DocBlock message', $result);
         $this->assertCount(1, $result);
@@ -151,8 +144,7 @@ class TranslateCommentExtractorTest extends TestCase
         $someOtherOperation();
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertEmpty($result);
     }
@@ -167,8 +159,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log($status);
         CODE;
 
-
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('pending', $result);
         $this->assertContains('in-progress', $result);
@@ -187,7 +178,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log($status);
         CODE;
 
-       $result = $this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertContains('pending', $result);
         $this->assertContains('test', $result);
@@ -206,7 +197,7 @@ class TranslateCommentExtractorTest extends TestCase
         $logger->log('Simple message');
         CODE;
 
-        $result =$this->parseAndExtract($code);
+        $result = $this->parseAndExtract($code);
 
         $this->assertEmpty($result);
     }

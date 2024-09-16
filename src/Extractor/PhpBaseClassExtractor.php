@@ -4,7 +4,6 @@ namespace Bottelet\TranslationChecker\Extractor;
 
 use Bottelet\TranslationChecker\Node\ChainedGetNodeRemover;
 use Bottelet\TranslationChecker\Node\EnumExtractor;
-use Bottelet\TranslationChecker\Node\TranslateAttributeExtractor;
 use Bottelet\TranslationChecker\Node\TranslateCommentExtractor;
 use Exception;
 use PhpParser\Node;
@@ -22,26 +21,6 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
      * @var string[]
      */
     protected array $translationKeys = [];
-
-    protected function parser(SplFileInfo $file): ?Parser
-    {
-        if ($file->getExtension() !== 'php') {
-            return null;
-        }
-
-        return (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));
-    }
-
-    /** @param  array<int, Node\Arg>  $args */
-    protected function addTranslation(array $args): void
-    {
-        if (! empty($args)) {
-            $firstArg = $args[0]->value;
-            if ($firstArg instanceof Node\Scalar\String_) {
-                $this->translationKeys[] = $firstArg->value;
-            }
-        }
-    }
 
     public function extractFromFile(SplFileInfo $file): array
     {
@@ -78,7 +57,28 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
         return array_merge(
             $this->translationKeys,
             $enumExtractor->getTranslationKeys(),
-            $translateCommentExtractor->getTranslationKeys());
+            $translateCommentExtractor->getTranslationKeys()
+        );
+    }
+
+    protected function parser(SplFileInfo $file): ?Parser
+    {
+        if ($file->getExtension() !== 'php') {
+            return null;
+        }
+
+        return (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));
+    }
+
+    /** @param  array<int, Node\Arg>  $args */
+    protected function addTranslation(array $args): void
+    {
+        if (! empty($args)) {
+            $firstArg = $args[0]->value;
+            if ($firstArg instanceof Node\Scalar\String_) {
+                $this->translationKeys[] = $firstArg->value;
+            }
+        }
     }
 
     protected function getCode(SplFileInfo $file): ?string

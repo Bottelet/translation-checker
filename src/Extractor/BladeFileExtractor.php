@@ -13,18 +13,6 @@ use SplFileInfo;
 
 class BladeFileExtractor extends PhpBaseClassExtractor
 {
-    protected function getCode(SplFileInfo $file): ?string
-    {
-        $code = parent::getCode($file);
-        if (empty($code)) {
-            return null;
-        }
-
-        $compiledCode = Blade::compileString($code);
-
-        return $compiledCode ?: null;
-    }
-
     public function enterNode(Node $node): ?int
     {
         if ($node instanceof FuncCall) {
@@ -57,5 +45,16 @@ class BladeFileExtractor extends PhpBaseClassExtractor
         }
 
         return null;
+    }
+    protected function getCode(SplFileInfo $file): ?string
+    {
+        $code = parent::getCode($file);
+        if (empty($code)) {
+            return null;
+        }
+
+        $compiledCode = Blade::compileString($code);
+
+        return $compiledCode ?: null;
     }
 }

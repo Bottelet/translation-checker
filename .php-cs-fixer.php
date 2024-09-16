@@ -31,4 +31,5 @@ return $config->setRules([
     'cast_spaces' => true,
     'no_unused_imports' => true,
     'fully_qualified_strict_types' => true,
+    'ordered_class_elements' => true,
 ])->setFinder($finder);
