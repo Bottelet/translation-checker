@@ -223,6 +223,49 @@ class TranslateCommentExtractorTest extends TestCase
         $this->assertCount(6, $result);
     }
 
+    #[Test]
+    public function itCanHandleAFunction(): void
+    {
+        $code = <<<'CODE'
+        <?php
+        class PostController
+        {
+           public function create()
+            {
+                /** @translate */
+                $variable = 'translated_text';
+                return view('posts.create')->with('text', 'translated_text');
+            }
+         }   
+        CODE;
+
+        $result = $this->parseAndExtract($code);
+        $this->assertContains('translated_text', $result);
+        $this->assertCount(1, $result);
+    }
+
+    #[Test]
+    public function itCanHandleAFunctionWithCommentInputs(): void
+    {
+        $code = <<<'CODE'
+        <?php
+        class PostController
+        {
+           public function create()
+            {
+                /** @translate<translated_text,other_text> */
+                $variable = Unkown::text();
+                return view('posts.create')->with('text', 'translated_text');
+            }
+         }   
+        CODE;
+
+        $result = $this->parseAndExtract($code);
+        $this->assertContains('translated_text', $result);
+        $this->assertContains('other_text', $result);
+        $this->assertCount(2, $result);
+    }
+
     private function parseAndExtract(string $code): array
     {
         $parser = (new ParserFactory)->createForVersion(PhpVersion::fromComponents(8, 2));

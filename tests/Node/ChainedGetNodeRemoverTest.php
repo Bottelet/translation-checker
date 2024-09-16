@@ -371,6 +371,7 @@ CODE;
 
         $extractor = new PhpClassExtractor;
         $foundTranslations = $extractor->extractFromFile($file);
+
         $this->assertContains(':count items retrieved', $foundTranslations);
     }
 }

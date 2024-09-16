@@ -4,6 +4,7 @@ namespace Bottelet\TranslationChecker\Node;
 
 use PhpParser\Comment\Doc;
 use PhpParser\Node;
+use PhpParser\Node\Stmt\Return_;
 use PhpParser\NodeVisitorAbstract;
 
 class TranslateCommentExtractor extends NodeVisitorAbstract
@@ -13,9 +14,18 @@ class TranslateCommentExtractor extends NodeVisitorAbstract
 
     public function enterNode(Node $node)
     {
-        if ($node instanceof Node\Stmt\Expression) {
+
+        if ($node instanceof Node\Stmt\ClassMethod) {
+            foreach ($node->stmts ?? [] as $stmt) {
+                if ($stmt instanceof Node\Stmt\Expression) {
+                    $this->processExpression($stmt);
+                }
+            }
+        }
+        if ($node instanceof Node\Stmt\Expression ) {
             $this->processExpression($node);
         }
+
 
         return null;
     }
@@ -33,7 +43,22 @@ class TranslateCommentExtractor extends NodeVisitorAbstract
             return;
         }
 
+        if ( ! str_contains($docComment, '@translate')) {
+            return;
+        }
+
         $expr = $node->expr;
+
+        if ($expr instanceof Node\Expr\Assign) {
+
+            if (preg_match('/@translate\s*<(.+)>/', $docComment->getText(), $matches)) {
+                $this->processTranslateInputs($matches[1]);
+            } elseif ($expr->expr instanceof Node\Scalar\String_) {
+                $this->translationKeys[] = $expr->expr->value;
+            }
+            return;
+        }
+
         if (!$expr instanceof Node\Expr\MethodCall) {
             return;
         }
@@ -44,9 +69,6 @@ class TranslateCommentExtractor extends NodeVisitorAbstract
     private function processNodeWithComment(Node\Expr\MethodCall $node, Doc $docComment): void
     {
         $docText = $docComment->getText();
-        if (strpos($docText, '@translate') === false) {
-            return;
-        }
 
         if (preg_match('/@translate\s*<(.+)>/', $docText, $matches)) {
             $this->processTranslateInputs($matches[1]);
