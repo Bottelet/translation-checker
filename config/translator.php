@@ -35,4 +35,5 @@ return [
         base_path('resources/'),
     ],
     'language_folder' => base_path('/lang'),
+    'noop_translation' => '__t',
 ];

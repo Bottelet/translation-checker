@@ -34,6 +34,36 @@ class BladeFileExtractorTest extends TestCase
     }
 
     #[Test]
+    public function canFindExtendedUnderScoreFunctionsInBlade(): void
+    {
+        $this->app->config->set('translator.noop_translation', '__noop');
+        $phpExtractor = new BladeFileExtractor;
+        $code = <<<'CODE'
+            @extends('layouts.app')
+            @section('content')
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">Example Component</div>
+
+                                <div class="card-body">
+                                    {{ __noop('Hello, world!') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        CODE;
+
+        $file = $this->createTempFile('extended-underscore-test.blade.php', $code);
+        $foundStrings = $phpExtractor->extractFromFile($file);
+
+        $this->assertContains('Hello, world!', $foundStrings);
+    }
+
+    #[Test]
     public function emptyArrayOnEmptyBladeFile()
     {
         $phpExtractor = new BladeFileExtractor;

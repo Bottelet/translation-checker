@@ -18,7 +18,7 @@ class BladeFileExtractor extends PhpBaseClassExtractor
         if ($node instanceof FuncCall) {
             if ($node->name instanceof Name) {
                 $functionName = $node->name->toString();
-                if (in_array($functionName, ['__', '__t', '@lang', '@trans', 'trans', 'lang'], true)) {
+                if (in_array($functionName, ['__', '@lang', '@trans', 'trans', 'lang'], true) || config('translator.noop_translation') === $functionName) {
                     $this->addTranslation($node->getArgs());
                 }
             }
