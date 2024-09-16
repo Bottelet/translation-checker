@@ -97,7 +97,6 @@ class MissingKeysFinderTest extends TestCase
     {
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$this->phpControllerFile]);
-
         $this->assertCount(10, $foundStrings);
     }
 
@@ -111,4 +110,30 @@ class MissingKeysFinderTest extends TestCase
         // Assuming TranslationFinder is expected to ignore non-PHP files
         $this->assertEmpty($foundStrings);
     }
+
+    #[Test]
+    public function findsPersistentKeysFromConfig(): void
+    {
+        $this->app['config']->set('translator.persistent_keys', ['persistent_key', 'A sentence that should be added to the translation file']);
+        $multiFunctionFile = $this->createTempFile('multiFunction.php', "<?php echo __('first_key');");
+        $translationFinder = new MissingKeysFinder;
+        $foundStrings = $translationFinder->findTranslatableStrings([$multiFunctionFile]);
+
+        $this->assertContains('first_key', $foundStrings);
+        $this->assertContains('persistent_key', $foundStrings);
+        $this->assertContains('A sentence that should be added to the translation file', $foundStrings);
+    }
+
+    #[Test]
+    public function findMissingTranslationsFindsPersistentKeysFromConfig(): void
+    {
+        $this->app['config']->set('translator.persistent_keys', ['persistent_key', 'A sentence that should be added to the translation file']);
+
+        $multiFunctionFile = $this->createTempFile('multiFunction.php', "<?php echo __('first_key');");
+        $translationFinder = new MissingKeysFinder;
+
+        $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], ['first_key' => 'translated', 'persistent_key' => 'translated']);
+        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings);
+    }
+
 }

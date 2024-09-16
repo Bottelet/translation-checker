@@ -46,4 +46,15 @@ return [
      * Set this to the name of the function that will act as a no-op for translation (e.g., '__t').
      */
     'noop_translation' => '__t',
+
+    /**
+     * A list of specific strings or keys that should always be included in translation files.
+     *
+     * These strings will remain in the translation system even if they are not actively found
+     * during clean processes. This is useful for reserved words, fallback keys, or
+     * any content that should be protected from deletion or always be translated.
+     *
+     * Add the words or keys that need to be permanently available for translators.
+     */
+    'persistent_keys' => [],
 ];

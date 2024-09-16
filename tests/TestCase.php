@@ -41,6 +41,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'api_key' => 'API_KEY',
             'organization_id' => 'ORG_ID',
         ]);
+        $this->app['config']->set('translator.persistent_keys', []);
 
         $this->createTemplateFiles();
     }

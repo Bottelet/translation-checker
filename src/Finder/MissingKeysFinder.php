@@ -27,7 +27,9 @@ class MissingKeysFinder
             }
         }
 
-        return $found;
+        $persistentKeys = (new PersistentKeysManager)->getKeys();
+
+        return array_merge($found, $persistentKeys);
     }
 
     /**
