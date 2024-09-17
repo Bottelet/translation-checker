@@ -3,11 +3,47 @@ Translation Checker is tool designed to help you find translations you forgot to
 
 It works with Laravel and supports various frontend frameworks like Vue.js, React, and Svelte.
 
+
+## How it works
+1. Scan Source Files: The system looks through your code for strings that need translation.
+2. Check Language Files: It then checks if these strings exist in your language files.
+3. Add missing translation keys: It adds the missing key with empty values if there is no translation service used.
+
+### Example:
+
+`lang.json`
+```json
+{
+  "test.value": "Value"
+}
+```
+
+```php
+<?php
+class TestClass
+{
+    public function getValue()
+    {
+        return __('translate this string');
+    }
+}
+```
+```bash 
+php artisan translations:check en
+```
+`lang.json`
+```json
+{
+  "test.value": "Value",
+  "translate this string": ""
+}
+```
+
 ## Quick Start
 
 Install the package via composer:
 ```bash
-composer require bottelet/laravel-translation-checker
+composer require bottelet/laravel-translation-checker --dev
 ```
 
 ## Usage
