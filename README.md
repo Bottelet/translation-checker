@@ -35,7 +35,7 @@ php artisan translations:check en
 ```json
 {
   "test.value": "Value",
-  "translate this string": ""
+  "translate this string": "translate this string"
 }
 ```
 
