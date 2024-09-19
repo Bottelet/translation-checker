@@ -4,10 +4,12 @@ namespace Bottelet\TranslationChecker;
 
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\Sort\SorterContract;
+use Bottelet\TranslationChecker\Translator\DeeplTranslator;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\OpenAiTranslator;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
+use DeepL\Translator;
 use Google\Cloud\Translate\V2\TranslateClient;
 use Illuminate\Support\ServiceProvider;
 use OpenAI;
@@ -46,6 +48,13 @@ class TranslationCheckerServiceProvider extends ServiceProvider
 
             return new OpenAiTranslator(
                 $factory->withHttpHeader('OpenAI-Beta', 'assistants=v2')->make()
+            );
+        });
+
+        $this->app->bind(DeeplTranslator::class, function ($app) {
+            return new DeeplTranslator(
+                $app->make(VariableRegexHandler::class),
+                new Translator($app->config['translator.translators.deepl.api_key'])
             );
         });
     }

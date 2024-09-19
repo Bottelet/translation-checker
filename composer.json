@@ -34,7 +34,8 @@
         "php": "^8.1",
         "nikic/php-parser": "^v5.2",
         "google/cloud-translate": "^1.17",
-        "openai-php/client": "^0.10.1"
+        "openai-php/client": "^0.10.1",
+        "deeplcom/deepl-php": "^1.9"
     },
     "config": {
         "allow-plugins": {

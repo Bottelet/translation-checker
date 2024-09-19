@@ -136,7 +136,6 @@ class MissingKeysFinderTest extends TestCase
         $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings);
     }
 
-
     #[Test]
     public function findMissingTranslatableStringUseNullAsDefaultValue(): void
     {
@@ -145,6 +144,5 @@ class MissingKeysFinderTest extends TestCase
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], []);
         $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings);
-
     }
 }

@@ -10,7 +10,7 @@ return [
       | using this translation library. This service is used when another is
       | not explicitly specified when executing a given translation function.
       |
-      | Supported: "google", "openai"
+      | Supported: "google", "openai", "deepl"
       |
       */
     'default' => env('DEFAULT_TRANSLATOR_SERVICE', 'openai'),
@@ -28,6 +28,10 @@ return [
             'model' => env('OPENAI_MODEL', 'gpt-4o'),
             'api_key' => env('OPENAI_API_KEY'),
             'organization_id' => env('OPENAI_ORGANIZATION'),
+        ],
+        'deepl' => [
+            'driver' => Bottelet\TranslationChecker\Translator\DeeplTranslator::class,
+            'api_key' => env('DEEPL_API_KEY'),
         ],
     ],
     'source_paths' => [
