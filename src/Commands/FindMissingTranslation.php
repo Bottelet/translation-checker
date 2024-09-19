@@ -48,7 +48,7 @@ class FindMissingTranslation extends BaseTranslationCommand
     }
 
     /**
-     * @param array<string, string> $missingTranslations
+     * @param array<string, string|null> $missingTranslations
      */
     private function printMissingTranslations(array $missingTranslations): void
     {

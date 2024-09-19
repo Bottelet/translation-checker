@@ -20,7 +20,7 @@ class TranslationManager
 
     /**
      * @param  array<string>  $sourceFilePaths
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, bool $sort = false, ?string $targetLanguage = null, bool $translateMissing = false, string $sourceLanguage = 'en'): array
     {
