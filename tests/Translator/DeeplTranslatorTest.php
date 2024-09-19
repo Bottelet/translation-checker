@@ -3,7 +3,6 @@
 namespace Bottelet\TranslationChecker\Tests\Translator;
 
 use Bottelet\TranslationChecker\Translator\DeeplTranslator;
-use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\VariableHandlers\VariableRegexHandler;
 use DeepL\TextResult;
 use DeepL\Translator;
@@ -91,7 +90,6 @@ class DeeplTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     public function testDeeplTranslatorHasValidCredentials(): void
     {
         $this->assertTrue($this->deeplTranslator->isConfigured());
-        ;
     }
 
     #[Test]
@@ -101,6 +99,5 @@ class DeeplTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
             'api_key' => null,
         ]);
         $this->assertFalse($this->deeplTranslator->isConfigured());
-        ;
     }
 }

@@ -41,8 +41,7 @@ class DeeplTranslator implements TranslatorContract
 
         $translatedKeys = [];
         foreach ($translations as $index => $translation) {
-            $translatedText = isset($translation->text) ? $this->variableHandler->restorePlaceholders($translation->text) : '';
-            $translatedKeys[$texts[$index]] = $translatedText ?: '';
+            $translatedKeys[$texts[$index]] = $this->variableHandler->restorePlaceholders($translation->text);
         }
 
         return $translatedKeys;
