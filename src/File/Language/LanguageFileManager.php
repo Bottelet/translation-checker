@@ -2,6 +2,8 @@
 
 namespace Bottelet\TranslationChecker\File\Language;
 
+use RuntimeException;
+
 class LanguageFileManager
 {
     public function __construct(protected string $filePath)
@@ -21,7 +23,11 @@ class LanguageFileManager
 
         $decodedJson = json_decode($jsonContent, true);
 
-        return is_array($decodedJson) ? $decodedJson : [];
+        if(!is_array($decodedJson)) {
+            throw new RuntimeException("Could not parse language file:" . json_last_error_msg());
+        }
+
+        return  $decodedJson;
     }
 
     /**

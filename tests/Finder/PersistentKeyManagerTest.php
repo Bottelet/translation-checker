@@ -2,11 +2,9 @@
 
 namespace Bottelet\TranslationChecker\Tests\Finder;
 
-use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\PersistentKeysManager;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use SplFileInfo;
 
 class PersistentKeyManagerTest extends TestCase
 {

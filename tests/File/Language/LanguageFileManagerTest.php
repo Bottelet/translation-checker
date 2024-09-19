@@ -5,6 +5,7 @@ namespace Bottelet\TranslationChecker\Tests\File\Language;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 
 class LanguageFileManagerTest extends TestCase
 {
@@ -100,14 +101,13 @@ class LanguageFileManagerTest extends TestCase
     }
 
     #[Test]
-    public function readJsonFileHandlesInvalidJson(): void
+    public function readJsonFileThrowsExceptionOnInvalidJson(): void
     {
         // Create an invalid JSON content
         file_put_contents($this->tempFile, '{invalid json}');
         $jsonManager = new LanguageFileManager($this->tempFile);
-        $result = $jsonManager->readFile();
-        $this->assertIsArray($result);
-        $this->assertEmpty($result);
+        $this->expectException(RuntimeException::class);
+        $jsonManager->readFile();
     }
 
     #[Test]

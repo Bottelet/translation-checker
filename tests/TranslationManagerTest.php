@@ -140,7 +140,7 @@ class TranslationManagerTest extends TestCase
     public function translationPerformedWithEmptyJsonFile(): void
     {
         $this->translationServiceMock->method('isConfigured')->willReturn(true);
-        file_put_contents($this->jsonFilePath, '');
+        file_put_contents($this->jsonFilePath, '{}');
 
         $translations = [
             'Hello, World!'   => 'Translated Hello, World!',

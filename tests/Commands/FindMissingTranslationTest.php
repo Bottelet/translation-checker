@@ -20,7 +20,7 @@ class FindMissingTranslationTest extends TestCase
             mkdir(dirname($this->translationFile), 0777, true);
         }
 
-        file_put_contents($this->translationFile, '');
+        file_put_contents($this->translationFile, '{}');
 
         Config::set('translator.source_paths', [$this->tempDir]);
         Config::set('translator.language_folder', $this->tempDir.'/lang');
@@ -47,7 +47,8 @@ class FindMissingTranslationTest extends TestCase
             '--print' => true,
         ])->assertExitCode(0);
 
-        $this->assertEmpty(json_decode(file_get_contents($this->translationFile)));
+        $this->assertJson(file_get_contents($this->translationFile));
+        $this->assertJsonStringEqualsJsonFile($this->translationFile, '{}');
     }
 
     #[Test]
