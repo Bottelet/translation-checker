@@ -28,12 +28,19 @@ GOOGLE_TRANSLATE_CLIENT_CERT_URL=your_client_cert_url
 ```
 See more here: [Google Translate Setup](https://cloud.google.com/translate/docs/setup)
 
+For DeepL, you need to set the following environment variable
+```bash
+DEEPL_API_KEY=your_api_key
+```
+See more here: [DeepL API Authentication](https://developers.deepl.com/docs/getting-started/auth#authentication)
+
 ### Default Service
 The `default` configuration option specifies the class to be used for automatic translation. This service will be used for translating strings.
 
-There are currently two built-in translation services:
+There are currently three built-in translation services:
 1. **GoogleTranslateService** - Translates strings using Google Translate
 2. **OpenAIService** - Translates strings using OpenAI's API
+3. **DeepLService** - Translates strings using DeepL's API
 
 
 You can create your own translation service by implementing the `Bottelet\TranslationChecker\Translator\TranslatorContract` and overwriting the `default` configuration option.
