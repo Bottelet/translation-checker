@@ -56,7 +56,7 @@ class MissingKeysFinder
         foreach ($foundStrings as $string) {
             $string = stripslashes($string);
             if (! array_key_exists($string, $jsonTranslations)) {
-                $missingTranslations[$string] = $string;
+                $missingTranslations[$string] = null;
             }
         }
 
