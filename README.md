@@ -35,9 +35,10 @@ php artisan translations:check en
 ```json
 {
   "test.value": "Value",
-  "translate this string": "translate this string"
+  "translate this string": null
 }
 ```
+The reason we default to null when no translation service are used is because it defaults to the key used in the function call.
 
 ## Quick Start
 

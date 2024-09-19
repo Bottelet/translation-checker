@@ -137,12 +137,12 @@ class MissingKeysFinderTest extends TestCase
     }
 
     #[Test]
-    public function findMissingTranslatableStringUseKeyAsDefaultValue(): void
+    public function findMissingTranslatableStringUseNullAsDefaultValue(): void
     {
         $multiFunctionFile = $this->createTempFile('multiFunction.php', "<?php echo __('da.key.test'); __('a long string');");
         $translationFinder = new MissingKeysFinder;
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], []);
-        $this->assertSame(['da.key.test' => 'da.key.test', 'a long string' => 'a long string'], $foundStrings);
+        $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings);
     }
 }

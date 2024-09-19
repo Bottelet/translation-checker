@@ -36,7 +36,7 @@ class MissingKeysFinder
      * @param  array<int, SplFileInfo>  $files
      * @param  array<string, string>  $existingTranslatedStrings
      *
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): array
     {
@@ -48,7 +48,7 @@ class MissingKeysFinder
     /**
      * @param  array<string>  $foundStrings
      * @param  array<string, string>  $jsonTranslations
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     protected function extractMissingTranslations(array $foundStrings, array $jsonTranslations): array
     {
@@ -56,7 +56,7 @@ class MissingKeysFinder
         foreach ($foundStrings as $string) {
             $string = stripslashes($string);
             if (! array_key_exists($string, $jsonTranslations)) {
-                $missingTranslations[$string] = $string;
+                $missingTranslations[$string] = null;
             }
         }
 
