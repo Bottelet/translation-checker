@@ -53,7 +53,7 @@ class SyncTranslationTest extends TestCase
     #[Test]
     public function itSyncsAllTranslationsIfNoTarget(): void
     {
-        $thirdFile = $this->createTranslationFile('pl', '');
+        $thirdFile = $this->createTranslationFile('pl', '{}');
 
         Artisan::call('translations:sync', [
             '--source' => 'en',
