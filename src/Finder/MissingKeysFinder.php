@@ -26,7 +26,6 @@ class MissingKeysFinder
                 }
             }
         }
-
         $persistentKeys = (new PersistentKeysManager)->getKeys();
 
         return array_merge($found, $persistentKeys);
@@ -55,9 +54,9 @@ class MissingKeysFinder
     {
         $missingTranslations = [];
         foreach ($foundStrings as $string) {
-            $unescapedString = stripslashes($string);
-            if (! array_key_exists($unescapedString, $jsonTranslations)) {
-                $missingTranslations[$unescapedString] = '';
+            $string = stripslashes($string);
+            if (! array_key_exists($string, $jsonTranslations)) {
+                $missingTranslations[$string] = $string;
             }
         }
 

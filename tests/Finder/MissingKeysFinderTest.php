@@ -135,4 +135,16 @@ class MissingKeysFinderTest extends TestCase
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], ['first_key' => 'translated', 'persistent_key' => 'translated']);
         $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings);
     }
+
+
+    #[Test]
+    public function findMissingTranslatableStringUseKeyAsDefaultValue(): void
+    {
+        $multiFunctionFile = $this->createTempFile('multiFunction.php', "<?php echo __('da.key.test'); __('a long string');");
+        $translationFinder = new MissingKeysFinder;
+
+        $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], []);
+        $this->assertSame(['da.key.test' => 'da.key.test', 'a long string' => 'a long string'], $foundStrings);
+
+    }
 }

@@ -77,9 +77,9 @@ class TranslationManagerTest extends TestCase
             $this->jsonFilePath
         );
         $this->assertEquals([
-            'app.title'       => '',
-            'Something cool ' => '',
-            'greeting'        => '',
+            'app.title'       => 'app.title',
+            'Something cool ' => 'Something cool ',
+            'greeting'        => 'greeting',
         ], $missingTranslations);
     }
 
