@@ -23,11 +23,11 @@ class LanguageFileManager
 
         $decodedJson = json_decode($jsonContent, true);
 
-        if(!is_array($decodedJson)) {
-            throw new RuntimeException("Could not parse language file:" . json_last_error_msg());
+        if (!is_array($decodedJson)) {
+            throw new RuntimeException('Could not parse language file:' . json_last_error_msg());
         }
 
-        return  $decodedJson;
+        return $decodedJson;
     }
 
     /**
