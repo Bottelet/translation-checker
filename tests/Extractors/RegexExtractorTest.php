@@ -76,4 +76,24 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $this->assertNotContains('request', $translationKeys);
         $this->assertNotContains('target', $translationKeys);
     }
+
+    #[Test]
+    public function it_accepts_a_new_added_pattern(): void
+    {
+        $testPhpContent = <<<'TEXT'
+         mytranslatefunction('simple_string');
+        TEXT;
+
+        file_put_contents($this->tempDir . '/test.php', $testPhpContent);
+
+        $file = new SplFileInfo($this->tempDir . '/test.php');
+        $extractor = new RegexExtractor;
+
+        $extractor->addPattern('/mytranslatefunction\((["\'])(.*?)\1\)/', 2, 'mytranslatefunction');
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertCount(1, $translationKeys);
+        $this->assertContains('simple_string', $translationKeys);
+    }
 }
