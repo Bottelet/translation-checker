@@ -82,6 +82,8 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     {
         $testPhpContent = <<<'TEXT'
          mytranslatefunction('simple_string');
+         mytranslatefunction('String with "double quotes"');
+         mytranslatefunction('with :variable test', ['variable' => 'test']);
         TEXT;
 
         file_put_contents($this->tempDir . '/test.php', $testPhpContent);
@@ -89,11 +91,40 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $file = new SplFileInfo($this->tempDir . '/test.php');
         $extractor = new RegexExtractor;
 
+        $extractor->addPattern('/(mytranslatefunction\()([\'"])(.*?)\2/', 3, 'mytranslatefunction');
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertCount(3, $translationKeys);
+        $this->assertContains('simple_string', $translationKeys);
+        $this->assertContains('String with "double quotes"', $translationKeys);
+        $this->assertContains('with :variable test', $translationKeys);
+    }
+
+    #[Test]
+    public function it_accepts_a_new_added_pattern_that_matches_specific_cases(): void
+    {
+        $testPhpContent = <<<'TEXT'
+         mytranslatefunction('simple_string');
+         mytranslatefunction('String with "double quotes"');
+         mytranslatefunction('with :variable test', ['variable' => 'test']);
+        TEXT;
+
+        file_put_contents($this->tempDir . '/test.php', $testPhpContent);
+
+        $file = new SplFileInfo($this->tempDir . '/test.php');
+        $extractor = new RegexExtractor;
+
+        // Pattern that does not match translations with variables
         $extractor->addPattern('/mytranslatefunction\((["\'])(.*?)\1\)/', 2, 'mytranslatefunction');
 
         $translationKeys = $extractor->extractFromFile($file);
 
-        $this->assertCount(1, $translationKeys);
+        $this->assertCount(2, $translationKeys);
         $this->assertContains('simple_string', $translationKeys);
+        $this->assertContains('String with "double quotes"', $translationKeys);
+
+        // Assert that the pattern does not match translations with variables
+        $this->assertNotContains('with :variable test', $translationKeys);
     }
 }
