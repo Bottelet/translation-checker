@@ -44,7 +44,7 @@ The reason we default to null when no translation service are used is because it
 
 Install the package via composer:
 ```bash
-composer require bottelet/laravel-translation-checker --dev
+composer require bottelet/translation-checker --dev
 ```
 
 ## Usage
