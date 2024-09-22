@@ -20,7 +20,7 @@ class CleanTranslation extends BaseTranslationCommand
         $this->info('Cleaning translations...');
 
         $options = $this->parseOptions();
-        $sourceJsonPath = $this->getTargetJsonPath($options->source);
+        $sourceJsonPath = $this->getTargetLanguagePath($options->source);
         $sourceFilePaths = $this->getSourceFilePaths();
 
         $translationFinder = new TranslationFinder(

@@ -20,7 +20,7 @@ class CheckTranslation extends BaseTranslationCommand
 
         $options = $this->parseOptions();
         $sourceFilePaths = $this->getSourceFilePaths();
-        $targetJsonPath = $this->getTargetJsonPath($options->target);
+        $targetJsonPath = $this->getTargetLanguagePath($options->target);
 
         $missingTranslations = $translationManager->updateTranslationsFromFile(
             $sourceFilePaths,

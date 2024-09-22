@@ -20,7 +20,7 @@ class FindMissingTranslation extends BaseTranslationCommand
         $this->info('Finding translations...');
 
         $options = $this->parseOptions();
-        $sourceJsonPath = $this->getTargetJsonPath($options->source);
+        $sourceJsonPath = $this->getTargetLanguagePath($options->source);
         $sourceFilePaths = $this->getSourceFilePaths();
 
         $translationFinder = new TranslationFinder(
