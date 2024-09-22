@@ -28,7 +28,7 @@ class MissingTranslationList
     /**
      * @return array<string, string|null>
      */
-    public function getValues(): array
+    public function getKeys(): array
     {
         return array_fill_keys(
             array_map(function (MissingTranslation $translation) {

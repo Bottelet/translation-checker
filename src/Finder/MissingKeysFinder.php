@@ -57,7 +57,7 @@ class MissingKeysFinder
     protected function extractMissingTranslations(TranslationList $foundStrings, array $jsonTranslations): MissingTranslationList
     {
         $missingTranslations = new MissingTranslationList();
-        foreach ($foundStrings->getValues() as $key => $string) {
+        foreach ($foundStrings->getKeys() as $key => $string) {
             $string = stripslashes($key);
             if (! array_key_exists($string, $jsonTranslations)) {
                 $missingTranslations->addTranslation(new MissingTranslation($string, null));

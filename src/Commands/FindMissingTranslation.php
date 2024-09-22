@@ -29,7 +29,7 @@ class FindMissingTranslation extends BaseTranslationCommand
             new MissingKeysFinder()
         );
 
-        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths)->getValues();
+        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths)->getKeys();
 
         if ($options->print) {
             $this->printMissingTranslations($missingTranslations);

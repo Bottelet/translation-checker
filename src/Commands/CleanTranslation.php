@@ -29,7 +29,7 @@ class CleanTranslation extends BaseTranslationCommand
             new MissingKeysFinder()
         );
 
-        $missingTranslations = $translationFinder->findAllTranslations($sourceFilePaths)->getValues();
+        $missingTranslations = $translationFinder->findAllTranslations($sourceFilePaths)->getKeys();
         $sourceFileManager = new LanguageFileManagerFactory($sourceJsonPath);
         $sourceTranslations = $sourceFileManager->readFile();
 
