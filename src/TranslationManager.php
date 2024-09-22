@@ -26,7 +26,7 @@ class TranslationManager
     {
         $translationFinder = new TranslationFinder(new FileManagement, new LanguageFileManagerFactory($targetJsonPath), new MissingKeysFinder);
 
-        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
+        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths)->getValues();
 
         if ($translateMissing && $targetLanguage !== null) {
             if (!$this->translationService->isConfigured()) {

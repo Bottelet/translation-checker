@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests\Finder;
 
+use Bottelet\TranslationChecker\Dto\Translation;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -15,7 +16,8 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
 
         $foundStrings = $translationFinder->findTranslatableStrings([$this->vueFile]);
-        $this->assertContains('welcome_message', $foundStrings);
+
+        $this->assertArrayHasKey('welcome_message', $foundStrings->getValues());
     }
 
     #[Test]
@@ -24,7 +26,8 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $nonPhpFile = $this->createTempFile('nonPhpContent.html', file_get_contents($this->noTranslationsBladeFile));
         $foundStrings = $translationFinder->findTranslatableStrings([$nonPhpFile]);
-        $this->assertEmpty($foundStrings);
+
+        $this->assertEmpty($foundStrings->getTranslations());
     }
 
     #[Test]
@@ -34,7 +37,7 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$emptyFile]);
 
-        $this->assertEmpty($foundStrings);
+        $this->assertEmpty($foundStrings->getTranslations());
     }
 
     #[Test]
@@ -45,7 +48,7 @@ class MissingKeysFinderTest extends TestCase
 
         $foundStrings = $translationFinder->findTranslatableStrings([$nonexistentFile]);
 
-        $this->assertEmpty($foundStrings);
+        $this->assertEmpty($foundStrings->getTranslations());
     }
 
     #[Test]
@@ -57,7 +60,7 @@ class MissingKeysFinderTest extends TestCase
         $foundStrings = $translationFinder->findTranslatableStrings([$normalizedFile]);
 
         $this->assertNotEmpty($foundStrings);
-        $this->assertContains('normalized string', $foundStrings);
+        $this->assertArrayHasKey('normalized string', $foundStrings->getValues());
     }
 
     #[Test]
@@ -68,7 +71,7 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$fileWithSyntaxError]);
 
-        $this->assertEmpty($foundStrings);
+        $this->assertEmpty($foundStrings->getTranslations());
     }
 
     #[Test]
@@ -78,8 +81,9 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$multiFunctionFile]);
 
-        $this->assertContains('first_key', $foundStrings);
-        $this->assertContains('second_key', $foundStrings);
+        $this->assertCount(2, $foundStrings->getTranslations());
+        $this->assertArrayHasKey('first_key', $foundStrings->getValues());
+        $this->assertArrayHasKey('second_key', $foundStrings->getValues());
     }
 
     #[Test]
@@ -89,7 +93,7 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$fileWithVariables]);
 
-        $this->assertEquals(['key_with_variable', 'a text with :key inside string'], $foundStrings);
+        $this->assertEquals(['key_with_variable' => null, 'a text with :key inside string' => null], $foundStrings->getValues());
     }
 
     #[Test]
@@ -97,7 +101,7 @@ class MissingKeysFinderTest extends TestCase
     {
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$this->phpControllerFile]);
-        $this->assertCount(10, $foundStrings);
+        $this->assertCount(10, $foundStrings->getTranslations());
     }
 
     #[Test]
@@ -108,7 +112,7 @@ class MissingKeysFinderTest extends TestCase
         $foundStrings = $translationFinder->findTranslatableStrings([$jsFile]);
 
         // Assuming TranslationFinder is expected to ignore non-PHP files
-        $this->assertEmpty($foundStrings);
+        $this->assertEmpty($foundStrings->getTranslations());
     }
 
     #[Test]
@@ -119,9 +123,9 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
         $foundStrings = $translationFinder->findTranslatableStrings([$multiFunctionFile]);
 
-        $this->assertContains('first_key', $foundStrings);
-        $this->assertContains('persistent_key', $foundStrings);
-        $this->assertContains('A sentence that should be added to the translation file', $foundStrings);
+        $this->assertArrayHasKey('first_key', $foundStrings->getValues());
+        $this->assertArrayHasKey('persistent_key', $foundStrings->getValues());
+        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings->getValues());
     }
 
     #[Test]
@@ -133,7 +137,8 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], ['first_key' => 'translated', 'persistent_key' => 'translated']);
-        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings);
+
+        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings->getValues());
     }
 
     #[Test]
@@ -143,6 +148,6 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], []);
-        $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings);
+        $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings->getValues());
     }
 }

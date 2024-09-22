@@ -2,6 +2,8 @@
 
 namespace Bottelet\TranslationChecker\Finder;
 
+use Bottelet\TranslationChecker\Dto\MissingTranslationList;
+use Bottelet\TranslationChecker\Dto\TranslationList;
 use Bottelet\TranslationChecker\File\FileManagement;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 
@@ -21,7 +23,7 @@ class TranslationFinder
      *
      * @return array<string, string|null>
      */
-    public function findMissingTranslations(array $sourceFilePaths): array
+    public function findMissingTranslations(array $sourceFilePaths): MissingTranslationList
     {
         $files = $this->fileManagement->getAllFiles($sourceFilePaths);
         $existingTranslations = $this->languageFileManager->readFile();
@@ -37,7 +39,7 @@ class TranslationFinder
      *
      * @return array<int, string>
      */
-    public function findAllTranslations(array $sourceFilePaths): array
+    public function findAllTranslations(array $sourceFilePaths): TranslationList
     {
         return $this->missingKeysFinder->findTranslatableStrings($this->fileManagement->getAllFiles($sourceFilePaths));
     }
