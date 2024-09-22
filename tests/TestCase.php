@@ -37,7 +37,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'client_x509_cert_url' => 'test',
         ]);
         $this->app['config']->set('translator.translators.openai', [
-            'model' => 'gpt-3.5-turbo',
+            'model' => 'gpt-4o-mini',
             'api_key' => 'API_KEY',
             'organization_id' => 'ORG_ID',
         ]);
