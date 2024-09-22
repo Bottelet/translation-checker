@@ -138,7 +138,7 @@ class MissingKeysFinderTest extends TestCase
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], ['first_key' => 'translated', 'persistent_key' => 'translated']);
 
-        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings->getTranslationsAsArray());
+        $this->assertArrayHasKey('A sentence that should be added to the translation file', $foundStrings->getKeys());
     }
 
     #[Test]
@@ -148,6 +148,6 @@ class MissingKeysFinderTest extends TestCase
         $translationFinder = new MissingKeysFinder;
 
         $foundStrings = $translationFinder->findMissingTranslatableStrings([$multiFunctionFile], []);
-        $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings->getTranslationsAsArray());
+        $this->assertSame(['da.key.test' => null, 'a long string' => null], $foundStrings->getKeys());
     }
 }
