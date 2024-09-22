@@ -20,8 +20,6 @@ class TranslationFinder
 
     /**
      * @param  array<string>  $sourceFilePaths
-     *
-     * @return array<string, string|null>
      */
     public function findMissingTranslations(array $sourceFilePaths): MissingTranslationList
     {
@@ -36,8 +34,6 @@ class TranslationFinder
 
     /**
      * @param array<string, string> $sourceFilePaths
-     *
-     * @return array<int, string>
      */
     public function findAllTranslations(array $sourceFilePaths): TranslationList
     {

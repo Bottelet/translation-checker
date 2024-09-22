@@ -4,10 +4,16 @@ namespace Bottelet\TranslationChecker\Dto;
 
 class TranslationList
 {
-    public function __construct(protected array $translations = [],)
+    /**
+     * @param  array<Translation> $translations
+     */
+    public function __construct(protected array $translations = [])
     {
     }
 
+    /**
+     * @return array<Translation>
+     */
     public function getTranslations(): array
     {
         return $this->translations;
@@ -19,6 +25,9 @@ class TranslationList
         return $this;
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function getValues(): array
     {
         return array_fill_keys(

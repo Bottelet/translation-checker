@@ -15,7 +15,6 @@ class MissingKeysFinder
      * Finds translatable strings in a set of files.
      *
      * @param  array<int, SplFileInfo>  $files
-     * @return array<int, string>
      */
     public function findTranslatableStrings(array $files): TranslationList
     {
@@ -44,7 +43,6 @@ class MissingKeysFinder
      * @param  array<int, SplFileInfo>  $files
      * @param  array<string, string>  $existingTranslatedStrings
      *
-     * @return array<string, string|null>
      */
     public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): MissingTranslationList
     {
@@ -54,9 +52,7 @@ class MissingKeysFinder
     }
 
     /**
-     * @param  array<string>  $foundStrings
      * @param  array<string, string>  $jsonTranslations
-     * @return array<string, string|null>
      */
     protected function extractMissingTranslations(TranslationList $foundStrings, array $jsonTranslations): MissingTranslationList
     {

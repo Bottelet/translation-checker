@@ -6,7 +6,7 @@ use SplFileInfo;
 
 class MissingTranslation
 {
-    private bool $exists;
+    protected bool $exists;
 
     public function __construct(protected ?string $value, protected ?string $path = null)
     {
@@ -14,7 +14,7 @@ class MissingTranslation
     }
 
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }

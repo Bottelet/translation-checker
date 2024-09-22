@@ -32,7 +32,7 @@ class CleanTranslation extends BaseTranslationCommand
         $missingTranslations = $translationFinder->findAllTranslations($sourceFilePaths)->getValues();
         $sourceFileManager = new LanguageFileManagerFactory($sourceJsonPath);
         $sourceTranslations = $sourceFileManager->readFile();
-        
+
         $cleanedTranslations = array_intersect_key($sourceTranslations, $missingTranslations);
         if ($options->print) {
             $this->printTranslations($cleanedTranslations);
