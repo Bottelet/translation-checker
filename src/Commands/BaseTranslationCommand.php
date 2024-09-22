@@ -27,6 +27,10 @@ abstract class BaseTranslationCommand extends Command
 
     protected function getTargetJsonPath(string $targetLanguage): string
     {
-        return config('translator.language_folder') . "/{$targetLanguage}.json";
+        $file = config('translator.language_folder') . "/{$targetLanguage}.json";
+        if(!file_exists($file)) {
+            $file = config('translator.language_folder') . "/{$targetLanguage}.php";
+        }
+        return $file;
     }
 }

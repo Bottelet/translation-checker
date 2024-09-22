@@ -30,7 +30,6 @@ class CheckTranslation extends BaseTranslationCommand
             $options->translateMissing,
             $options->source
         );
-
         $this->displayResult($missingTranslations);
     }
 

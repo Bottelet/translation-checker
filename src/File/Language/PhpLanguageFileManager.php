@@ -37,33 +37,8 @@ class PhpLanguageFileManager implements FileManagerInterface
      */
     public function updateFile(array $translations): void
     {
-        $formattedTranslations = [];
-        foreach ($translations as $key => $value) {
-            $this->setNestedValue($formattedTranslations, explode('.', $key), $key);
-        }
-
-        $content = "<?php\n\nreturn " . var_export($formattedTranslations, true) . ";\n";
+        $content = "<?php\n\nreturn " . var_export($translations, true) . ";\n";
         file_put_contents($this->filePath, $content);
-    }
-
-    /**
-     * Recursively sets a nested value in an array.
-     *
-     * @param array<string, mixed> &$array
-     * @param array<int, string> $keys
-     * @param mixed $value
-     */
-    private function setNestedValue(array &$array, array $keys, $value): void
-    {
-        $key = array_shift($keys);
-        if (empty($keys)) {
-            $array[$key] = $value;
-        } else {
-            if (!isset($array[$key]) || !is_array($array[$key])) {
-                $array[$key] = [];
-            }
-            $this->setNestedValue($array[$key], $keys, $value);
-        }
     }
 
     public function sortFile(): void
