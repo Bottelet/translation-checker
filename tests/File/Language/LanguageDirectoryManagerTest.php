@@ -16,8 +16,8 @@ class LanguageDirectoryManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->translationFile = $this->createTranslationFile('da');
-        $this->secondTranslationFile = $this->createTranslationFile('fr');
+        $this->translationFile = $this->createJsonTranslationFile('da');
+        $this->secondTranslationFile = $this->createJsonTranslationFile('fr');
 
         $this->directoryManager = new LanguageDirectoryManager($this->tempDir . '/lang');
     }

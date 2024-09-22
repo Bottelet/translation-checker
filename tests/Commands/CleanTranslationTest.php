@@ -11,7 +11,7 @@ class CleanTranslationTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->createTranslationFile('da', [
+        $this->translationFile = $this->createJsonTranslationFile('da', [
             'sundae' => 'sundae',
             'softice' => 'softice',
             'cubes' => 'cubes',
@@ -58,7 +58,7 @@ class CleanTranslationTest extends TestCase
             'The title field is required for create' => "Vaj che'meH mIw'a' lughovlaH",
             'unused key' => 'voq',
         ];
-        $file = $this->createTranslationFile('ot', $initialTranslations);
+        $file = $this->createJsonTranslationFile('ot', $initialTranslations);
 
         $this->artisan('translations:clean', [
             '--source' => 'ot',
@@ -81,7 +81,7 @@ class CleanTranslationTest extends TestCase
             'you are currently not logged in.' => 'You are currently not logged in.',
             'Please_log_in' => 'please_log_in',
         ];
-        $file = $this->createTranslationFile('ot', $initialTranslations);
+        $file = $this->createJsonTranslationFile('ot', $initialTranslations);
 
         $this->artisan('translations:clean', [
             '--source' => 'ot',

@@ -3,7 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\FileManagement;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
 
@@ -25,7 +25,7 @@ class FindMissingTranslation extends BaseTranslationCommand
 
         $translationFinder = new TranslationFinder(
             new FileManagement(),
-            new LanguageFileManager($sourceJsonPath),
+            new LanguageFileManagerFactory($sourceJsonPath),
             new MissingKeysFinder()
         );
 

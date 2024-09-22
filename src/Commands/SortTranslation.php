@@ -3,7 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 
 class SortTranslation extends BaseTranslationCommand
@@ -53,7 +53,7 @@ class SortTranslation extends BaseTranslationCommand
 
     private function sortFile(string $filePath): void
     {
-        $languageFile = new LanguageFileManager($filePath);
+        $languageFile = new LanguageFileManagerFactory($filePath);
         $contents = $languageFile->readFile();
         $sortedContents = $this->sorter->sortByKey($contents);
         $languageFile->updateFile($sortedContents);

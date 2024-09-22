@@ -16,13 +16,13 @@ class SyncTranslationTest extends TestCase
     {
         parent::setUp();
 
-        $this->sourceFile = $this->createTranslationFile('en', [
+        $this->sourceFile = $this->createJsonTranslationFile('en', [
             'key1' => 'Source Value 1',
             'key2' => 'Source Value 2',
             'key3' => 'Source Value 3',
         ]);
 
-        $this->targetFile = $this->createTranslationFile('de', [
+        $this->targetFile = $this->createJsonTranslationFile('de', [
             'key1' => 'Target Value 1',
             'key4' => 'Target Value 4',
             'key5' => 'Target Value 5',
@@ -53,7 +53,7 @@ class SyncTranslationTest extends TestCase
     #[Test]
     public function itSyncsAllTranslationsIfNoTarget(): void
     {
-        $thirdFile = $this->createTranslationFile('pl', '{}');
+        $thirdFile = $this->createJsonTranslationFile('pl', '{}');
 
         Artisan::call('translations:sync', [
             '--source' => 'en',

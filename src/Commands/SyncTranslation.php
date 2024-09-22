@@ -3,7 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Illuminate\Console\Command;
 
 class SyncTranslation extends Command
@@ -21,19 +21,19 @@ class SyncTranslation extends Command
         $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
         $sourcePath = config('translator.language_folder') . "/{$sourceLanguage}.json";
 
-        $sourceFileManager = new LanguageFileManager($sourcePath);
+        $sourceFileManager = new LanguageFileManagerFactory($sourcePath);
 
         if ($target) {
             $target = is_string($this->option('target')) ? $this->option('target') : 'en';
             $targetPath = config('translator.language_folder') . "/{$target}.json";
 
-            $targetFileManager = new LanguageFileManager($targetPath);
+            $targetFileManager = new LanguageFileManagerFactory($targetPath);
             $sourceFileManager->syncFile($targetFileManager);
         } else {
             $files = $directoryManager->getLanguageFiles();
 
             foreach ($files as $file) {
-                $targetFileManager = new LanguageFileManager($file->getPathname());
+                $targetFileManager = new LanguageFileManagerFactory($file->getPathname());
 
                 if ($file->getPathname() !== $source) {
                     $sourceFileManager->syncFile($targetFileManager);

@@ -4,7 +4,7 @@ namespace Bottelet\TranslationChecker;
 
 use Bottelet\TranslationChecker\Exception\TranslationServiceException;
 use Bottelet\TranslationChecker\File\FileManagement;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Bottelet\TranslationChecker\Sort\SorterContract;
@@ -24,7 +24,7 @@ class TranslationManager
      */
     public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, bool $sort = false, ?string $targetLanguage = null, bool $translateMissing = false, string $sourceLanguage = 'en'): array
     {
-        $translationFinder = new TranslationFinder(new FileManagement, new LanguageFileManager($targetJsonPath), new MissingKeysFinder);
+        $translationFinder = new TranslationFinder(new FileManagement, new LanguageFileManagerFactory($targetJsonPath), new MissingKeysFinder);
 
         $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
 

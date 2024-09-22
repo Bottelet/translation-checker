@@ -13,7 +13,7 @@ class SortTranslationTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->createTranslationFile('da', [
+        $this->translationFile = $this->createJsonTranslationFile('da', [
             'z' => 'Z value',
             'b' => 'B value',
             'a' => 'A value',
@@ -49,7 +49,7 @@ class SortTranslationTest extends TestCase
     #[Test]
     public function allTranslationFiles(): void
     {
-        $secondTranslationFile = $this->createTranslationFile('es', [
+        $secondTranslationFile = $this->createJsonTranslationFile('es', [
             'Aba' => 'value',
             'Cbb' => 'value',
             'ILL' => 'value',

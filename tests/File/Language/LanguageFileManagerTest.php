@@ -2,7 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests\File\Language;
 
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
@@ -14,7 +14,7 @@ class LanguageFileManagerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->tempFile = $this->createTranslationFile('da', [
+        $this->tempFile = $this->createJsonTranslationFile('da', [
             'welcome' => 'Welcome',
             'farewell' => 'Goodbye',
         ]);
@@ -23,7 +23,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function readJsonFileReturnsArray(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $translations = $jsonManager->readFile();
         $this->assertIsArray($translations);
         $this->assertCount(2, $translations);
@@ -32,7 +32,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function updateJsonFileUpdatesContentCorrectly(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $newTranslations = [
             'welcome' => 'Welcome to our application',
             'farewell' => 'See you soon',
@@ -48,7 +48,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function ensureLastLineDoesNotAddComma(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $translations = [
             'welcome' => 'Welcome to our application',
             'farewell' => 'See you soon',
@@ -78,7 +78,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function sortJsonFileSortsKeys(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $translations = [
             'b' => 'Second',
             'a' => 'First',
@@ -94,7 +94,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function nonexistentFileReadReturnsEmptyArray(): void
     {
-        $jsonManager = new LanguageFileManager('/path/to/nonexistent/file.json');
+        $jsonManager = new LanguageFileManagerFactory('/path/to/nonexistent/file.json');
         $translations = $jsonManager->readFile();
         $this->assertIsArray($translations);
         $this->assertEmpty($translations);
@@ -105,7 +105,7 @@ class LanguageFileManagerTest extends TestCase
     {
         // Create an invalid JSON content
         file_put_contents($this->tempFile, '{invalid json}');
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $this->expectException(RuntimeException::class);
         $jsonManager->readFile();
     }
@@ -113,7 +113,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function addsNewTranslationsOverwritesExisting(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $additionalTranslations = ['new_key' => 'New translation'];
         $jsonManager->updateFile($additionalTranslations);
 
@@ -126,7 +126,7 @@ class LanguageFileManagerTest extends TestCase
     #[Test]
     public function updateSpecialCharactersCorrectly(): void
     {
-        $jsonManager = new LanguageFileManager($this->tempFile);
+        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
         $newTranslations = [
             'Welcome/Hi' => 'Velkommen/Hej',
             'PHP & Laravel ^^' => 'PHP & Laravel ^^',

@@ -3,15 +3,15 @@
 namespace Bottelet\TranslationChecker\Finder;
 
 use Bottelet\TranslationChecker\File\FileManagement;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 
 class TranslationFinder
 {
-    public function __construct(protected FileManagement $fileManagement, protected LanguageFileManager $languageFileManager, protected MissingKeysFinder $missingKeysFinder)
+    public function __construct(protected FileManagement $fileManagement, protected LanguageFileManagerFactory $languageFileManager, protected MissingKeysFinder $missingKeysFinder)
     {
     }
 
-    public function getLanguageFilerManager(): LanguageFileManager
+    public function getLanguageFilerManager(): LanguageFileManagerFactory
     {
         return $this->languageFileManager;
     }
