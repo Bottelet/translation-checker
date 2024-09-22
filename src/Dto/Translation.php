@@ -6,13 +6,13 @@ use SplFileInfo;
 
 class Translation
 {
-    public function __construct(protected string $value, protected string $path)
+    public function __construct(protected string $key, protected string $path)
     {
 
     }
 
-    public function getValue(): string
+    public function getKey(): string
     {
-        return $this->value;
+        return $this->key;
     }
 }

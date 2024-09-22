@@ -119,6 +119,7 @@ class TranslationManagerTest extends TestCase
         $this->assertNotContains('Hello, World!', array_keys($missingTranslations));
 
         $jsonContent = file_get_contents($this->jsonFilePath);
+
         foreach ($translations as $key => $translation) {
             $this->assertStringContainsString("\"{$key}\": \"{$translation}\"", $jsonContent);
         }

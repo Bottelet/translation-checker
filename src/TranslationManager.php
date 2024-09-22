@@ -33,6 +33,7 @@ class TranslationManager
                 throw TranslationServiceException::notConfigured(get_class($this->translationService));
             }
             $missingTranslations = $this->translationService->translateBatch(array_keys($missingTranslations), $targetLanguage, $sourceLanguage);
+            dd($missingTranslations);
         }
 
         /** @var array<string, string> $allTranslations */

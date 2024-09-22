@@ -8,14 +8,14 @@ class MissingTranslation
 {
     protected bool $exists;
 
-    public function __construct(protected ?string $value, protected ?string $path = null)
+    public function __construct(protected ?string $key, protected ?string $path = null)
     {
         $this->exists = false;
     }
 
 
-    public function getValue(): ?string
+    public function getKey(): ?string
     {
-        return $this->value;
+        return $this->key;
     }
 }

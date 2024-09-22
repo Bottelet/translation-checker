@@ -32,7 +32,7 @@ class MissingTranslationList
     {
         return array_fill_keys(
             array_map(function (MissingTranslation $translation) {
-                return $translation->getValue();
+                return $translation->getKey();
             }, $this->translations),
             null
         );

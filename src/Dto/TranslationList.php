@@ -32,7 +32,7 @@ class TranslationList
     {
         return array_fill_keys(
             array_map(function (Translation $translation) {
-                return $translation->getValue();
+                return $translation->getKey();
             }, $this->translations),
             null
         );
