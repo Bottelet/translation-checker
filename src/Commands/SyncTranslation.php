@@ -16,8 +16,9 @@ class SyncTranslation extends BaseTranslationCommand
 
     public function handle(LanguageDirectoryManager $directoryManager): void
     {
-        $source = $this->option('source');
-        $target = $this->option('target');
+        $options = $this->parseOptions();
+        $source = $options->source;
+        $target = $options->target;
         $sourcePath = $this->getTargetLanguagePath($source);
 
         $sourceFileManager = new LanguageFileManagerFactory($sourcePath);
@@ -44,8 +45,7 @@ class SyncTranslation extends BaseTranslationCommand
     {
         return new CommandOptions(
             source: is_string($this->option('source')) ? $this->option('source') : 'en',
-            target: is_string($this->option('target')) ? $this->option('target') : null,
-            print: (bool) $this->option('print')
+            target: is_string($this->option('target')) ? $this->option('target') : '',
         );
     }
 }

@@ -42,7 +42,7 @@ class LanguageFileManagerFactory implements FileManagerInterface
 
     public function syncFile(FileManagerInterface $targetFile): void
     {
-        $this->fileManager->syncFile($targetFile->fileManager);
+        $this->fileManager->syncFile($targetFile);
     }
 
     public function getFilePath(): string
