@@ -22,6 +22,7 @@ class TranslationList
     public function addTranslation(Translation $translation): self
     {
         $this->translations[] = $translation;
+
         return $this;
     }
 

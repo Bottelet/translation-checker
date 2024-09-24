@@ -4,7 +4,6 @@ namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
-use Illuminate\Console\Command;
 
 class SyncTranslation extends BaseTranslationCommand
 {

@@ -22,6 +22,7 @@ class MissingTranslationList
     public function addTranslation(MissingTranslation $translation): self
     {
         $this->translations[] = $translation;
+
         return $this;
     }
 

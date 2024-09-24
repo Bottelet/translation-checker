@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Tests\Finder;
 
-use Bottelet\TranslationChecker\Dto\Translation;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;

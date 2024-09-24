@@ -60,7 +60,6 @@ class CleanTranslationForPhpFilesTest extends TestCase
         ];
         $file = $this->createPhpTranslationFile('ot.php', $initialTranslations);
 
-
         $this->artisan('translations:clean', [
             '--source' => 'ot',
         ])->assertExitCode(0);

@@ -44,7 +44,6 @@ class CheckTranslationForPhpFilesTest extends TestCase
             '--translate-missing' => true,
         ])->assertExitCode(0);
 
-
         $file = require $this->translationFile;
 
         foreach ($file as $translation) {

@@ -8,7 +8,7 @@ class LanguageFileManagerFactory implements FileManagerInterface
 
     public function __construct(protected string $filePath)
     {
-        if(str_ends_with($filePath, '.php')) {
+        if (str_ends_with($filePath, '.php')) {
             $this->fileManager = new PhpLanguageFileManager($filePath);
         } else {
             $this->fileManager = new JsonLanguageFileManager($filePath);

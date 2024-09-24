@@ -2,8 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Dto;
 
-use SplFileInfo;
-
 class MissingTranslation
 {
     protected bool $exists;
@@ -12,7 +10,6 @@ class MissingTranslation
     {
         $this->exists = false;
     }
-
 
     public function getKey(): ?string
     {
