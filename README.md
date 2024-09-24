@@ -18,8 +18,16 @@ It works with Laravel and supports various frontend frameworks like Vue.js, Reac
 }
 ```
 
+`lang.php`
 ```php
-<?php
+return [
+  'test.value' => 'Value',
+];
+```
+
+TestClass.php
+
+```php
 class TestClass
 {
     public function getValue()
@@ -37,6 +45,13 @@ php artisan translations:check en
   "test.value": "Value",
   "translate this string": null
 }
+```
+`lang.php`
+```php
+return [
+  'test.value' => 'Value',
+  'translate this string' => '',
+];
 ```
 The reason we default to null when no translation service are used is because it defaults to the key used in the function call.
 
