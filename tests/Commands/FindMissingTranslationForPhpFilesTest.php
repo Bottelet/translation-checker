@@ -7,20 +7,20 @@ use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
 
-class FindMissingTranslationTest extends TestCase
+class FindMissingTranslationForPhpFilesTest extends TestCase
 {
     private string $translationFile;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->tempDir.'/lang/da.json';
+        $this->translationFile = $this->tempDir.'/lang/da.php';
 
         if (! file_exists(dirname($this->translationFile))) {
             mkdir(dirname($this->translationFile), 0777, true);
         }
 
-        file_put_contents($this->translationFile, '{}');
+        file_put_contents($this->translationFile, '<?php return [];');
 
         Config::set('translator.source_paths', [$this->tempDir]);
         Config::set('translator.language_folder', $this->tempDir.'/lang');
@@ -33,7 +33,7 @@ class FindMissingTranslationTest extends TestCase
             '--source' => 'da',
         ])->assertExitCode(0);
 
-        $this->assertNotEmpty(json_decode(file_get_contents($this->translationFile)));
+        $this->assertNotEmpty(require $this->translationFile);
     }
 
     #[Test]
@@ -47,8 +47,9 @@ class FindMissingTranslationTest extends TestCase
             '--print' => true,
         ])->assertExitCode(0);
 
-        $this->assertJson(file_get_contents($this->translationFile));
-        $this->assertJsonStringEqualsJsonFile($this->translationFile, '{}');
+        $content = require $this->translationFile;
+        $this->assertIsArray($content);
+        $this->assertEmpty($content);
     }
 
     #[Test]

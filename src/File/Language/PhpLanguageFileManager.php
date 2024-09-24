@@ -52,7 +52,6 @@ class PhpLanguageFileManager implements FileManagerInterface
     {
         $sourceTranslations = $this->readFile();
         $targetTranslations = $targetFile->readFile();
-
         foreach ($sourceTranslations as $key => $value) {
             if (!array_key_exists($key, $targetTranslations)) {
                 $targetTranslations[$key] = $value;

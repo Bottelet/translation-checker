@@ -6,7 +6,7 @@ use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Illuminate\Console\Command;
 
-class SyncTranslation extends Command
+class SyncTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:sync
                             {--source= : The source language file to sync from}
@@ -18,14 +18,12 @@ class SyncTranslation extends Command
     {
         $source = $this->option('source');
         $target = $this->option('target');
-        $sourceLanguage = is_string($this->option('source')) ? $this->option('source') : 'en';
-        $sourcePath = config('translator.language_folder') . "/{$sourceLanguage}.json";
+        $sourcePath = $this->getTargetLanguagePath($source);
 
         $sourceFileManager = new LanguageFileManagerFactory($sourcePath);
 
         if ($target) {
-            $target = is_string($this->option('target')) ? $this->option('target') : 'en';
-            $targetPath = config('translator.language_folder') . "/{$target}.json";
+            $targetPath = $this->getTargetLanguagePath($target);
 
             $targetFileManager = new LanguageFileManagerFactory($targetPath);
             $sourceFileManager->syncFile($targetFileManager);
@@ -40,5 +38,14 @@ class SyncTranslation extends Command
                 }
             }
         }
+    }
+
+    protected function parseOptions(): CommandOptions
+    {
+        return new CommandOptions(
+            source: is_string($this->option('source')) ? $this->option('source') : 'en',
+            target: is_string($this->option('target')) ? $this->option('target') : null,
+            print: (bool) $this->option('print')
+        );
     }
 }
