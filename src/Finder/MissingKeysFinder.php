@@ -2,6 +2,10 @@
 
 namespace Bottelet\TranslationChecker\Finder;
 
+use Bottelet\TranslationChecker\Dto\MissingTranslation;
+use Bottelet\TranslationChecker\Dto\MissingTranslationList;
+use Bottelet\TranslationChecker\Dto\Translation;
+use Bottelet\TranslationChecker\Dto\TranslationList;
 use Bottelet\TranslationChecker\Extractor\ExtractorFactory;
 use SplFileInfo;
 
@@ -11,24 +15,27 @@ class MissingKeysFinder
      * Finds translatable strings in a set of files.
      *
      * @param  array<int, SplFileInfo>  $files
-     * @return array<int, string>
      */
-    public function findTranslatableStrings(array $files): array
+    public function findTranslatableStrings(array $files): TranslationList
     {
-        $found = [];
+        $translationList = new TranslationList();
 
         foreach ($files as $file) {
             if ($file->isFile()) {
                 $extractor = ExtractorFactory::createExtractorForFile($file);
                 $translationKeys = $extractor->extractFromFile($file);
                 foreach ($translationKeys as $key) {
-                    $found[] = $key;
+                    $translationList->addTranslation(new Translation($key, $file->getPathname()));
                 }
             }
         }
         $persistentKeys = (new PersistentKeysManager)->getKeys();
 
-        return array_merge($found, $persistentKeys);
+        foreach ($persistentKeys as $key) {
+            $translationList->addTranslation(new Translation($key, config_path('translator')));
+        }
+
+        return $translationList;
     }
 
     /**
@@ -36,9 +43,8 @@ class MissingKeysFinder
      * @param  array<int, SplFileInfo>  $files
      * @param  array<string, string>  $existingTranslatedStrings
      *
-     * @return array<string, string|null>
      */
-    public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): array
+    public function findMissingTranslatableStrings(array $files, array $existingTranslatedStrings): MissingTranslationList
     {
         $translationString = $this->findTranslatableStrings($files);
 
@@ -46,17 +52,15 @@ class MissingKeysFinder
     }
 
     /**
-     * @param  array<string>  $foundStrings
      * @param  array<string, string>  $jsonTranslations
-     * @return array<string, string|null>
      */
-    protected function extractMissingTranslations(array $foundStrings, array $jsonTranslations): array
+    protected function extractMissingTranslations(TranslationList $foundStrings, array $jsonTranslations): MissingTranslationList
     {
-        $missingTranslations = [];
-        foreach ($foundStrings as $string) {
-            $string = stripslashes($string);
+        $missingTranslations = new MissingTranslationList();
+        foreach ($foundStrings->getKeys() as $key => $string) {
+            $string = stripslashes($key);
             if (! array_key_exists($string, $jsonTranslations)) {
-                $missingTranslations[$string] = null;
+                $missingTranslations->addTranslation(new MissingTranslation($string, null));
             }
         }
 

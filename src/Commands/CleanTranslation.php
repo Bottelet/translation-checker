@@ -3,7 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\FileManagement;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
 
@@ -20,20 +20,20 @@ class CleanTranslation extends BaseTranslationCommand
         $this->info('Cleaning translations...');
 
         $options = $this->parseOptions();
-        $sourceJsonPath = $this->getTargetJsonPath($options->source);
+        $sourceJsonPath = $this->getTargetLanguagePath($options->source);
         $sourceFilePaths = $this->getSourceFilePaths();
 
         $translationFinder = new TranslationFinder(
             new FileManagement(),
-            new LanguageFileManager($sourceJsonPath),
+            new LanguageFileManagerFactory($sourceJsonPath),
             new MissingKeysFinder()
         );
 
-        $missingTranslations = $translationFinder->findAllTranslations($sourceFilePaths);
-        $sourceFileManager = new LanguageFileManager($sourceJsonPath);
+        $missingTranslations = $translationFinder->findAllTranslations($sourceFilePaths)->getKeys();
+        $sourceFileManager = new LanguageFileManagerFactory($sourceJsonPath);
         $sourceTranslations = $sourceFileManager->readFile();
 
-        $cleanedTranslations = array_intersect_key($sourceTranslations, array_flip($missingTranslations));
+        $cleanedTranslations = array_intersect_key($sourceTranslations, $missingTranslations);
         if ($options->print) {
             $this->printTranslations($cleanedTranslations);
         } else {

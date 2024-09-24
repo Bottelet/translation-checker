@@ -6,12 +6,12 @@ use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 
-class CleanTranslationTest extends TestCase
+class CleanTranslationForPhpFilesTest extends TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->createJsonTranslationFile('da', [
+        $this->translationFile = $this->createPhpTranslationFile('da.php', [
             'sundae' => 'sundae',
             'softice' => 'softice',
             'cubes' => 'cubes',
@@ -28,7 +28,7 @@ class CleanTranslationTest extends TestCase
         $this->artisan('translations:clean', [
             '--source' => 'da',
         ])->assertExitCode(0);
-        $content = json_decode(file_get_contents($this->translationFile), true);
+        $content = require $this->translationFile;
         $this->assertNotEmpty($content);
         $this->assertSame(['The title field is required for create' => 'Ice cream'], $content);
     }
@@ -40,7 +40,7 @@ class CleanTranslationTest extends TestCase
             '--source' => 'da',
             '--print' => true,
         ])->assertExitCode(0);
-        $content = json_decode(file_get_contents($this->translationFile), true);
+        $content = require $this->translationFile;
         $this->assertNotEmpty($content);
         $this->assertSame([
             'sundae' => 'sundae',
@@ -58,14 +58,13 @@ class CleanTranslationTest extends TestCase
             'The title field is required for create' => "Vaj che'meH mIw'a' lughovlaH",
             'unused key' => 'voq',
         ];
-        $file = $this->createJsonTranslationFile('ot', $initialTranslations);
+        $file = $this->createPhpTranslationFile('ot.php', $initialTranslations);
 
         $this->artisan('translations:clean', [
             '--source' => 'ot',
         ])->assertExitCode(0);
 
-        $content = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
-
+        $content = require $file;
         $this->assertSame([
             'The title field is required for create' => "Vaj che'meH mIw'a' lughovlaH",
         ], $content);
@@ -81,13 +80,13 @@ class CleanTranslationTest extends TestCase
             'you are currently not logged in.' => 'You are currently not logged in.',
             'Please_log_in' => 'please_log_in',
         ];
-        $file = $this->createJsonTranslationFile('ot', $initialTranslations);
+        $file = $this->createPhpTranslationFile('ot.php', $initialTranslations);
 
         $this->artisan('translations:clean', [
             '--source' => 'ot',
         ])->assertExitCode(0);
 
-        $content = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+        $content = require $file;
         $this->assertEmpty($content);
     }
 }
