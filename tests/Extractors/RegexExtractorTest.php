@@ -146,7 +146,7 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         TEXT;
 
         // Create a '.something' file to test if the extractor is resolved correctly
-        $fileName = $this->tempDir . '/test.something';
+        $fileName = $this->tempDir . '/test.js';
         file_put_contents($fileName, $testPhpContent);
         $file = new SplFileInfo($fileName);
 
