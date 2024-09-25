@@ -32,13 +32,15 @@ class RegexExtractor implements ExtractorContract
         ]);
     }
 
-    public function addPattern(string $regex, int $matchIndex, ?string $group = null): void
+    public function addPattern(string $regex, int $matchIndex, ?string $group = null): self
     {
         $this->patterns->push([
             'regex' => $regex,
             'matchIndex' => $matchIndex,
             'group' => $group ?? Str::random(10),
         ]);
+
+        return $this;
     }
 
     public function extractFromFile(SplFileInfo $file): array

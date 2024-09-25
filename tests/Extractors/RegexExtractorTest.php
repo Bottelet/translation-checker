@@ -2,6 +2,7 @@
 
 namespace Bottelet\TranslationChecker\Tests\Extractors;
 
+use Bottelet\TranslationChecker\Extractor\ExtractorFactory;
 use Bottelet\TranslationChecker\Extractor\RegexExtractor;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileInfo;
@@ -126,5 +127,34 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 
         // Assert that the pattern does not match translations with variables
         $this->assertNotContains('with :variable test', $translationKeys);
+    }
+
+    #[Test]
+    public function it_resolves_extractor_bound_to_the_app(): void
+    {
+        app()->bind(RegexExtractor::class, function () {
+            return (new RegexExtractor)->addPattern(
+                regex: '/mytranslatefunction\((["\'])(.*?)\1\)/',
+                matchIndex: 2,
+                group: 'mytranslatefunction'
+            );
+        });
+
+        $testPhpContent = <<<'TEXT'
+         mytranslatefunction('simple_string');
+         mytranslatefunction('String with "double quotes"');
+        TEXT;
+
+        // Create a '.something' file to test if the extractor is resolved correctly
+        $fileName = $this->tempDir . '/test.something';
+        file_put_contents($fileName, $testPhpContent);
+        $file = new SplFileInfo($fileName);
+
+        $extractor = ExtractorFactory::createExtractorForFile($file);
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertCount(2, $translationKeys);
+        $this->assertContains('simple_string', $translationKeys);
+        $this->assertContains('String with "double quotes"', $translationKeys);
     }
 }

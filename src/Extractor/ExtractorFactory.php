@@ -16,6 +16,6 @@ class ExtractorFactory
             return new PhpClassExtractor;
         }
 
-        return new RegexExtractor;
+        return app(RegexExtractor::class);
     }
 }
