@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 
-class SyncTranslationTest extends TestCase
+class SyncTranslationsForPhpFilesTest extends TestCase
 {
     private string $sourceFile;
     private string $targetFile;
@@ -16,13 +16,13 @@ class SyncTranslationTest extends TestCase
     {
         parent::setUp();
 
-        $this->sourceFile = $this->createJsonTranslationFile('en', [
+        $this->sourceFile = $this->createPhpTranslationFile('en.php', [
             'key1' => 'Source Value 1',
             'key2' => 'Source Value 2',
             'key3' => 'Source Value 3',
         ]);
 
-        $this->targetFile = $this->createJsonTranslationFile('de', [
+        $this->targetFile = $this->createPhpTranslationFile('de.php', [
             'key1' => 'Target Value 1',
             'key4' => 'Target Value 4',
             'key5' => 'Target Value 5',
@@ -47,13 +47,13 @@ class SyncTranslationTest extends TestCase
             'key5' => 'Target Value 5',
         ];
 
-        $this->assertEquals($expectedTranslations, json_decode(file_get_contents($this->targetFile), true));
+        $this->assertEquals($expectedTranslations, require $this->targetFile);
     }
 
     #[Test]
     public function itSyncsAllTranslationsIfNoTarget(): void
     {
-        $thirdFile = $this->createJsonTranslationFile('pl', '{}');
+        $thirdFile = $this->createPhpTranslationFile('pl.php', []);
 
         Artisan::call('translations:sync', [
             '--source' => 'en',
@@ -73,8 +73,8 @@ class SyncTranslationTest extends TestCase
             'key5' => 'Target Value 5',
         ];
 
-        $this->assertEquals($expectedTranslationsSource, json_decode(file_get_contents($this->sourceFile), true));
-        $this->assertEquals($expectedTranslationsTarget, json_decode(file_get_contents($this->targetFile), true));
-        $this->assertEquals($expectedTranslationsSource, json_decode(file_get_contents($thirdFile), true));
+        $this->assertEquals($expectedTranslationsSource, require $this->sourceFile);
+        $this->assertEquals($expectedTranslationsTarget, require $this->targetFile);
+        $this->assertEquals($expectedTranslationsSource, require $thirdFile);
     }
 }

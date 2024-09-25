@@ -6,14 +6,14 @@ use Bottelet\TranslationChecker\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 
-class SortTranslationTest extends TestCase
+class SortTranslationsForPhpFileTest extends TestCase
 {
     private string $translationFile;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->createJsonTranslationFile('da', [
+        $this->translationFile = $this->createPhpTranslationFile('da.php', [
             'z' => 'Z value',
             'b' => 'B value',
             'a' => 'A value',
@@ -32,7 +32,7 @@ class SortTranslationTest extends TestCase
             '--source' => 'da',
         ])->assertExitCode(0);
 
-        $sortedContent = json_decode(file_get_contents($this->translationFile), true);
+        $sortedContent = require $this->translationFile;
 
         $expectedContent = [
             'a' => 'A value',
@@ -49,7 +49,7 @@ class SortTranslationTest extends TestCase
     #[Test]
     public function allTranslationFiles(): void
     {
-        $secondTranslationFile = $this->createJsonTranslationFile('es', [
+        $secondTranslationFile = $this->createPhpTranslationFile('es.php', [
             'Aba' => 'value',
             'Cbb' => 'value',
             'ILL' => 'value',
@@ -62,8 +62,8 @@ class SortTranslationTest extends TestCase
             '--all' => true,
         ])->assertExitCode(0);
 
-        $sortedContentDaFile = json_decode(file_get_contents($this->translationFile), true);
-        $sortedContentEsFile = json_decode(file_get_contents($secondTranslationFile), true);
+        $sortedContentDaFile = require $this->translationFile;
+        $sortedContentEsFile = require $secondTranslationFile;
 
         $expectedContentDaFile = [
             'a' => 'A value',

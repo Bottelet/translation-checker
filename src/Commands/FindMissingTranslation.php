@@ -3,7 +3,7 @@
 namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\FileManagement;
-use Bottelet\TranslationChecker\File\Language\LanguageFileManager;
+use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
 
@@ -20,16 +20,16 @@ class FindMissingTranslation extends BaseTranslationCommand
         $this->info('Finding translations...');
 
         $options = $this->parseOptions();
-        $sourceJsonPath = $this->getTargetJsonPath($options->source);
+        $sourceJsonPath = $this->getTargetLanguagePath($options->source);
         $sourceFilePaths = $this->getSourceFilePaths();
 
         $translationFinder = new TranslationFinder(
             new FileManagement(),
-            new LanguageFileManager($sourceJsonPath),
+            new LanguageFileManagerFactory($sourceJsonPath),
             new MissingKeysFinder()
         );
 
-        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths);
+        $missingTranslations = $translationFinder->findMissingTranslations($sourceFilePaths)->getKeys();
 
         if ($options->print) {
             $this->printMissingTranslations($missingTranslations);

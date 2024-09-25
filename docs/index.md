@@ -15,7 +15,7 @@ and as default looks for translations in the `app/` and `resources/` folders.
 You can install the package via composer: 
 
 ```bash
-composer require bottelet/laravel-translation-checker
+composer require bottelet/translation-checker --dev
 ```
 
 ## Configuration

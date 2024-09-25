@@ -37,7 +37,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'client_x509_cert_url' => 'test',
         ]);
         $this->app['config']->set('translator.translators.openai', [
-            'model' => 'gpt-3.5-turbo',
+            'model' => 'gpt-4o-mini',
             'api_key' => 'API_KEY',
             'organization_id' => 'ORG_ID',
         ]);
@@ -96,7 +96,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         );
     }
 
-    public function createTranslationFile(string $name, string|array $content = '')
+    public function createJsonTranslationFile(string $name, string|array $content = ''): string
     {
         $translationFile = $this->tempDir."/lang/{$name}.json";
         if (! file_exists(dirname($translationFile))) {
@@ -110,6 +110,17 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return $translationFile;
     }
 
+    public function createPhpTranslationFile(string $fullPath, array $content = []): string
+    {
+        $translationFile = $this->tempDir.'/lang/'.$fullPath;
+        if (! file_exists(dirname($translationFile))) {
+            mkdir(dirname($translationFile), 0777, true);
+        }
+
+        file_put_contents($translationFile, '<?php return '.var_export($content, true).';');
+
+        return $translationFile;
+    }
     /**
      * @param  \Illuminate\Foundation\Application  $app
      * @return array

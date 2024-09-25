@@ -4,7 +4,7 @@ namespace Bottelet\TranslationChecker\File\Language;
 
 use RuntimeException;
 
-class LanguageFileManager
+class JsonLanguageFileManager implements FileManagerInterface
 {
     public function __construct(protected string $filePath)
     {
@@ -48,7 +48,7 @@ class LanguageFileManager
         $this->updateFile($translations);
     }
 
-    public function syncFile(LanguageFileManager $targetFile): void
+    public function syncFile(FileManagerInterface $targetFile): void
     {
         $sourceTranslations = $this->readFile();
         $targetTranslations = $targetFile->readFile();
