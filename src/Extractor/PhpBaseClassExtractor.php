@@ -39,7 +39,6 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
         $enumExtractor = new EnumExtractor;
         $translateCommentExtractor = new TranslateCommentExtractor;
         $traverser->addVisitor($this);
-        $traverser->addVisitor(new ChainedGetNodeRemover);
         $traverser->addVisitor($enumExtractor);
         $traverser->addVisitor($translateCommentExtractor);
 

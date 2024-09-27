@@ -95,14 +95,4 @@ class BladeFileExtractorTest extends TestCase
 
         $this->assertNull($result);
     }
-
-    #[Test]
-    public function stopTraverseOnNonFuncCallCalledGet(): void
-    {
-        $methodCallNode = new MethodCall(new Node\Expr\Variable('someVar'), 'get');
-        $bladeExtractor = new BladeFileExtractor;
-        $result = $bladeExtractor->enterNode($methodCallNode);
-
-        $this->assertEquals(NodeVisitor::STOP_TRAVERSAL, $result);
-    }
 }

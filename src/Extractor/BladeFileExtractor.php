@@ -23,9 +23,6 @@ class BladeFileExtractor extends PhpBaseClassExtractor
                 }
             }
         } elseif ($node instanceof MethodCall && $node->name instanceof Identifier && $node->name->name === 'get') {
-            if (! $node->var instanceof FuncCall) {
-                return NodeVisitor::STOP_TRAVERSAL;
-            }
             /** @var FuncCall $variable */
             $variable = $node->var;
             /** @var Name $function */
