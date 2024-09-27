@@ -37,6 +37,9 @@
         "openai-php/client": "^0.10.1",
         "deeplcom/deepl-php": "^1.9"
     },
+    "scripts": {
+        "test": "vendor/bin/phpunit tests"
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true
