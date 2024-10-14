@@ -27,8 +27,7 @@ class BladeFileExtractor extends PhpBaseClassExtractor
             $variable = $node->var;
             /** @var Name $function */
             $function = $variable->name;
-
-            if ($function->name === 'app') {
+            if (property_exists($function, 'name') && $function->name === 'app') {
                 /** @var Node\Arg $argument */
                 $argument = $variable->getArgs()[0];
                 /** @var Node\Scalar\String_ $value */

@@ -95,4 +95,22 @@ class BladeFileExtractorTest extends TestCase
 
         $this->assertNull($result);
     }
+
+    #[Test]
+    public function willIgnoreGetMethodIfNodeHasNoNameProperty():void
+    {
+        $code = <<<'BLADE'
+                <div>
+                    @if ($request->get('version') === "1.0")
+                        {{ __('Complete registration') }}
+                    @endif
+                </div>
+BLADE;
+
+        $file = $this->createTempFile('node-without-name-prop.blade.php', $code);
+        $phpExtractor = new BladeFileExtractor;
+        $foundStrings = $phpExtractor->extractFromFile($file);
+
+        $this->assertContains('Complete registration', $foundStrings);
+    }
 }
