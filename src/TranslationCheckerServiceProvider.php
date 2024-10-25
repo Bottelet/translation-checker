@@ -5,6 +5,7 @@ namespace Bottelet\TranslationChecker;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 use Bottelet\TranslationChecker\Translator\DeeplTranslator;
+use Bottelet\TranslationChecker\Translator\FreeGoogleTranslator;
 use Bottelet\TranslationChecker\Translator\GoogleTranslator;
 use Bottelet\TranslationChecker\Translator\OpenAiTranslator;
 use Bottelet\TranslationChecker\Translator\TranslatorContract;
@@ -34,6 +35,13 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             return new GoogleTranslator(
                 $app->make(VariableRegexHandler::class),
                 new TranslateClient(['keyFile' =>  $app->config['translator.translators.google']])
+            );
+        });
+
+        $this->app->bind(FreeGoogleTranslator::class, function ($app) {
+            return new FreeGoogleTranslator(
+                $app->make(VariableRegexHandler::class),
+                new \Stichoza\GoogleTranslate\GoogleTranslate()
             );
         });
 

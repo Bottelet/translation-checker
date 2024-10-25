@@ -5,9 +5,11 @@ parent: Translation Services
 nav_order: 1
 ---
 
-# Google Translation API
+# Google Cloud Translation API
 
-For Google Translate, you need to set the following environment variables
+For Google Cloud Translate (More advanced translation than free Google previously), you need to set the following
+environment variables
+
 ```bash
 GOOGLE_TRANSLATE_TYPE=service_account
 GOOGLE_TRANSLATE_PROJECT_ID=your_project_id

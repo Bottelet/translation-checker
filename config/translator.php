@@ -13,8 +13,11 @@ return [
       | Supported: "google", "openai", "deepl"
       |
       */
-    'default' => env('DEFAULT_TRANSLATOR_SERVICE', 'openai'),
+    'default' => env('DEFAULT_TRANSLATOR_SERVICE', 'free_google'),
     'translators' => [
+        'free_google' => [
+            'driver' => Bottelet\TranslationChecker\Translator\FreeGoogleTranslator::class,
+        ],
         'google' => [
             'driver' => Bottelet\TranslationChecker\Translator\GoogleTranslator::class,
             'type' => env('GOOGLE_TRANSLATE_TYPE', 'service_account'),
@@ -39,6 +42,14 @@ return [
         base_path('resources/'),
     ],
     'language_folder' => base_path('/lang'),
+
+    /**
+     *  Specify a PHP filename if you prefer not to use JSON files like en.json
+     *
+     *  This approach offers several advantages for developers, as PHP translation files are often more manageable
+     *  and compatible with translation UIs, such as [https://github.com/MohmmedAshraf/laravel-translations].
+     */
+    'php_file_name' => '', // add `msg`, `message`, `label`, etc
 
     /**
      * Defines the function used to mark strings for translation without actually translating them.
