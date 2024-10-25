@@ -44,14 +44,6 @@ return [
     'language_folder' => base_path('/lang'),
 
     /**
-     *  Specify a PHP filename if you prefer not to use JSON files like en.json
-     *
-     *  This approach offers several advantages for developers, as PHP translation files are often more manageable
-     *  and compatible with translation UIs, such as [https://github.com/MohmmedAshraf/laravel-translations].
-     */
-    'php_file_name' => '', // add `msg`, `message`, `label`, etc
-
-    /**
      * Defines the function used to mark strings for translation without actually translating them.
      *
      * When this function (e.g., '__t') is used, it returns the original string unchanged. This is useful
