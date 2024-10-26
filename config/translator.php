@@ -13,8 +13,11 @@ return [
       | Supported: "google", "openai", "deepl"
       |
       */
-    'default' => env('DEFAULT_TRANSLATOR_SERVICE', 'openai'),
+    'default' => env('DEFAULT_TRANSLATOR_SERVICE', 'free_google'),
     'translators' => [
+        'free_google' => [
+            'driver' => Bottelet\TranslationChecker\Translator\FreeGoogleTranslator::class,
+        ],
         'google' => [
             'driver' => Bottelet\TranslationChecker\Translator\GoogleTranslator::class,
             'type' => env('GOOGLE_TRANSLATE_TYPE', 'service_account'),

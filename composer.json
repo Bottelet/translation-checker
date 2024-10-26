@@ -35,7 +35,8 @@
         "nikic/php-parser": "^v5.2",
         "google/cloud-translate": "^1.17",
         "openai-php/client": "^0.10.1",
-        "deeplcom/deepl-php": "^1.9"
+        "deeplcom/deepl-php": "^1.9",
+        "stichoza/google-translate-php": "^5.2"
     },
     "scripts": {
         "test": "vendor/bin/phpunit tests"
