@@ -23,7 +23,7 @@ if (config('translator.translators.openai.custom_prompt')) {
     $systemPrompt .= $this->CustomPrompt();
 }
 
-$systemPrompt .= "Input format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
+$systemPrompt .= "\nInput format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
 
 Output format: respond with a single string in {$targetLanguage}, potentially containing words prefixed with colons.";
 
