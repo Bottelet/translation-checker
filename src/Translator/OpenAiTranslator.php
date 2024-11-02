@@ -17,9 +17,13 @@ class OpenAiTranslator implements TranslatorContract
 Instructions:
 1. Translate the entire string from {$sourceLanguage} to {$targetLanguage}.
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
-3. Maintain the original structure and formatting of the input string.
+3. Maintain the original structure and formatting of the input string.";
 
-Input format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
+if (config('translator.translators.openai.custom_prompt')) {
+    $systemPrompt .= $this->CustomPrompt();
+}
+
+$systemPrompt .= "Input format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
 
 Output format: respond with a single string in {$targetLanguage}, potentially containing words prefixed with colons.";
 
@@ -53,9 +57,13 @@ Output format: respond with a single string in {$targetLanguage}, potentially co
 Instructions:
 1. Translate each string from {$sourceLanguage} to {$targetLanguage}.
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
-3. Maintain the original structure and formatting of each input string.
+3. Maintain the original structure and formatting of each input string.\n";
 
-Input format: An array of strings in {$sourceLanguage}, potentially containing words prefixed with colons.
+if (config('translator.translators.openai.custom_prompt')) {
+    $systemPrompt .= $this->CustomPrompt();
+}
+
+$systemPrompt .="\nInput format: An array of strings in {$sourceLanguage}, potentially containing words prefixed with colons.
 
 Output format: Respond with a single JSON object. Each key-value pair in this object should represent one translation:
 - Key: The original string in {$sourceLanguage}
@@ -113,5 +121,10 @@ Ensure your entire response is a valid JSON object.";
         $openAiConfig = config('translator.translators.openai');
 
         return $openAiConfig['api_key'] && $openAiConfig['model'];
+    }
+
+    private function CustomPrompt(): string
+    {
+        return "4. " . config('translator.translators.openai.custom_prompt') . "\n";   
     }
 }
