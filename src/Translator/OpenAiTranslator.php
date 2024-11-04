@@ -19,8 +19,8 @@ Instructions:
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
 3. Maintain the original structure and formatting of the input string.";
 
-if (config('translator.translators.openai.custom_prompt')) {
-    $systemPrompt .= $this->CustomPrompt();
+if (config('translator.translators.openai.prompt_extension')) {
+    $systemPrompt .= $this->customPrompt();
 }
 
 $systemPrompt .= "\nInput format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
@@ -59,8 +59,8 @@ Instructions:
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
 3. Maintain the original structure and formatting of each input string.\n";
 
-if (config('translator.translators.openai.custom_prompt')) {
-    $systemPrompt .= $this->CustomPrompt();
+if (config('translator.translators.openai.prompt_extension')) {
+    $systemPrompt .= $this->customPrompt();
 }
 
 $systemPrompt .="\nInput format: An array of strings in {$sourceLanguage}, potentially containing words prefixed with colons.
@@ -123,8 +123,8 @@ Ensure your entire response is a valid JSON object.";
         return $openAiConfig['api_key'] && $openAiConfig['model'];
     }
 
-    private function CustomPrompt(): string
+    private function customPrompt(): string
     {
-        return "4. " . config('translator.translators.openai.custom_prompt') . "\n";   
+        return "4. " . config('translator.translators.openai.prompt_extension') . "\n";   
     }
 }

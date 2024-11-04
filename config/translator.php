@@ -33,12 +33,12 @@ return [
             'organization_id' => env('OPENAI_ORGANIZATION'),
 
             /**
-             * Custom prompt to enhance translation quality.
+             * Custom added prompt to enhance translation quality.
              * 
              * Example:
-             * 'custom_prompt' => 'This application translates medical terms consistently throughout.'
+             * 'prompt_extension' => 'This application translates medical terms consistently throughout.'
              */
-            'custom_prompt' => ''
+            'prompt_extension' => ''
         ],
         'deepl' => [
             'driver' => Bottelet\TranslationChecker\Translator\DeeplTranslator::class,
