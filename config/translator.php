@@ -31,6 +31,14 @@ return [
             'model' => env('OPENAI_MODEL', 'gpt-4o'),
             'api_key' => env('OPENAI_API_KEY'),
             'organization_id' => env('OPENAI_ORGANIZATION'),
+
+            /**
+             * Custom added prompt to enhance translation quality.
+             * 
+             * Example:
+             * 'prompt_extension' => 'This application translates medical terms consistently throughout.'
+             */
+            'prompt_extension' => ''
         ],
         'deepl' => [
             'driver' => Bottelet\TranslationChecker\Translator\DeeplTranslator::class,
