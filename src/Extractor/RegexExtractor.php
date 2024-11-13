@@ -20,7 +20,7 @@ class RegexExtractor implements ExtractorContract
                 'group' => 'doubleUnderscoreSyntax',
             ],
             [
-                'regex' => '/(?<![\w\$])\$?t\((["\'])(.*?)\1\)/',
+                'regex' => '/(?<![\w$])\$?tc?\((["\'])(.*?)\1[^)]*?\)/s',
                 'matchIndex' => 2,
                 'group' => 'tSyntax',
             ],
