@@ -113,7 +113,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
                 'message' => 'The model `gpt-1` does not exist',
                 'type' => 'invalid_request_error',
                 'code' => null,
-            ]),
+            ], 400),
         ]);
         $this->openAiTranslator = new OpenAiTranslator($this->translateClientMock);
 
