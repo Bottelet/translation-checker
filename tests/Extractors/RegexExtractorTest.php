@@ -18,12 +18,21 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
          __('String with "double quotes"');
          __('custom_translator', 'Another simple string');
          __('with :variable test', ['variable' => 'test']);
+         __('with :variable test and line breaks', [
+             'variable' => 'test'
+         ]);
         $t('dollar t');
         t("t translation")
+        t("t translation with parameters", { parameter: someValue, another: 'value' })
+        t("t translation with parameters and line breaks", { 
+            parameter: 'someValue',
+            another: 'value' 
+        })
+        tc("t translation with pluralization", 2)
         $_('underscore translator')
         { $t("dollar t inside curly bracket") }
         {{ $_('underscore translator inside curly bracket') }}
-        {{ t("t translation inside curly brakcets") }}
+        {{ t("t translation inside curly brackets") }}
         TEXT;
 
         file_put_contents($this->tempDir . '/test.php', $testPhpContent);
@@ -37,7 +46,7 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
 
         $translationKeys = $extractor->extractFromFile($file);
 
-        $this->assertCount(10, $translationKeys);
+        $this->assertCount(14, $translationKeys);
         $this->assertContains('with :variable test', $translationKeys);
         $this->assertContains('dollar t inside curly bracket', $translationKeys);
         $this->assertContains('simple_string', $translationKeys);

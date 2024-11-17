@@ -11,21 +11,25 @@ class RegexExtractor implements ExtractorContract
     /** @var Collection<int, array{regex: string, matchIndex: int, group: string}> */
     private Collection $patterns;
 
+    public const DOUBLE_UNDERSCORE_SYNTAX_PATTERN = '/(__\()([\'"])(.*?)\2/';
+    public const T_SYNTAX_PATTERN = '/(?<![\w$])\$?tc?\((["\'])(.*?)\1[^)]*?\)/s';
+    public const DOLLAR_UNDERSCORE_PATTERN = '/\$_\([\'"]([^\'"]+)[\'"]\)/';
+
     public function __construct()
     {
         $this->patterns = collect([
             [
-                'regex' => '/(__\()([\'"])(.*?)\2/',
+                'regex' => self::DOUBLE_UNDERSCORE_SYNTAX_PATTERN,
                 'matchIndex' => 3,
                 'group' => 'doubleUnderscoreSyntax',
             ],
             [
-                'regex' => '/(?<![\w\$])\$?t\((["\'])(.*?)\1\)/',
+                'regex' => self::T_SYNTAX_PATTERN,
                 'matchIndex' => 2,
                 'group' => 'tSyntax',
             ],
             [
-                'regex' => '/\$_\([\'"]([^\'"]+)[\'"]\)/',
+                'regex' => self::DOLLAR_UNDERSCORE_PATTERN,
                 'matchIndex' => 1,
                 'group' => 'dollarUnderscorePattern',
             ],
