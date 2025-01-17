@@ -95,4 +95,25 @@ class CheckTranslationTest extends TestCase
         $this->assertStringContainsString('Welcome/Hi', file_get_contents($this->translationFile));
         $this->assertStringContainsString('Velkommen/Hej', file_get_contents($this->translationFile));
     }
+
+    #[Test]
+    public function itCreatesPhpFileIfNoTargetFilesExist(): void
+    {
+        // Remove any existing files
+        if (file_exists($this->translationFile)) {
+            unlink($this->translationFile);
+        }
+        $phpFile = dirname($this->translationFile) . '/fr.php';
+        if (file_exists($phpFile)) {
+            unlink($phpFile);
+        }
+        Config::set('translator.source_paths', []);
+
+        $this->artisan('translations:check', [
+            'target' => 'fr',
+        ])->assertExitCode(0);
+
+        $this->assertFileExists($phpFile);
+        $this->assertEquals("<?php\n\nreturn array (\n);\n", file_get_contents($phpFile));
+    }
 }
