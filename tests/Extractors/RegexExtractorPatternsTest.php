@@ -38,8 +38,6 @@ class RegexExtractorPatternsTest extends TestCase
         $contents = "<template>{{ \$t('welcome_t') }} not me {{ \$t('Hello t world') }}  {{ t('only t in bracket') }} ({{ t('within parens with params', { param: 'value' })}}) t('only t withoutbrackets')</template>";
         preg_match_all($tPattern, $contents, $matches);
 
-        ray($matches);
-
         $this->assertContains('Hello t world', $matches[2]);
         $this->assertCount(5, $matches[2]);
     }
