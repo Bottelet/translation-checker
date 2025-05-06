@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "dependencyDashboard": true,
+  "baseBranches": ["main"],
+  "extends": [
+    "config:recommended",
+    ":disableRateLimiting",
+    "docker:disable",
+    "schedule:earlyMondays"
+  ],
+  "ignorePaths": ["**/.github/**"],
+  "ignoreDeps": ["php"],
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "enabled": true,
+      "automerge": false,
+      "matchPackageNames": ["*"]
+    },
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "all dependencies",
+      "groupSlug": "update-dependencies",
+      "enabled": true,
+      "automerge": false,
+      "matchPackageNames": ["*"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["*"],
+      "enabled": false
+    }
+  ]
+}
