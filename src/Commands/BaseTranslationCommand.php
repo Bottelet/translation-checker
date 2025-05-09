@@ -31,6 +31,12 @@ abstract class BaseTranslationCommand extends Command
         if (!file_exists($file)) {
             $file = config('translator.language_folder') . "/{$targetLanguage}.php";
         }
+        
+        if (!file_exists($file)) {
+            $file = config('translator.language_folder') . "/{$targetLanguage}.php";
+            file_put_contents($file, "<?php\n\nreturn [];");
+        }
+
 
         return $file;
     }
