@@ -10,7 +10,8 @@ class CheckTranslation extends BaseTranslationCommand
                             {target : The target language for the translations}
                             {--source= : The source language used for the translation provider}
                             {--translate-missing : Translate missing translations using the translation service}
-                            {--sort : Sort JSON translation files}';
+                            {--sort : Sort JSON translation files}
+                            {--nested : Use nested structure where keys are split at the first dot}';
 
     protected $description = 'Check and manage translations';
 
@@ -28,8 +29,10 @@ class CheckTranslation extends BaseTranslationCommand
             $options->sort,
             $options->target,
             $options->translateMissing,
-            $options->source
+            $options->source,
+            $options->nested
         );
+
         $this->displayResult($missingTranslations);
     }
 
@@ -39,7 +42,8 @@ class CheckTranslation extends BaseTranslationCommand
             source: is_string($this->option('source')) ? $this->option('source') : 'en',
             target: is_string($this->argument('target')) ? $this->argument('target') : 'en',
             translateMissing: (bool) $this->option('translate-missing'),
-            sort: (bool) $this->option('sort')
+            sort: (bool) $this->option('sort'),
+            nested: (bool) $this->option('nested')
         );
     }
 

@@ -21,7 +21,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
         error_reporting(E_ALL);
         $this->tempDir = sys_get_temp_dir() . '/bottelet-translation-checker-test';
-        if (! file_exists($this->tempDir)) {
+        if (!file_exists($this->tempDir)) {
             mkdir($this->tempDir, 0777, true);
         }
 
@@ -48,7 +48,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function tearDown(): void
     {
-        $iterator    = new RecursiveDirectoryIterator($this->tempDir, FilesystemIterator::SKIP_DOTS);
+        $iterator = new RecursiveDirectoryIterator($this->tempDir, FilesystemIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($files as $file) {
             if ($file instanceof SplFileInfo && $file->isFile()) {
@@ -77,29 +77,29 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         $this->bladeFile = $this->createTempFile(
             'test.blade.php',
-            file_get_contents(__DIR__.'/Files/templates/underscore-translations.blade.php'),
+            file_get_contents(__DIR__ . '/Files/templates/underscore-translations.blade.php'),
         );
 
         $this->phpControllerFile = $this->createTempFile(
             'TestController.php',
-            file_get_contents(__DIR__.'/Files/templates/TestController.php'),
+            file_get_contents(__DIR__ . '/Files/templates/TestController.php'),
         );
 
         $this->vueFile = $this->createTempFile(
             'test.vue',
-            file_get_contents(__DIR__.'/Files/templates/dollar-t.vue'),
+            file_get_contents(__DIR__ . '/Files/templates/dollar-t.vue'),
         );
 
         $this->noTranslationsBladeFile = $this->createTempFile(
             'empty.blade.php',
-            file_get_contents(__DIR__.'/Files/templates/no-translations.blade.php'),
+            file_get_contents(__DIR__ . '/Files/templates/no-translations.blade.php'),
         );
     }
 
     public function createJsonTranslationFile(string $name, string|array $content = ''): string
     {
-        $translationFile = $this->tempDir."/lang/{$name}.json";
-        if (! file_exists(dirname($translationFile))) {
+        $translationFile = $this->tempDir . "/lang/{$name}.json";
+        if (!file_exists(dirname($translationFile))) {
             mkdir(dirname($translationFile), 0777, true);
         }
         if (is_array($content)) {
@@ -112,17 +112,43 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     public function createPhpTranslationFile(string $fullPath, array $content = []): string
     {
-        $translationFile = $this->tempDir.'/lang/'.$fullPath;
-        if (! file_exists(dirname($translationFile))) {
+        $translationFile = $this->tempDir . '/lang/' . $fullPath;
+        if (!file_exists(dirname($translationFile))) {
             mkdir(dirname($translationFile), 0777, true);
         }
 
-        file_put_contents($translationFile, '<?php return '.var_export($content, true).';');
+        file_put_contents($translationFile, '<?php return ' . var_export($content, true) . ';');
 
         return $translationFile;
     }
+
+    public function createNestedTranslationFile(string $language, string $filename, array $content = []): string
+    {
+        $languageDir = $this->tempDir . '/lang/' . $language;
+        if (!file_exists($languageDir)) {
+            mkdir($languageDir, 0777, true);
+        }
+
+        $filePath = $languageDir . '/' . $filename . '.php';
+        file_put_contents($filePath, "<?php\n\nreturn " . var_export($content, true) . ";\n");
+
+        return $filePath;
+    }
+
+    public function assertNestedFileContains(string $language, string $filename, array $expectedContent): void
+    {
+        $filePath = $this->tempDir . '/lang/' . $language . '/' . $filename . '.php';
+        $this->assertFileExists($filePath);
+        $fileContents = require $filePath;
+
+        foreach ($expectedContent as $key => $value) {
+            $this->assertArrayHasKey($key, $fileContents);
+            $this->assertEquals($value, $fileContents[$key]);
+        }
+    }
+
     /**
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
      * @return array
      */
     protected function getPackageProviders($app)

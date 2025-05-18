@@ -5,6 +5,7 @@ namespace Bottelet\TranslationChecker;
 use Bottelet\TranslationChecker\Exception\TranslationServiceException;
 use Bottelet\TranslationChecker\File\FileManagement;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
+use Bottelet\TranslationChecker\File\Language\PhpNestedLanguageFileHelper;
 use Bottelet\TranslationChecker\Finder\MissingKeysFinder;
 use Bottelet\TranslationChecker\Finder\TranslationFinder;
 use Bottelet\TranslationChecker\Sort\SorterContract;
@@ -13,16 +14,25 @@ use Bottelet\TranslationChecker\Translator\TranslatorContract;
 class TranslationManager
 {
     public function __construct(
-        protected SorterContract $sorter,
+        protected SorterContract     $sorter,
         protected TranslatorContract $translationService
-    ) {
+    )
+    {
     }
 
     /**
-     * @param  array<string>  $sourceFilePaths
+     * @param array<string> $sourceFilePaths
      * @return array<string, string|null>
      */
-    public function updateTranslationsFromFile(array $sourceFilePaths, string $targetJsonPath, bool $sort = false, ?string $targetLanguage = null, bool $translateMissing = false, string $sourceLanguage = 'en'): array
+    public function updateTranslationsFromFile(
+        array   $sourceFilePaths,
+        string  $targetJsonPath,
+        bool    $sort = false,
+        ?string $targetLanguage = null,
+        bool    $translateMissing = false,
+        string  $sourceLanguage = 'en',
+        bool    $nested = false
+    ): array
     {
         $translationFinder = new TranslationFinder(new FileManagement, new LanguageFileManagerFactory($targetJsonPath), new MissingKeysFinder);
 
@@ -43,8 +53,24 @@ class TranslationManager
             $allTranslations = $this->sorter->sortByKey($allTranslations);
         }
 
-        $translationFinder->getLanguageFilerManager()->updateFile($allTranslations);
+        if ($nested) {
+            $this->processNestedStructure($allTranslations, $targetLanguage ?? $sourceLanguage);
+        } else {
+            $translationFinder->getLanguageFilerManager()->updateFile($allTranslations);
+        }
 
         return $missingTranslations;
+    }
+
+    protected function processNestedStructure(array $translations, string $language): void
+    {
+        if (empty($translations)) {
+            return;
+        }
+
+        $nestedTranslations = PhpNestedLanguageFileHelper::processNestedKeys($translations);
+        $languageFolder = config('translator.language_folder');
+
+        PhpNestedLanguageFileHelper::writeNestedTranslations($nestedTranslations, $languageFolder, $language);
     }
 }
