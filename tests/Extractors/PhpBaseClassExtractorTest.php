@@ -51,6 +51,12 @@ class PhpBaseClassExtractorTest extends TestCase
     #[Test]
     public function getEmptyIfFilePermissionFails(): void
     {
+        // Skip this test on Windows as chmod does not have the same effect
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->markTestSkipped('Skipping permission test on Windows');
+            return;
+        }
+
         $filePath = $this->tempDir . '/permission.php';
         file_put_contents($filePath, $this->phpControllerFile);
 

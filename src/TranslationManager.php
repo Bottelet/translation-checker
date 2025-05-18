@@ -69,8 +69,6 @@ class TranslationManager
         }
 
         $nestedTranslations = PhpNestedLanguageFileHelper::processNestedKeys($translations);
-        $languageFolder = config('translator.language_folder');
-
-        PhpNestedLanguageFileHelper::writeNestedTranslations($nestedTranslations, $languageFolder, $language);
+        PhpNestedLanguageFileHelper::writeNestedTranslations($nestedTranslations, $language);
     }
 }
