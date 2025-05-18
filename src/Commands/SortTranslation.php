@@ -37,10 +37,6 @@ class SortTranslation extends BaseTranslationCommand
 
         if ($options->all) {
             $this->sortAllFiles();
-            $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
-            foreach ($languageFiles as $file) {
-                $this->sortFile($file->getPathname());
-            }
         } else {
             $targetJsonPath = $this->getTargetLanguagePath($options->source);
             $this->sortFile($targetJsonPath);
