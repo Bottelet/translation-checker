@@ -147,6 +147,20 @@ class TestCase extends \Orchestra\Testbench\TestCase
         }
     }
 
+    public function assertNestedFileSorted(string $language, string $filename): void
+    {
+        $filePath = $this->tempDir . '/lang/' . $language . '/' . $filename . '.php';
+        $this->assertFileExists($filePath);
+        $fileContents = require $filePath;
+
+        $keys = array_keys($fileContents);
+
+        $sortedKeys = $keys;
+        sort($sortedKeys);
+
+        $this->assertSame($sortedKeys, $keys, "Keys in {$language}/{$filename}.php are not sorted alphabetically");
+    }
+
     /**
      * @param \Illuminate\Foundation\Application $app
      * @return array

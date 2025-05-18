@@ -31,7 +31,7 @@ class PhpNestedLanguageFileHelper
 
     public static function getAllNestedTranslations(string $language): array
     {
-        $languageDir = self::getLanguageDir($language);
+        $languageDir = self::getLocaleDirectory($language);
 
         // Get all existing translations from nested files
         $existingTranslations = [];
@@ -55,7 +55,7 @@ class PhpNestedLanguageFileHelper
 
     public static function writeNestedTranslations(array $nestedTranslations, string $language): void
     {
-        $languageDir = self::getLanguageDir($language);
+        $languageDir = self::getLocaleDirectory($language);
 
         // Ensure language directory exists
         if (!file_exists($languageDir)) {
@@ -65,6 +65,7 @@ class PhpNestedLanguageFileHelper
         foreach ($nestedTranslations as $file => $translations) {
             $filePath = $languageDir . DIRECTORY_SEPARATOR . $file . '.php';
             $fileDir = dirname($filePath);
+
             if (!file_exists($fileDir)) {
                 mkdir($fileDir, 0755, true);
             }
@@ -88,7 +89,7 @@ class PhpNestedLanguageFileHelper
 
     public static function cleanNestedTranslations(array $nestedTranslationsToKeep, string $language): void
     {
-        $languageDir = self::getLanguageDir($language);
+        $languageDir = self::getLocaleDirectory($language);
 
         foreach ($nestedTranslationsToKeep as $file => $translations) {
             $filePath = $languageDir . DIRECTORY_SEPARATOR . $file . '.php';
@@ -111,8 +112,34 @@ class PhpNestedLanguageFileHelper
         }
     }
 
-    private static function getLanguageDir(string $language): string
+    public static function sortLocaleTranslations(string $language)
     {
-        return rtrim(config('translator.language_folder'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $language;
+        $languageDir = self::getLocaleDirectory($language);
+        if (!file_exists($languageDir)) {
+            return;
+        }
+
+        $phpFiles = glob($languageDir . DIRECTORY_SEPARATOR . '*.php');
+
+        foreach ($phpFiles as $file) {
+            $fileTranslations = require $file;
+
+            if (!is_array($fileTranslations)) {
+                return;
+            }
+
+            ksort($fileTranslations);
+            file_put_contents($file, "<?php\n\nreturn " . var_export($fileTranslations, true) . ";\n");
+        }
+    }
+
+    public static function getLangDirectory(): string
+    {
+        return rtrim(config('translator.language_folder'), DIRECTORY_SEPARATOR);
+    }
+
+    public static function getLocaleDirectory(string $locale): string
+    {
+        return self::getLangDirectory() . DIRECTORY_SEPARATOR . $locale;
     }
 }

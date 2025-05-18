@@ -4,13 +4,15 @@ namespace Bottelet\TranslationChecker\Commands;
 
 use Bottelet\TranslationChecker\File\Language\LanguageDirectoryManager;
 use Bottelet\TranslationChecker\File\Language\LanguageFileManagerFactory;
+use Bottelet\TranslationChecker\File\Language\PhpNestedLanguageFileHelper;
 use Bottelet\TranslationChecker\Sort\SorterContract;
 
 class SortTranslation extends BaseTranslationCommand
 {
     protected $signature = 'translations:sort
                             {--source= : The source language for the translations to sort}
-                            {--all : All files found in the config language_folder }';
+                            {--all : All files found in the config language_folder }
+                            {--nested : Use nested structure where keys are split at the first dot}';
 
     protected $description = 'Sort translation file by using the sorter given in config';
 
@@ -24,9 +26,20 @@ class SortTranslation extends BaseTranslationCommand
         $this->info('Sorting translations...');
 
         $options = $this->parseOptions();
+        $nested = $options->nested;
+
+        if ($nested) {
+            $this->processNestedStructure($options->source, $options->all);
+            $this->info('Translation sorting completed.');
+
+            return;
+        }
 
         if ($options->all) {
-            $this->sortAllFiles();
+            $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
+            foreach ($languageFiles as $file) {
+                $this->sortFile($file->getPathname());
+            }
         } else {
             $targetJsonPath = $this->getTargetLanguagePath($options->source);
             $this->sortFile($targetJsonPath);
@@ -39,16 +52,9 @@ class SortTranslation extends BaseTranslationCommand
     {
         return new CommandOptions(
             source: is_string($this->option('source')) ? $this->option('source') : 'en',
-            all: (bool) $this->option('all')
+            all: (bool) $this->option('all'),
+            nested: (bool) $this->option('nested')
         );
-    }
-
-    private function sortAllFiles(): void
-    {
-        $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
-        foreach ($languageFiles as $file) {
-            $this->sortFile($file);
-        }
     }
 
     private function sortFile(string $filePath): void
@@ -58,5 +64,23 @@ class SortTranslation extends BaseTranslationCommand
         $sortedContents = $this->sorter->sortByKey($contents);
         $languageFile->updateFile($sortedContents);
         $this->info("Sorted: $filePath");
+    }
+
+    private function processNestedStructure(string $language, bool $all = false): void
+    {
+        $langDir = PhpNestedLanguageFileHelper::getLangDirectory();
+
+        if ($all) {
+            foreach (scandir($langDir) as $locale) {
+                if (!in_array($locale, ['.', '..']) && is_dir(PhpNestedLanguageFileHelper::getLocaleDirectory($locale))) {
+                    PhpNestedLanguageFileHelper::sortLocaleTranslations($locale);
+                    $this->info("Sorted nested PHP file: {$locale}.php");
+                }
+            }
+            return;
+        }
+
+        PhpNestedLanguageFileHelper::sortLocaleTranslations($language);
+        $this->info("Sorted nested PHP file: {$language}.php");
     }
 }

@@ -36,9 +36,10 @@ class CleanTranslation extends BaseTranslationCommand
 
         if ($options->nested) {
             $this->cleanNestedTranslations($usedTranslations, $options->source, $options->print);
-        } else {
-            $this->cleanSingleFileTranslations($usedTranslations, $sourceJsonPath, $options->print);
+            return;
         }
+
+        $this->cleanSingleFileTranslations($usedTranslations, $sourceJsonPath, $options->print);
     }
 
     protected function cleanSingleFileTranslations(array $usedTranslations, string $sourceJsonPath, bool $print = true): void
@@ -83,8 +84,8 @@ class CleanTranslation extends BaseTranslationCommand
     {
         return new CommandOptions(
             source: is_string($this->option('source')) ? $this->option('source') : 'en',
-            print: (bool) $this->option('print'),
-            nested: (bool) $this->option('nested')
+            print: (bool)$this->option('print'),
+            nested: (bool)$this->option('nested')
         );
     }
 
