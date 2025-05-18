@@ -36,6 +36,7 @@ class SortTranslation extends BaseTranslationCommand
         }
 
         if ($options->all) {
+            $this->sortAllFiles();
             $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
             foreach ($languageFiles as $file) {
                 $this->sortFile($file->getPathname());
@@ -64,6 +65,14 @@ class SortTranslation extends BaseTranslationCommand
         $sortedContents = $this->sorter->sortByKey($contents);
         $languageFile->updateFile($sortedContents);
         $this->info("Sorted: $filePath");
+    }
+
+    private function sortAllFiles(): void
+    {
+        $languageFiles = $this->languageDirectoryManager->getLanguageFiles();
+        foreach ($languageFiles as $file) {
+            $this->sortFile($file);
+        }
     }
 
     private function processNestedStructure(string $language, bool $all = false): void
