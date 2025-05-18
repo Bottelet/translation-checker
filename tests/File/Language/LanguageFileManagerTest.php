@@ -55,24 +55,26 @@ class LanguageFileManagerTest extends TestCase
             'greeting' => 'Hello User',
         ];
         $jsonManager->updateFile($translations);
-        $jsonContent = file_get_contents($this->tempFile);
-        $lines = explode(PHP_EOL, $jsonContent);
 
-        //remove last line as it's curly bracket
+        // Normalize line endings before exploding
+        $jsonContent = str_replace("\r\n", "\n", file_get_contents($this->tempFile));
+        $lines = explode("\n", $jsonContent);
+
+        // Remove last line (closing bracket)
         array_pop($lines);
         $lastLine = end($lines);
-        $this->assertStringNotContainsString(',', $lastLine);
+        $this->assertStringNotContainsString(',', trim($lastLine));
 
         $jsonManager->updateFile(['new' => 'add new']);
-        $this->assertStringNotContainsString(',', $lastLine);
 
-        $jsonContent = file_get_contents($this->tempFile);
-        $lines = explode(PHP_EOL, $jsonContent);
+        // Normalize again for second check
+        $jsonContent = str_replace("\r\n", "\n", file_get_contents($this->tempFile));
+        $lines = explode("\n", $jsonContent);
         array_pop($lines);
         $lastLine = end($lines);
 
-        $this->assertStringNotContainsString(',', $lastLine);
-        $this->assertStringContainsString('add new', $lastLine);
+        $this->assertStringNotContainsString(',', trim($lastLine));
+        $this->assertStringContainsString('add new', trim($lastLine));
     }
 
     #[Test]
