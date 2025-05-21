@@ -3,6 +3,7 @@
 namespace Bottelet\TranslationChecker\Tests\Commands;
 
 use Bottelet\TranslationChecker\Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -13,16 +14,14 @@ class CheckTranslationTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->translationFile = $this->tempDir.'/lang/fr.json';
-
-        if (! file_exists(dirname($this->translationFile))) {
+        $this->translationFile = $this->tempDir . '/lang/fr.json';
+        if (!file_exists(dirname($this->translationFile))) {
             mkdir(dirname($this->translationFile), 0777, true);
         }
 
         file_put_contents($this->translationFile, '{}');
 
         Config::set('translator.source_paths', [$this->tempDir]);
-        Config::set('translator.language_folder', $this->tempDir.'/lang');
     }
 
     #[Test]
@@ -60,7 +59,7 @@ class CheckTranslationTest extends TestCase
         ]));
 
         Config::set('translator.source_paths', []);
-        Config::set('translator.language_folder', $this->tempDir.'/lang');
+        Config::set('translator.language_folder', $this->tempDir . '/lang');
 
         // Execute the command with the sort option
         $this->artisan('translations:check', [
@@ -94,5 +93,54 @@ class CheckTranslationTest extends TestCase
         $this->assertStringNotContainsString('Velkommen\/Hej', file_get_contents($this->translationFile));
         $this->assertStringContainsString('Welcome/Hi', file_get_contents($this->translationFile));
         $this->assertStringContainsString('Velkommen/Hej', file_get_contents($this->translationFile));
+    }
+
+    #[Test]
+    public function itHandlesNestedTranslationsCorrectly(): void
+    {
+        file_put_contents($this->tempDir . '/test.php', '<?php echo __("home.welcome"); echo __("dashboard.analytics.visits"); ?>');
+
+        $this->createNestedTranslationFile('fr', 'home', ['welcome' => 'Bienvenue à la maison']);
+        $this->createNestedTranslationFile('fr', 'dashboard', ['analytics.visits' => 'Visites']);
+        $this->createNestedTranslationFile('fr', 'general', ['simple' => 'Simple valeur']);
+
+        Config::set('translator.source_paths', []);
+        Artisan::call('translations:check', [
+            'target' => 'fr',
+            '--nested' => true,
+        ]);
+
+        $this->assertNestedFileContains('fr', 'home', ['welcome' => 'Bienvenue à la maison']);
+        $this->assertNestedFileContains('fr', 'dashboard', ['analytics.visits' => 'Visites']);
+        $this->assertNestedFileContains('fr', 'general', ['simple' => 'Simple valeur']);
+    }
+
+
+    #[Test]
+    public function itMergesExistingTranslationsWithNestedFlag(): void
+    {
+        file_put_contents($this->tempDir . '/test.php', '<?php echo __("home.welcome"); echo __("home.about"); ?>');
+
+        $this->createNestedTranslationFile('fr', 'home', [
+            'welcome' => 'Bienvenue',
+            'other' => 'Autre contenu'
+        ]);
+
+        Config::set('translator.source_paths', [$this->tempDir]);
+        Config::set('translator.language_folder', $this->tempDir . '/lang');
+
+        Artisan::call('translations:check', [
+            'target' => 'fr',
+            '--nested' => true,
+        ]);
+
+        $this->assertNestedFileContains('fr', 'home', [
+            'welcome' => 'Bienvenue',
+            'other' => 'Autre contenu'
+        ]);
+
+        $homeFilePath = $this->tempDir . '/lang/fr/home.php';
+        $homeContents = require $homeFilePath;
+        $this->assertArrayHasKey('about', $homeContents);
     }
 }
