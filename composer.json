@@ -33,7 +33,7 @@
         "php": "^8.2",
         "nikic/php-parser": "^v5.4",
         "google/cloud-translate": "^1.12",
-        "openai-php/client": ">=0.14.0"
+        "openai-php/client": ">=0.14.0",
         "deeplcom/deepl-php": "^1.12",
         "stichoza/google-translate-php": "^5.2"
     },
