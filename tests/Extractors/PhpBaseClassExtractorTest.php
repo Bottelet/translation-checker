@@ -51,6 +51,11 @@ class PhpBaseClassExtractorTest extends TestCase
     #[Test]
     public function getEmptyIfFilePermissionFails(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Skipping permission test on Windows');
+            return;
+        }
+
         $filePath = $this->tempDir . '/permission.php';
         file_put_contents($filePath, $this->phpControllerFile);
 

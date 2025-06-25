@@ -33,7 +33,21 @@ class LanguageDirectoryManagerTest extends TestCase
         });
 
         $this->assertCount(2, $files);
-        $this->assertEquals($this->translationFile, $files[0]->getPathname());
-        $this->assertEquals($this->secondTranslationFile, $files[1]->getPathname());
+        $this->assertEquals(
+            $this->normalizePath($this->translationFile),
+            $this->normalizePath($files[0]->getPathname())
+        );
+        $this->assertEquals(
+            $this->normalizePath($this->secondTranslationFile),
+            $this->normalizePath($files[1]->getPathname())
+        );
+    }
+
+    private function normalizePath(string $path): string
+    {
+        if (PHP_OS_FAMILY !== 'Windows') {
+            return $path;
+        }
+        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
     }
 }
