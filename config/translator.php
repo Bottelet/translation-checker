@@ -1,6 +1,21 @@
 <?php
 
 return [
+
+    /*
+      |--------------------------------------------------------------------------
+      | PHP Version
+      |--------------------------------------------------------------------------
+      |
+      | The PHP version makes the parser aware of version-specific syntax
+      | e.g., in PHP 8.4 introduced multiple access type modifiers to properties
+      |
+      | Supported: "8.4", "8.3", "8.2"
+      |
+      | Default: 8.2
+      |
+      */
+    'php_version' => env('TRANSLATOR_PHP_VERSION', '8.2'),
     /*
       |--------------------------------------------------------------------------
       | Default Translation Service
@@ -34,7 +49,7 @@ return [
 
             /**
              * Custom added prompt to enhance translation quality.
-             * 
+             *
              * Example:
              * 'prompt_extension' => 'This application translates medical terms consistently throughout.'
              */
