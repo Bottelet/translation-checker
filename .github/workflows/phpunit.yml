@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    name: PHPUnit PHP-${{ matrix.php-versions }}
+    name: Tests PHP-${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
