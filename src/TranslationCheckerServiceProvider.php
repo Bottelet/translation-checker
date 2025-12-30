@@ -31,20 +31,6 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(GoogleTranslator::class, function ($app) {
-            return new GoogleTranslator(
-                $app->make(VariableRegexHandler::class),
-                new TranslateClient(['keyFile' =>  $app->config['translator.translators.google']])
-            );
-        });
-
-        $this->app->bind(FreeGoogleTranslator::class, function ($app) {
-            return new FreeGoogleTranslator(
-                $app->make(VariableRegexHandler::class),
-                new \Stichoza\GoogleTranslate\GoogleTranslate()
-            );
-        });
-
         $this->app->bind(OpenAiTranslator::class, function ($app) {
             $factory = OpenAI::factory();
             if ($app->config['translator.translators.openai.api_key']) {
@@ -59,12 +45,6 @@ class TranslationCheckerServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(DeeplTranslator::class, function ($app) {
-            return new DeeplTranslator(
-                $app->make(VariableRegexHandler::class),
-                new Translator($app->config['translator.translators.deepl.api_key'])
-            );
-        });
     }
 
     public function boot(): void
