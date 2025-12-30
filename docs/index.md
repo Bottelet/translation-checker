@@ -31,9 +31,8 @@ php artisan vendor:publish --provider="Bottelet\TranslationChecker\TranslationCh
 
 1. **translations:check** - Check, manage, and update translations
 2. **translations:clean** - Clean translations by removing unused keys
-3. **translations:find-missing** - Find and add missing translations
-4. **translations:sort** - Sort translation files
-5. **translations:sync** - Sync translations between language files
+3. **translations:sort** - Sort translation files
+4. **translations:sync** - Sync translations between language files
 
 ## General Usage
 

@@ -2,10 +2,12 @@
 
 namespace Bottelet\TranslationChecker\Dto;
 
-class Translation
+class TranslationItem
 {
-    public function __construct(protected string $key, protected string $path)
-    {
+    public function __construct(
+        protected string $key,
+        protected ?string $path = null
+    ) {
     }
 
     public function getKey(): string

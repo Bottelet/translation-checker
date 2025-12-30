@@ -2,24 +2,24 @@
 
 namespace Bottelet\TranslationChecker\Dto;
 
-class TranslationList
+class TranslationCollection
 {
     /**
-     * @param  array<Translation> $translations
+     * @param  array<TranslationItem> $translations
      */
     public function __construct(protected array $translations = [])
     {
     }
 
     /**
-     * @return array<Translation>
+     * @return array<TranslationItem>
      */
     public function getTranslations(): array
     {
         return $this->translations;
     }
 
-    public function addTranslation(Translation $translation): self
+    public function addTranslation(TranslationItem $translation): self
     {
         $this->translations[] = $translation;
 
@@ -32,9 +32,7 @@ class TranslationList
     public function getKeys(): array
     {
         return array_fill_keys(
-            array_map(function (Translation $translation) {
-                return $translation->getKey();
-            }, $this->translations),
+            array_map(fn (TranslationItem $translation) => $translation->getKey(), $this->translations),
             null
         );
     }

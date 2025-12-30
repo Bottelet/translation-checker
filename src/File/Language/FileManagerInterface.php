@@ -16,7 +16,5 @@ interface FileManagerInterface
     */
     public function updateFile(array $translations): void;
 
-    public function sortFile(): void;
-
     public function syncFile(FileManagerInterface $targetFile): void;
 }

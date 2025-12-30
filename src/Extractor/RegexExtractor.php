@@ -8,12 +8,11 @@ use SplFileInfo;
 
 class RegexExtractor implements ExtractorContract
 {
+    public const DOUBLE_UNDERSCORE_SYNTAX_PATTERN = '/(__\(\s*)([\'"])(.*?)\2/s';
+    public const T_SYNTAX_PATTERN = '/(?<![\w$])\$?tc?\(\s*(["\'])(.*?)\1[^)]*?\)/s';
+    public const DOLLAR_UNDERSCORE_PATTERN = '/\$_\(\s*[\'"]([^\'"]+)[\'"]\s*\)/s';
     /** @var Collection<int, array{regex: string, matchIndex: int, group: string}> */
     private Collection $patterns;
-
-    public const DOUBLE_UNDERSCORE_SYNTAX_PATTERN = '/(__\()([\'"])(.*?)\2/';
-    public const T_SYNTAX_PATTERN = '/(?<![\w$])\$?tc?\((["\'])(.*?)\1[^)]*?\)/s';
-    public const DOLLAR_UNDERSCORE_PATTERN = '/\$_\([\'"]([^\'"]+)[\'"]\)/';
 
     public function __construct()
     {

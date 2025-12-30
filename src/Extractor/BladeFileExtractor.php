@@ -18,7 +18,7 @@ class BladeFileExtractor extends PhpBaseClassExtractor
         if ($node instanceof FuncCall) {
             if ($node->name instanceof Name) {
                 $functionName = $node->name->toString();
-                if (in_array($functionName, ['__', '@lang', '@trans', 'trans', 'lang'], true) || config('translator.noop_translation') === $functionName) {
+                if ($this->isTranslationFunction($functionName)) {
                     $this->addTranslation($node->getArgs());
                 }
             }
@@ -52,5 +52,16 @@ class BladeFileExtractor extends PhpBaseClassExtractor
         $compiledCode = Blade::compileString($code);
 
         return $compiledCode ?: null;
+    }
+
+    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang', '@lang', '@trans'];
+
+    private function isTranslationFunction(string $functionName): bool
+    {
+        if (in_array($functionName, self::TRANSLATION_FUNCTIONS, true)) {
+            return true;
+        }
+
+        return config('translator.noop_translation') === $functionName;
     }
 }

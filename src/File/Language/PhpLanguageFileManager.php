@@ -41,13 +41,6 @@ class PhpLanguageFileManager implements FileManagerInterface
         file_put_contents($this->filePath, $content);
     }
 
-    public function sortFile(): void
-    {
-        $translations = $this->readFile();
-        ksort($translations, SORT_FLAG_CASE | SORT_NATURAL);
-        $this->updateFile($translations);
-    }
-
     public function syncFile(FileManagerInterface $targetFile): void
     {
         $sourceTranslations = $this->readFile();

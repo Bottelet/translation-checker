@@ -5,7 +5,7 @@ namespace Bottelet\TranslationChecker\Tests;
 use Bottelet\TranslationChecker\Exception\TranslationServiceException;
 use Bottelet\TranslationChecker\Sort\AlphabeticSort;
 use Bottelet\TranslationChecker\TranslationManager;
-use Bottelet\TranslationChecker\Translator\GoogleTranslator;
+use Bottelet\TranslationChecker\Translator\OpenAiTranslator;
 use FilesystemIterator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -43,7 +43,7 @@ class TranslationManagerTest extends TestCase
         }
         file_put_contents($this->jsonFilePath, '{"Hello, World!": "Already Translated Hello, World!"}');
 
-        $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
+        $this->translationServiceMock = $this->createMock(OpenAiTranslator::class);
         $this->translationManager     = new TranslationManager(
             new AlphabeticSort,
             $this->translationServiceMock
@@ -181,7 +181,7 @@ class TranslationManagerTest extends TestCase
     {
         $this->expectException(TranslationServiceException::class);
 
-        $this->translationServiceMock = $this->createMock(GoogleTranslator::class);
+        $this->translationServiceMock = $this->createMock(OpenAiTranslator::class);
         $this->translationManager     = new TranslationManager(
             new AlphabeticSort,
             $this->translationServiceMock

@@ -19,11 +19,11 @@ Instructions:
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
 3. Maintain the original structure and formatting of the input string.";
 
-if (config('translator.translators.openai.prompt_extension')) {
-    $systemPrompt .= $this->customPrompt();
-}
+        if (config('translator.translators.openai.prompt_extension')) {
+            $systemPrompt .= $this->customPrompt();
+        }
 
-$systemPrompt .= "\nInput format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
+        $systemPrompt .= "\nInput format: A single string in {$sourceLanguage}, potentially containing words prefixed with colons.
 
 Output format: respond with a single string in {$targetLanguage}, potentially containing words prefixed with colons.";
 
@@ -59,11 +59,11 @@ Instructions:
 2. Words prefixed with a colon (:) are special tokens. Do not translate these tokens, keep them as is.
 3. Maintain the original structure and formatting of each input string.\n";
 
-if (config('translator.translators.openai.prompt_extension')) {
-    $systemPrompt .= $this->customPrompt();
-}
+        if (config('translator.translators.openai.prompt_extension')) {
+            $systemPrompt .= $this->customPrompt();
+        }
 
-$systemPrompt .="\nInput format: An array of strings in {$sourceLanguage}, potentially containing words prefixed with colons.
+        $systemPrompt .= "\nInput format: An array of strings in {$sourceLanguage}, potentially containing words prefixed with colons.
 
 Output format: Respond with a single JSON object. Each key-value pair in this object should represent one translation:
 - Key: The original string in {$sourceLanguage}
@@ -125,6 +125,6 @@ Ensure your entire response is a valid JSON object.";
 
     private function customPrompt(): string
     {
-        return "4. " . config('translator.translators.openai.prompt_extension') . "\n";   
+        return '4. ' . config('translator.translators.openai.prompt_extension') . "\n";
     }
 }

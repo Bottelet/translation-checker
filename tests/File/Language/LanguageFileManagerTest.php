@@ -76,22 +76,6 @@ class LanguageFileManagerTest extends TestCase
     }
 
     #[Test]
-    public function sortJsonFileSortsKeys(): void
-    {
-        $jsonManager = new LanguageFileManagerFactory($this->tempFile);
-        $translations = [
-            'b' => 'Second',
-            'a' => 'First',
-        ];
-        $jsonManager->updateFile($translations);
-        $jsonManager->sortFile();
-
-        $sortedContent = json_decode(file_get_contents($this->tempFile), true);
-        $expectedOrder = ['a' => 'First', 'b' => 'Second'];
-        $this->assertEquals(array_keys($expectedOrder), array_keys($sortedContent));
-    }
-
-    #[Test]
     public function nonexistentFileReadReturnsEmptyArray(): void
     {
         $jsonManager = new LanguageFileManagerFactory('/path/to/nonexistent/file.json');

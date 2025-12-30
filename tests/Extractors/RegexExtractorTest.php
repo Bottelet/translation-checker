@@ -166,4 +166,98 @@ class RegexExtractorTest extends \Bottelet\TranslationChecker\Tests\TestCase
         $this->assertContains('simple_string', $translationKeys);
         $this->assertContains('String with "double quotes"', $translationKeys);
     }
+
+    #[Test]
+    public function it_extracts_multiline_translations_from_vue_files(): void
+    {
+        $vueContent = <<<'TEXT'
+<template>
+    <div>
+        <p>{{ $t('simple_key') }}</p>
+        <button>
+            {{ $t(
+                'Press Enter or comma to add. These will be used as default for all contacts under this company.'
+            ) }}
+        </button>
+        <span>{{ t(
+            'Another multi-line translation'
+        ) }}</span>
+    </div>
+</template>
+TEXT;
+
+        $file = $this->createTempFile('multiline.vue', $vueContent);
+        $extractor = new RegexExtractor;
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertContains('simple_key', $translationKeys);
+        $this->assertContains('Press Enter or comma to add. These will be used as default for all contacts under this company.', $translationKeys);
+        $this->assertContains('Another multi-line translation', $translationKeys);
+    }
+
+    #[Test]
+    public function it_extracts_multiline_translations_from_blade_files(): void
+    {
+        $bladeContent = <<<'TEXT'
+<div>
+    {{ $t(
+        'Long translation text that spans multiple lines for better readability'
+    ) }}
+</div>
+TEXT;
+
+        $file = $this->createTempFile('multiline.blade.php', $bladeContent);
+        $extractor = new RegexExtractor;
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertContains('Long translation text that spans multiple lines for better readability', $translationKeys);
+    }
+
+    #[Test]
+    public function it_extracts_multiline_translations_from_react_files(): void
+    {
+        $reactContent = <<<'TEXT'
+export default function Component() {
+    return (
+        <div>
+            {t(
+                'React translation with multiple lines'
+            )}
+        </div>
+    );
+}
+TEXT;
+
+        $file = $this->createTempFile('multiline.jsx', $reactContent);
+        $extractor = new RegexExtractor;
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertContains('React translation with multiple lines', $translationKeys);
+    }
+
+    #[Test]
+    public function it_extracts_multiline_translations_from_svelte_files(): void
+    {
+        $svelteContent = <<<'TEXT'
+<script>
+    import { t } from '$lib/i18n';
+</script>
+
+<div>
+    {$t(
+        'Svelte translation with multiple lines'
+    )}
+</div>
+TEXT;
+
+        $file = $this->createTempFile('multiline.svelte', $svelteContent);
+        $extractor = new RegexExtractor;
+
+        $translationKeys = $extractor->extractFromFile($file);
+
+        $this->assertContains('Svelte translation with multiple lines', $translationKeys);
+    }
 }
