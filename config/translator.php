@@ -15,7 +15,7 @@ return [
       | Default: 8.2
       |
       */
-    'php_version' => env('TRANSLATOR_PHP_VERSION', '8.2'),
+    'php_version' => env('TRANSLATOR_PHP_VERSION', '8.5'),
     /*
       |--------------------------------------------------------------------------
       | Default Translation Service
