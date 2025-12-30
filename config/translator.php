@@ -12,7 +12,7 @@ return [
       |
       | Supported: "8.4", "8.3", "8.2"
       |
-      | Default: 8.2
+      | Default: 8.5
       |
       */
     'php_version' => env('TRANSLATOR_PHP_VERSION', '8.5'),
