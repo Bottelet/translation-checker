@@ -77,4 +77,89 @@ class SyncTranslationTest extends TestCase
         $this->assertEquals($expectedTranslationsTarget, json_decode(file_get_contents($this->targetFile), true));
         $this->assertEquals($expectedTranslationsSource, json_decode(file_get_contents($thirdFile), true));
     }
+
+    #[Test]
+    public function itSyncsAllTranslationsWithAllFlag(): void
+    {
+        $thirdFile = $this->createJsonTranslationFile('fr', [
+            'key1' => 'French Value 1',
+        ]);
+
+        Artisan::call('translations:sync', [
+            '--source' => 'en',
+            '--all' => true,
+        ]);
+
+        $expectedTranslationsSource = [
+            'key1' => 'Source Value 1',
+            'key2' => 'Source Value 2',
+            'key3' => 'Source Value 3',
+        ];
+
+        $expectedTranslationsTarget = [
+            'key1' => 'Target Value 1',
+            'key2' => 'Source Value 2',
+            'key3' => 'Source Value 3',
+            'key4' => 'Target Value 4',
+            'key5' => 'Target Value 5',
+        ];
+
+        $expectedTranslationsFrench = [
+            'key1' => 'French Value 1',
+            'key2' => 'Source Value 2',
+            'key3' => 'Source Value 3',
+        ];
+
+        $this->assertEquals($expectedTranslationsSource, json_decode(file_get_contents($this->sourceFile), true));
+        $this->assertEquals($expectedTranslationsTarget, json_decode(file_get_contents($this->targetFile), true));
+        $this->assertEquals($expectedTranslationsFrench, json_decode(file_get_contents($thirdFile), true));
+    }
+
+    #[Test]
+    public function itSyncsOnlyTargetWhenTargetSpecified(): void
+    {
+        $thirdFile = $this->createJsonTranslationFile('fr', [
+            'key1' => 'French Value 1',
+        ]);
+
+        Artisan::call('translations:sync', [
+            '--source' => 'en',
+            '--target' => 'de',
+        ]);
+
+        $expectedTranslationsTarget = [
+            'key1' => 'Target Value 1',
+            'key2' => 'Source Value 2',
+            'key3' => 'Source Value 3',
+            'key4' => 'Target Value 4',
+            'key5' => 'Target Value 5',
+        ];
+
+        $expectedTranslationsFrench = [
+            'key1' => 'French Value 1',
+        ];
+
+        $this->assertEquals($expectedTranslationsTarget, json_decode(file_get_contents($this->targetFile), true));
+        $this->assertEquals($expectedTranslationsFrench, json_decode(file_get_contents($thirdFile), true));
+    }
+
+    #[Test]
+    public function itUsesAppLocaleAsDefaultSource(): void
+    {
+        Config::set('app.locale', 'en');
+
+        $thirdFile = $this->createJsonTranslationFile('es', []);
+
+        Artisan::call('translations:sync', [
+            '--target' => 'es',
+        ]);
+
+        $expectedTranslations = [
+            'key1' => 'Source Value 1',
+            'key2' => 'Source Value 2',
+            'key3' => 'Source Value 3',
+        ];
+
+        $this->assertEquals($expectedTranslations, json_decode(file_get_contents($thirdFile), true));
+    }
 }

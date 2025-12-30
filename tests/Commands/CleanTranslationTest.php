@@ -90,4 +90,76 @@ class CleanTranslationTest extends TestCase
         $content = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
         $this->assertEmpty($content);
     }
+
+    #[Test]
+    public function itCleansAllLanguageFilesWithAllFlag(): void
+    {
+        $secondFile = $this->createJsonTranslationFile('de', [
+            'sundae' => 'Eisbecher',
+            'The title field is required for create' => 'Das Titelfeld ist erforderlich',
+        ]);
+
+        $this->artisan('translations:clean', [
+            '--all' => true,
+        ])->assertExitCode(0);
+
+        $daContent = json_decode(file_get_contents($this->translationFile), true);
+        $deContent = json_decode(file_get_contents($secondFile), true);
+
+        $this->assertSame(['The title field is required for create' => 'Ice cream'], $daContent);
+        $this->assertSame(['The title field is required for create' => 'Das Titelfeld ist erforderlich'], $deContent);
+    }
+
+    #[Test]
+    public function itCleansAllLanguageFilesWhenNoSourceSpecified(): void
+    {
+        $secondFile = $this->createJsonTranslationFile('fr', [
+            'cubes' => 'cubes',
+            'The title field is required for create' => 'Le champ titre est requis',
+        ]);
+
+        $this->artisan('translations:clean')->assertExitCode(0);
+
+        $daContent = json_decode(file_get_contents($this->translationFile), true);
+        $frContent = json_decode(file_get_contents($secondFile), true);
+
+        $this->assertSame(['The title field is required for create' => 'Ice cream'], $daContent);
+        $this->assertSame(['The title field is required for create' => 'Le champ titre est requis'], $frContent);
+    }
+
+    #[Test]
+    public function itCleansOnlySpecifiedSourceWhenProvided(): void
+    {
+        $secondFile = $this->createJsonTranslationFile('es', [
+            'sundae' => 'sundae',
+            'The title field is required for create' => 'El campo de título es obligatorio',
+        ]);
+
+        $this->artisan('translations:clean', [
+            '--source' => 'da',
+        ])->assertExitCode(0);
+
+        $daContent = json_decode(file_get_contents($this->translationFile), true);
+        $esContent = json_decode(file_get_contents($secondFile), true);
+
+        $this->assertSame(['The title field is required for create' => 'Ice cream'], $daContent);
+
+        $this->assertSame([
+            'sundae' => 'sundae',
+            'The title field is required for create' => 'El campo de título es obligatorio',
+        ], $esContent);
+    }
+
+    #[Test]
+    public function itUsesAppLocaleAsDefaultSourceWhenSpecified(): void
+    {
+        Config::set('app.locale', 'da');
+
+        $this->artisan('translations:clean', [
+            '--source' => 'da',
+        ])->assertExitCode(0);
+
+        $content = json_decode(file_get_contents($this->translationFile), true);
+        $this->assertSame(['The title field is required for create' => 'Ice cream'], $content);
+    }
 }

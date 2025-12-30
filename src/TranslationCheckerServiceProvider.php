@@ -93,7 +93,6 @@ class TranslationCheckerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Commands\CheckTranslation::class,
-                Commands\FindMissingTranslation::class,
                 Commands\SortTranslation::class,
                 Commands\SyncTranslation::class,
                 Commands\CleanTranslation::class,

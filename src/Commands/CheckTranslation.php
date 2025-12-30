@@ -17,7 +17,6 @@ class CheckTranslation extends BaseTranslationCommand
     public function handle(TranslationManager $translationManager): void
     {
         $this->info('Checking translations...');
-
         $options = $this->parseOptions();
         $sourceFilePaths = $this->getSourceFilePaths();
         $targetJsonPath = $this->getTargetLanguagePath($options->target);
