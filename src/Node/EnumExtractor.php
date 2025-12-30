@@ -18,16 +18,27 @@ class EnumExtractor extends NodeVisitorAbstract
     /** @var array<int, string> */
     private array $translationKeys = [];
 
+    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang'];
+
     public function enterNode(Node $node): Node
     {
         if ($node instanceof FuncCall && $node->name instanceof Name) {
             $functionName = $node->name->toString();
-            if (in_array($functionName, ['__', '__t', 'trans', 'lang'], true)) {
+            if ($this->isTranslationFunction($functionName)) {
                 $this->processTranslationFunction($node);
             }
         }
 
         return $node;
+    }
+
+    private function isTranslationFunction(string $functionName): bool
+    {
+        if (in_array($functionName, self::TRANSLATION_FUNCTIONS, true)) {
+            return true;
+        }
+
+        return config('translator.noop_translation') === $functionName;
     }
 
     /**

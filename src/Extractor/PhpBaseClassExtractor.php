@@ -2,7 +2,6 @@
 
 namespace Bottelet\TranslationChecker\Extractor;
 
-use Bottelet\TranslationChecker\Node\ChainedGetNodeRemover;
 use Bottelet\TranslationChecker\Node\EnumExtractor;
 use Bottelet\TranslationChecker\Node\TranslateCommentExtractor;
 use Exception;

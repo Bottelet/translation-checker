@@ -64,7 +64,8 @@ class CleanTranslation extends BaseTranslationCommand
 
     protected function parseOptions(): CommandOptions
     {
-        $defaultLocale = config('app.locale', 'en');
+        $configLocale = config('app.locale', 'en');
+        $defaultLocale = is_string($configLocale) ? $configLocale : 'en';
 
         return new CommandOptions(
             source: is_string($this->option('source')) ? $this->option('source') : $defaultLocale,

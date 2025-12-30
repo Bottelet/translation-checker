@@ -35,11 +35,6 @@ class LanguageFileManagerFactory implements FileManagerInterface
         $this->fileManager->updateFile($translations);
     }
 
-    public function sortFile(): void
-    {
-        $this->fileManager->sortFile();
-    }
-
     public function syncFile(FileManagerInterface $targetFile): void
     {
         $this->fileManager->syncFile($targetFile);
