@@ -104,6 +104,14 @@ class MissingKeysFinderTest extends TestCase
     }
 
     #[Test]
+    public function canFindDirectivesInBlade(): void
+    {
+        $translationFinder = new MissingKeysFinder;
+        $foundStrings = $translationFinder->findTranslatableStrings([$this->bladeFile]);
+        $this->assertCount(12, $foundStrings->getTranslations());
+    }
+
+    #[Test]
     public function distinguishesBetweenTranslationAndOtherScriptingFunctions(): void
     {
         $jsFile = $this->createTempFile('script.js', "console.log('Not a PHP file');");

@@ -37,6 +37,17 @@ class CleanTranslation extends BaseTranslationCommand
         }
     }
 
+    protected function parseOptions(): CommandOptions
+    {
+        $configLocale = config('app.locale', 'en');
+        $defaultLocale = is_string($configLocale) ? $configLocale : 'en';
+
+        return new CommandOptions(
+            source: is_string($this->option('source')) ? $this->option('source') : $defaultLocale,
+            print: (bool) $this->option('print')
+        );
+    }
+
     /**
      * @param array<string> $sourceFilePaths
      */
@@ -60,17 +71,6 @@ class CleanTranslation extends BaseTranslationCommand
             $sourceFileManager->updateFile($cleanedTranslations);
             $this->info("Unused translations removed from {$languageFilePath}");
         }
-    }
-
-    protected function parseOptions(): CommandOptions
-    {
-        $configLocale = config('app.locale', 'en');
-        $defaultLocale = is_string($configLocale) ? $configLocale : 'en';
-
-        return new CommandOptions(
-            source: is_string($this->option('source')) ? $this->option('source') : $defaultLocale,
-            print: (bool) $this->option('print')
-        );
     }
 
     /**

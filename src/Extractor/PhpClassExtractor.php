@@ -9,12 +9,11 @@ use PhpParser\Node\Scalar\String_;
 
 class PhpClassExtractor extends PhpBaseClassExtractor
 {
+    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'trans_choice'];
     /**
      * @var string[]
      */
     protected array $translationKeys = [];
-
-    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang'];
 
     public function enterNode(Node $node): ?int
     {

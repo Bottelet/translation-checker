@@ -65,10 +65,7 @@ class PhpBaseClassExtractor extends NodeVisitorAbstract implements ExtractorCont
             return null;
         }
 
-        /** @var string $phpVersion */
-        $phpVersion = config('translator.php_version');
-
-        return (new ParserFactory)->createForVersion(PhpVersion::fromString($phpVersion));
+        return (new ParserFactory)->createForVersion(PhpVersion::getHostVersion());
     }
 
     /** @param  array<int, Node\Arg>  $args */

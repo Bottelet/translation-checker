@@ -15,10 +15,9 @@ use PhpParser\NodeVisitorAbstract;
 
 class EnumExtractor extends NodeVisitorAbstract
 {
+    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang', 'trans_choice', 'choice'];
     /** @var array<int, string> */
     private array $translationKeys = [];
-
-    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang'];
 
     public function enterNode(Node $node): Node
     {
@@ -32,6 +31,14 @@ class EnumExtractor extends NodeVisitorAbstract
         return $node;
     }
 
+    /**
+     * @return array<int, string>
+     */
+    public function getTranslationKeys(): array
+    {
+        return array_unique($this->translationKeys);
+    }
+
     private function isTranslationFunction(string $functionName): bool
     {
         if (in_array($functionName, self::TRANSLATION_FUNCTIONS, true)) {
@@ -39,14 +46,6 @@ class EnumExtractor extends NodeVisitorAbstract
         }
 
         return config('translator.noop_translation') === $functionName;
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    public function getTranslationKeys(): array
-    {
-        return array_unique($this->translationKeys);
     }
 
     private function processTranslationFunction(FuncCall $node): void

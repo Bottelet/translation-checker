@@ -1,21 +1,6 @@
 <?php
 
 return [
-
-    /*
-      |--------------------------------------------------------------------------
-      | PHP Version
-      |--------------------------------------------------------------------------
-      |
-      | The PHP version makes the parser aware of version-specific syntax
-      | e.g., in PHP 8.4 introduced multiple access type modifiers to properties
-      |
-      | Supported: "8.4", "8.3", "8.2"
-      |
-      | Default: 8.5
-      |
-      */
-    'php_version' => env('TRANSLATOR_PHP_VERSION', '8.5'),
     /*
       |--------------------------------------------------------------------------
       | Default Translation Service

@@ -110,7 +110,7 @@ class OpenAiTranslatorTest extends \Bottelet\TranslationChecker\Tests\TestCase
     {
         $mockResponse = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
         $mockResponse->method('getStatusCode')->willReturn(400);
-        
+
         $this->translateClientMock = new ClientFake([
             new ErrorException([
                 'message' => 'The model `gpt-1` does not exist',
