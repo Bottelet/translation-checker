@@ -10,9 +10,12 @@
             </div>
         @else
             <div class="alert alert-warning" role="alert">
-                @lang('You are currently not logged in.')
+                @lang('1You are currently not logged in.')
+                @lang('2You are currently not logged in.')
             </div>
         @endif
+
+        @lang('3You are currently not logged in.')
 
         <div class="buttons">
             <button type="primary">
@@ -20,6 +23,12 @@
             </button>
             <button type="secondary">
                 {{ __('Another Button') }}
+            </button>
+            <button type="secondary">
+                {{ trans_choice('countable', 2) }}
+            </button>
+            <button type="secondary">
+                @choice('count', 2)
             </button>
         </div>
 

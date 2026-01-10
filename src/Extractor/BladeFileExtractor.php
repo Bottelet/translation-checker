@@ -8,11 +8,12 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
-use PhpParser\NodeVisitor;
 use SplFileInfo;
 
 class BladeFileExtractor extends PhpBaseClassExtractor
 {
+    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'trans_choice', 'lang', '@lang', '@choice'];
+
     public function enterNode(Node $node): ?int
     {
         if ($node instanceof FuncCall) {
@@ -34,14 +35,13 @@ class BladeFileExtractor extends PhpBaseClassExtractor
                 $value = $argument->value;
                 if ($value->value === 'translator') {
                     $this->addTranslation($node->getArgs());
-
-                    return NodeVisitor::STOP_TRAVERSAL;
                 }
             }
         }
 
         return null;
     }
+
     protected function getCode(SplFileInfo $file): ?string
     {
         $code = parent::getCode($file);
@@ -53,8 +53,6 @@ class BladeFileExtractor extends PhpBaseClassExtractor
 
         return $compiledCode ?: null;
     }
-
-    private const TRANSLATION_FUNCTIONS = ['__', 'trans', 'lang', '@lang', '@trans'];
 
     private function isTranslationFunction(string $functionName): bool
     {

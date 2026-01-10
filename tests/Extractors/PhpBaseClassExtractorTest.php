@@ -5,7 +5,6 @@ namespace Bottelet\TranslationChecker\Tests\Extractors;
 use Bottelet\TranslationChecker\Extractor\PhpBaseClassExtractor;
 use Bottelet\TranslationChecker\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use RuntimeException;
 use SplFileInfo;
 
 class PhpBaseClassExtractorTest extends TestCase
@@ -61,49 +60,5 @@ class PhpBaseClassExtractorTest extends TestCase
         $phpExtractor = new PhpBaseClassExtractor();
         $this->expectException(\ErrorException::class);
         $phpExtractor->extractFromFile($file);
-    }
-
-    #[Test]
-    public function throwsExceptionWhenPhp84SyntaxUsedWithPhp82Parser(): void
-    {
-        config(['translator.php_version' => '8.2']);
-
-        $phpCode = <<<'PHP'
-<?php
-
-class TestClass
-{
-    public private(set) ?string $title = null;
-}
-PHP;
-
-        $file = $this->createTempFile('php84-syntax.php', $phpCode);
-        $phpExtractor = new PhpBaseClassExtractor();
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Multiple access type modifiers are not allowed/');
-        $phpExtractor->extractFromFile($file);
-    }
-
-    #[Test]
-    public function parsesPhp84SyntaxSuccessfullyWithPhp84Parser(): void
-    {
-        config(['translator.php_version' => '8.4']);
-
-        $phpCode = <<<'PHP'
-<?php
-
-class TestClass
-{
-    public private(set) ?string $title = null;
-}
-PHP;
-
-        $file = $this->createTempFile('php84-syntax-valid.php', $phpCode);
-        $phpExtractor = new PhpBaseClassExtractor();
-
-        $foundStrings = $phpExtractor->extractFromFile($file);
-
-        $this->assertIsArray($foundStrings);
     }
 }

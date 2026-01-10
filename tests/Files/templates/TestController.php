@@ -31,7 +31,7 @@ class PostController
         $post->slug = str_slug($request->title);
         $post->save();
 
-        Session::flash('success', lang('messages.post_created_successfully'));
+        Session::flash('success', trans_choice('messages.post_created_successfully', 2));
 
         return redirect()->route('posts.index');
     }

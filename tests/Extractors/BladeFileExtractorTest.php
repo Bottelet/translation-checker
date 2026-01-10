@@ -9,7 +9,6 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Name;
-use PhpParser\NodeVisitor;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileInfo;
 
@@ -29,8 +28,20 @@ class BladeFileExtractorTest extends TestCase
         $phpExtractor = new BladeFileExtractor;
         $foundStrings = $phpExtractor->extractFromFile($this->bladeFile);
 
-        $this->assertContains('This is a demo page to showcase translations and Blade components.', $foundStrings);
-        $this->assertContains('You are currently not logged in.', $foundStrings);
+        $this->assertEquals([
+            'Welcome to Our Application :name',
+            'This is a demo page to showcase translations and Blade components.',
+            '1You are currently not logged in.',
+            '2You are currently not logged in.',
+            '3You are currently not logged in.',
+            'Click Me',
+            'Another Button',
+            'countable',
+            'Item #:count',
+            'Active User',
+            'Inactive User',
+            'Unknown Status',
+        ], $foundStrings);
     }
 
     #[Test]
@@ -97,7 +108,7 @@ class BladeFileExtractorTest extends TestCase
     }
 
     #[Test]
-    public function willIgnoreGetMethodIfNodeHasNoNameProperty():void
+    public function willIgnoreGetMethodIfNodeHasNoNameProperty(): void
     {
         $code = <<<'BLADE'
                 <div>
@@ -112,5 +123,14 @@ BLADE;
         $foundStrings = $phpExtractor->extractFromFile($file);
 
         $this->assertContains('Complete registration', $foundStrings);
+    }
+
+    #[Test]
+    public function canFindDirectivesInBlade(): void
+    {
+        $phpExtractor = new BladeFileExtractor;
+        $foundStrings = $phpExtractor->extractFromFile($this->phpControllerFile);
+
+        $this->assertCount(10, $foundStrings);
     }
 }
